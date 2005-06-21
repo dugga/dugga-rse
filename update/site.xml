@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <description url="http://support.softlanding.com/opensource/update">
+      Update site for open source Eclipse plugins provided by SoftLanding Systems.
+   </description>
+   <feature url="features/com.softlanding.rse.extensions_6.0.0.jar" id="com.softlanding.rse.extensions" version="6.0.0">
+      <category name="Free"/>
+   </feature>
+   <category-def name="Free" label="Open Source Plug-ins">
+      <description>
+         Free open source plug-ins provided by SoftLanding
+      </description>
+   </category-def>
+</site>
