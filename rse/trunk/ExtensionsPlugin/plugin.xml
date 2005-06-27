@@ -26,14 +26,10 @@
          id="com.softlanding.spooledfiles.extension"
          name="%spooledFiles"
          point="org.eclipse.ui.views">
-      <category
-            name="%softLandingCategory"
-            id="com.softlanding.wdsc.category">
-      </category>
       <view
             name="%spooledFiles"
             icon="icons/spooled_files.gif"
-            category="com.softlanding.wdsc.category"
+            category="com.ibm.etools.iseries.views"
             class="com.softlanding.rse.extensions.spooledfiles.SpooledFilesView"
             id="com.softlanding.spooledfiles.SpooledFilesView">
       </view>
