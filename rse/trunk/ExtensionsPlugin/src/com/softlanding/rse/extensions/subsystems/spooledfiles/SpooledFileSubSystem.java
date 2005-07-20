@@ -65,13 +65,7 @@ public class SpooledFileSubSystem extends DefaultSubSystemImpl implements IISeri
 			}			
 		} catch (Exception e) {
 			handleError(e);
-			//return new SpooledFileResource[0];
-			String[] errors = new String[1];
-			if (e.getMessage() == null)
-			 	errors[0] = e.toString();
-			else
-				errors[0] = e.getMessage();
-			return errors;
+			return new SpooledFileResource[0];
 		}
 		return spooledFileResources;
 	}  

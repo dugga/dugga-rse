@@ -66,14 +66,7 @@ private MonitoredMessageQueue monitoredMessageQueue;
 			}			
 		} catch (Exception e) {
 			handleError(e);
-			Exception[] errorsArray = {e};
-			return errorsArray;
-//			String[] errors = new String[1];
-//			if (e.getMessage() == null)
-//				errors[0] = e.toString();
-//			else
-//				errors[0] = e.getMessage();
-//			return errors;
+			return new QueuedMessageResource[0];
 		}
 		return queuedMessageResources;
 	}  
