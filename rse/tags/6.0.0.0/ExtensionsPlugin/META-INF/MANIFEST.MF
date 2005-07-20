@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-Name: SoftLanding Extensions to RSE
+Bundle-SymbolicName: com.softlanding.rse.extensions
+Bundle-Version: 6.0.0.0
+Bundle-ClassPath: extensions.jar,
+ activation.jar,
+ mail.jar
+Bundle-Activator: com.softlanding.rse.extensions.ExtensionsPlugin
+Bundle-Vendor: SoftLanding Systems, Inc.
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.views,
+ com.ibm.etools.iseries.core,
+ com.ibm.etools.iseries.toolbox,
+ com.ibm.etools.systems.core,
+ com.ibm.etools.systems.dstore.core,
+ com.ibm.etools.systems.logging
+Eclipse-AutoStart: true

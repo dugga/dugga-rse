@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.softlanding.rse.extensions"
+      label="%featureName"
+      version="6.0.0.0"
+      provider-name="%providerName"
+      image="update.gif"
+      colocation-affinity="com.softlanding.rse.extensions">
+
+   <install-handler/>
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      (c) Copyright SoftLanding Systems, Inc. 2005.  All rights reserved.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://support.softlanding.com/opensource/update"/>
+      <discovery label="%updateSiteName" url="http://support.softlanding.com/opensource/update"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="com.ibm.etools.iseries.core"/>
+      <import plugin="com.ibm.etools.iseries.toolbox"/>
+      <import plugin="com.ibm.etools.systems.core"/>
+      <import plugin="com.ibm.etools.systems.dstore.core"/>
+      <import plugin="com.ibm.etools.systems.logging"/>
+   </requires>
+
+   <plugin
+         id="com.softlanding.rse.extensions"
+         download-size="452"
+         install-size="500"
+         version="6.0.0.0"/>
+
+</feature>
