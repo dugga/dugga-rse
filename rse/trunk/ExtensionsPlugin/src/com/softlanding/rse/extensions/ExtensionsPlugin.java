@@ -145,7 +145,7 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		if (saveToFileDelegates == null) {
 			ArrayList delegates = new ArrayList();
 			IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
-			IConfigurationElement[] configurationElements = pluginRegistry.getConfigurationElementsFor("com.softlanding.rse.extensions.spooledfiles.save"); //$NON-NLS-1$
+			IConfigurationElement[] configurationElements = pluginRegistry.getConfigurationElementsFor("com.softlanding.rse.extensions.save"); //$NON-NLS-1$
 			for (int i = 0; i < configurationElements.length; i++) {
 				IConfigurationElement configurationElement = configurationElements[i];
 				SaveToFileDelegate delegate = new SaveToFileDelegate();
