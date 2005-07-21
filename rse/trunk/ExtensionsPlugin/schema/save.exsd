@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="com.softlanding.spooledfiles">
+<schema targetNamespace="com.softlanding.rse.extensions">
 <annotation>
-   <appInfo>
-      <meta.schema plugin="com.softlanding.spooledfiles" id="save" name="Spooled File Conversion Types"/>
-   </appInfo>
-   <documentation>
-      This extension point is used to plug in alternate file types for saving spooled files.
-   </documentation>
-</annotation>
+      <appInfo>
+         <meta.schema plugin="com.softlanding.rse.extensions" id="save" name="Spooled File Conversion Types"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to plug in alternate file types for saving spooled files.
+      </documentation>
+   </annotation>
 
    <element name="extension">
       <complexType>
@@ -54,7 +54,7 @@
                   a fully qualified name of the Java class that implements &lt;samp&gt;com.softlanding.spooledfiles.ISaveToFile&lt;/samp&gt; interface
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="com.softlanding.spooledfiles.ISaveToFile"/>
+                  <meta.attribute kind="java" basedOn="com.softlanding.rse.extensions.spooledfiles.ISaveToFile"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -106,13 +106,13 @@ in the UI
 
 &lt;p&gt;
 &lt;pre&gt;
- &lt;extension point="com.softlanding.spooledfiles.save"&gt;
+ &lt;extension point=&quot;com.softlanding.rse.extensions.save&quot;&gt;
   &lt;type
-   id="com.example.xyz.type1"
-   name="Glimwitz File"
-   class="com.example.xyz.SaveToGlimwitz"
-   prtdevtypefilter="*SCS"
-   file_extension="gwz"&gt;
+   id=&quot;com.example.xyz.type1&quot;
+   name=&quot;Glimwitz File&quot;
+   class=&quot;com.example.xyz.SaveToGlimwitz&quot;
+   prtdevtypefilter=&quot;*SCS&quot;
+   file_extension=&quot;gwz&quot;&gt;
   &lt;/type&gt;
  &lt;/extension&gt;
 &lt;/pre&gt;
@@ -126,7 +126,7 @@ in the UI
       </appInfo>
       <documentation>
          Plug-ins that want to extend this extension point must implement
-&lt;samp&gt;com.softlanding.spooledfiles.ISaveToFile&lt;/samp&gt; interface.
+&lt;samp&gt;com.softlanding.rse.extensions.spooledfiles.ISaveToFile&lt;/samp&gt; interface.
       </documentation>
    </annotation>
 
@@ -135,7 +135,7 @@ in the UI
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         The RSE Extensions plugin provides the default implementations of the save schema.  It includes an implementation for plain text as well as TIFF files.
       </documentation>
    </annotation>
 
