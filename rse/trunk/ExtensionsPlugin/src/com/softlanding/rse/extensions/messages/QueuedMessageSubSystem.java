@@ -26,10 +26,14 @@ import com.ibm.etools.systems.as400cmdsubsys.CmdSubSystem;
 import com.ibm.etools.systems.as400cmdsubsys.impl.CmdSubSystemImpl;
 import com.ibm.etools.systems.as400filesubsys.FileSubSystem;
 import com.ibm.etools.systems.as400filesubsys.impl.FileSubSystemImpl;
+import com.ibm.etools.systems.core.ISystemMessages;
 import com.ibm.etools.systems.core.SystemPlugin;
+import com.ibm.etools.systems.core.messages.SystemMessage;
 import com.ibm.etools.systems.dftsubsystem.impl.DefaultSubSystemImpl;
+import com.ibm.etools.systems.model.ISystemMessageObject;
 import com.ibm.etools.systems.model.SystemConnection;
 import com.ibm.etools.systems.model.SystemRegistry;
+import com.ibm.etools.systems.model.impl.SystemMessageObject;
 import com.ibm.etools.systems.subsystems.CommunicationsEvent;
 import com.ibm.etools.systems.subsystems.ICommunicationsListener;
 import com.ibm.etools.systems.subsystems.ISystem;
@@ -66,7 +70,10 @@ private MonitoredMessageQueue monitoredMessageQueue;
 			}			
 		} catch (Exception e) {
 			handleError(e);
-			return new QueuedMessageResource[0];
+            SystemMessage msg = SystemPlugin.getPluginMessage(ISystemMessages.MSG_GENERIC_E); 
+            msg.makeSubstitution(e.getMessage()); 
+            SystemMessageObject msgObj = new SystemMessageObject(msg, ISystemMessageObject.MSGTYPE_ERROR, null); 
+            return new Object[] {msgObj}; 
 		}
 		return queuedMessageResources;
 	}  
