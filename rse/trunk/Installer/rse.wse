@@ -28,13 +28,13 @@ item: Global
   FTP Cluster Size=20
   Per-User Version ID=1
   Dialogs Version=7
-  Version File=6.0.0
+  Version File=6.0.0.2
   Version Description=Extensions for RSE
   Version Copyright=2005 SoftLanding Systems
   Version Company=SoftLanding Systems
   Crystal Format=10111100101100000010001001001001
   Crystal Destination=00000000000000000000000000001011
-  Step View=&Properties
+  Step View=&All
   Variable Name1=_SYS_
   Variable Default1=C:\WINNT\System32
   Variable Flags1=00001000
@@ -92,7 +92,7 @@ item: Set Variable
 end
 item: Set Variable
   Variable=VERSION
-  Value=6.0.0
+  Value=6.0.0.2
   Flags=10000000
 end
 item: Remark
@@ -393,7 +393,7 @@ item: Custom Dialog Set
   Name=Welcome
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE% 
@@ -558,7 +558,7 @@ item: Custom Dialog Set
   Name=Display License
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE%
@@ -670,7 +670,7 @@ item: Custom Dialog Set
   Name=Select Destination Directory
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE%
@@ -947,7 +947,7 @@ item: Custom Dialog Set
   Name=WDSC Not Installed
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE%
@@ -1054,7 +1054,7 @@ item: Custom Dialog Set
   Name=Confirm WDSC
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE%
@@ -1194,7 +1194,7 @@ item: Custom Dialog Set
   Name=Start Installation
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE%
@@ -1602,7 +1602,7 @@ item: Custom Dialog Set
   Name=Finished
   Display Variable=DISPLAY
   item: Dialog
-    Title=%APPTITLE%
+    Title=%APPTITLE% - Version: %VERSION%
     Title French=%APPTITLE%
     Title German=%APPTITLE%
     Title Portuguese=%APPTITLE%
