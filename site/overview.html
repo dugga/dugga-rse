@@ -9,53 +9,47 @@
 <div class="app">
 
 <h1 style="text-align: center;">RSE Extensions: An Overview</h1>
-<p>Here you will find a very brief overview of what is included in the RSE Extensions.  If you
-are somewhat familiar with WDSC and the Remote Systems Explorer just seeing these screenshots should
-make more of this fairly obvious to you.  If you are not familiar with RSE, then as you become more
+<p>This overview briefly describes the features included in the RSE Extensions.  If you
+are somewhat familiar with WDSC and its Remote Systems Explorer (RSE), these screenshots should
+help make the added features fairly obvious to you.  If you are not familiar with RSE, then as you become more
 familiar with using WDSC you should find that these extensions just naturally fall in line with everything
-else within WDSC.  For example, the following screenshot is an example of what you should see when you
-restart WDSC after installing the RSE Extensions.</p>
+else within WDSC.  The following screenshot is an example of how WDSC will likely appear when you
+restart it after installing the RSE Extensions.</p>
 <img src="images/overview/overview-1.png" alt="RSE Extensions screen" />
-<p>Notice that there are now "subsystems" beneath your iSeries connection for spooled files and messages.  These
-subsystems look and behave in a manner that is consistent with the other subsystems that are included with WDSC
-such as the iSeries Objects subsystem.</p>
+<p>Notice that there are new subsystems for spooled files and messages beneath your iSeries connection.  These
+subsystems look and behave similarly to the other connection subsystems that WDSC contributes. </p>
 <div class="h2" id="overview" title="overview">
 <h2>Overview</h2>
-<p>The RSE Extensions consists of three primary features:</p>
+<p>The RSE Extensions consists of these primary features:</p>
 <ol>
 <li>The ability to manage and view iSeries <a href="#spooledfiles">spooled files.</a></li>
 <li>The ability to manage and view iSeries <a href="#messages">messages.</a></li>
 <li>A new "<a href="#editing">perspective</a>" that is optimized for source editing.</li>
 </ol>
-<p>An overview of each of these features follows.</p>
+<p>A description of each feature follows.</p>
 <div class="h3" id="spooledfiles" title="spooledfiles">
 <h3>Working with Spooled Files</h3>
-<p>The RSE Extensions adds an "iSeries Spooled Files" subsystem to your iSeries connections.  This subsystem will
-initiall include one filter -- "Your spooled files" that will show you all of your spooled files.  It should be
-the equivalent of running the WRKSPLF command.  The following screen shows the filter in the Remote Systems Details
-table view.  It also shows a spooled file being shown in the built-in text editor. </p>
+<p>The RSE Extensions adds a subsystem named <strong>iSeries Spooled Files</strong> to your iSeries connections.  This subsystem will
+initially include one filter -- <strong>Your spooled files</strong> -- that shows you all the spooled files associated with the user profile the connection is using to access the iSeries computer.  The filter delivers results equivalent to running the WRKSPLF command on a 5250 command line. </p>
+<p>The following screen shows the filter in the Remote Systems Details
+table view.  It also shows a spooled file that has been opened in the built-in text editor. </p>
 <img src="images/overview/spool-1.png" alt="RSE Extensions screen" />
-<p>  As with the other subsystems in RSE, it is also possible to create custom filters:</p>
+<p>You can create custom filters in the spooled files subsystem just as you can in other RSE subsystems:</p>
 <img src="images/overview/spool-2.png" alt="RSE Extensions screen" />
-<p>All of the standard options for managing spooled files are available in the expanded filters.  It should be noted
-that the intent of this feature is only to make it easy for a developer to access compile listings and joblogs.  Consequently,
-the ability to view and access more complicated spooled files, such as *AFP with overlays, is very limited.</p>
+<p>All of the standard options for managing spooled files are available for use in the expanded filters.</p>  
+<p>Because this feature is intended to make it easier for a developer to access compile listings and joblogs without leaving the IDE,  the ability to view and access more complicated spooled files, such as *AFP with overlays, is very limited.</p>
 </div>
-
 
 <div class="h3" id="messages" title="messages">
 <h3>Working with Messages</h3>
 <p>The RSE Extensions also adds a subsystem for iSeries Messages.  As with the spooled files subsystem, it implements
 a standard RSE subsystem that allows you to define filters for messages.  A default "Your Messages" filter is created
-automatically.  In addition to these features, which are not worthy of additional explanation, there is one other
-unique feature implemented.  Namely, the ability to monitor your personal message queue in the background and notify
-you of new messages.  Right-click on the iSeries Messages subsystem and choose Properties, then click on the Message
-Queue Monitoring item.  You will see a screen somewhat like this:</p>
+automatically.  In addition to these features, which require no additional explanation, there is one other
+unique feature implemented, and that is the ability to have WDSC monitor your personal message queue in the background and notify
+you of new messages.  Right click on the iSeries Messages subsystem and choose Properties, then click on <strong>Message
+Queue Monitoring</strong>.  A screen like this appears:</p>
 <img src="images/overview/message-1.png" alt="RSE Extensions screen" />
-<p>When the screen first appears, the Monitor Message Queue checkbox will not be checked, and you will not see the rest
-of the settings.  Hopefully the settings are fairly self-explanatory.  You are mostly just deciding what you want to
-do with the various types of messages you receive.  If you receive an Inquiry message it is possible to get a dialog
-that lets you respond to the message from within WDSC.</p>
+<p>Initially, the Monitor Message Queue checkbox is not checked, so the remaining settings do not appear.  The settings are self-explanatory; you are indicating how you want WDSC to handle the various types of messages you receive.  If you receive an Inquiry message, WDSC can present a dialog that lets you respond to the message without leaving the IDE.</p>
 </div>
 
 <div class="h3" id="editing" title="editing">
