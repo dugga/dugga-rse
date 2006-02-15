@@ -20,5 +20,6 @@ Require-Bundle: org.eclipse.ui,
  com.ibm.etools.iseries.toolbox,
  com.ibm.etools.systems.core,
  com.ibm.etools.systems.dstore.core,
- com.ibm.etools.systems.logging
+ com.ibm.etools.systems.logging,
+ org.eclipse.compare
 Eclipse-AutoStart: true

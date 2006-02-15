@@ -34,6 +34,11 @@
             id="com.softlanding.rse.extensions.spooledfiles.SpooledFilesView">
       </view>
    </extension>
+   
+   <extension point="org.eclipse.ui.preferencePages">
+   		<page name="%rseExtensions" category="com.ibm.etools.iseries.core.ui.preferences.ISeriesPreferencePage" class="com.softlanding.rse.extensions.RSEExtensionsPreferences" id="com.softlanding.rse.extensions.RSEExtensionsPreferences" /> 
+   </extension>
+   
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
@@ -120,6 +125,36 @@
    </extension>
    <extension
          point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="ibm.files400"
+            subtypefilter="*"
+            typecategoryfilter="MEMBERS"
+            typefilter="*"
+            namefilter="*"
+            id="com.softlanding.rse.extensions.subsystems.members.actions">
+         <menu
+               label="%rseExtensions"
+               menubarPath="additions"
+               id="com.softlanding.rse.extensions.menu">             
+            <separator
+                  name="group1">
+            </separator>
+         </menu> 
+         <action
+               label="%merge"
+               class="com.softlanding.rse.extensions.compare.MergeAction"
+               menubarPath="com.softlanding.rse.extensions.menu/group1"
+               enablesFor="1"
+               id="com.softlanding.rse.extensions.compare.MergeAction">
+         </action>                     
+         <action
+               label="%compare"
+               class="com.softlanding.rse.extensions.compare.CompareAction"
+               menubarPath="com.softlanding.rse.extensions.menu/group1"
+               enablesFor="1"
+               id="com.softlanding.rse.extensions.compare.CompareAction">
+         </action>                    
+      </objectContribution>
       <objectContribution
             subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
             subtypefilter="*"

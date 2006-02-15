@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -57,7 +58,9 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 	public static final String IMAGE_INQUIRY = "inquiry.gif"; //$NON-NLS-1$
 	public static final String IMAGE_ERROR = "error.gif"; //$NON-NLS-1$
 	public static final String IMAGE_WARNING = "warning.gif"; //$NON-NLS-1$
-
+	
+	public static final String PREFERENCE_COMPARE_MERGE_WARNING = "com.softlanding.rse.extensions.compareMergeWarning"; //$NON-NLS-1$
+	public static final boolean DEFAULT_COMPARE_MERGE_WARNING = true;
 	/**
 	 * The constructor.
 	 */
@@ -197,4 +200,7 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		reg.put(IMAGE_WARNING, getImageDescriptor(IMAGE_WARNING));
 }
 	
+    protected void initializeDefaultPreferences(IPreferenceStore store) {
+        store.setDefault(PREFERENCE_COMPARE_MERGE_WARNING, DEFAULT_COMPARE_MERGE_WARNING);
+    }
 }
