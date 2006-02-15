@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -198,9 +197,6 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		reg.put(IMAGE_INQUIRY, getImageDescriptor(IMAGE_INQUIRY));
 		reg.put(IMAGE_ERROR, getImageDescriptor(IMAGE_ERROR));
 		reg.put(IMAGE_WARNING, getImageDescriptor(IMAGE_WARNING));
-}
-	
-    protected void initializeDefaultPreferences(IPreferenceStore store) {
-        store.setDefault(PREFERENCE_COMPARE_MERGE_WARNING, DEFAULT_COMPARE_MERGE_WARNING);
-    }
+	}
+
 }

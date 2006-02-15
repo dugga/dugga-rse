@@ -35,6 +35,10 @@
       </view>
    </extension>
    
+   <extension point="org.eclipse.core.runtime.preferences">
+   		<initializer class="com.softlanding.rse.extensions.PreferenceInitializer"/>
+   </extension>   
+   
    <extension point="org.eclipse.ui.preferencePages">
    		<page name="%rseExtensions" category="com.ibm.etools.iseries.core.ui.preferences.ISeriesPreferencePage" class="com.softlanding.rse.extensions.RSEExtensionsPreferences" id="com.softlanding.rse.extensions.RSEExtensionsPreferences" /> 
    </extension>
