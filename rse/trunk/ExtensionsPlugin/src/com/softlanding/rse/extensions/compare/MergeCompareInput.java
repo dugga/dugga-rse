@@ -150,16 +150,6 @@ public class MergeCompareInput extends CompareEditorInput {
         isSaving = false;
     }
 
-    public boolean isSaveNeeded() {
-        boolean saveNeeded;
-        if (neverSaved) {
-            return saveNeeded = true;
-        } else {
-            saveNeeded = super.isSaveNeeded();
-        }
-        return saveNeeded;
-    }
-    
     public static class MyDiffNode extends DiffNode {
         public MyDiffNode(IDiffContainer parent, int kind, ITypedElement ancestor, ITypedElement left, ITypedElement right) {
             super(parent, kind, ancestor, left, right);

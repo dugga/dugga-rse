@@ -155,13 +155,7 @@ public class MemberCompareInput extends CompareEditorInput {
     
     public boolean isSaveNeeded() {
         if (!getCompareConfiguration().isLeftEditable()) return false;
-        boolean saveNeeded;
-        if (neverSaved) {
-            return saveNeeded = true;
-        } else {
-            saveNeeded = super.isSaveNeeded();
-        }
-        return saveNeeded;
+        return super.isSaveNeeded();
     }
     
     public static class MyDiffNode extends DiffNode {
