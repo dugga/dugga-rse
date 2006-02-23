@@ -139,7 +139,7 @@ public class CompareDialog extends Dialog {
 		compareLibraryText.setLayoutData(gd);
 		
 		Button libraryBrowseButton = new Button(compareGroup, SWT.PUSH);
-		libraryBrowseButton.setText("Browse...");
+		libraryBrowseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.0")); //$NON-NLS-1$
 		libraryBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
@@ -159,14 +159,14 @@ public class CompareDialog extends Dialog {
 		compareFileText.setText(member.getFile());		
 		
 		Button fileBrowseButton = new Button(compareGroup, SWT.PUSH);
-		fileBrowseButton.setText("Browse...");
+		fileBrowseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.0")); //$NON-NLS-1$
 		fileBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
                 action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
                 if (compareLibraryText.getText().trim().length() > 0)
                     action.setRootLibrary(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection(), compareLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC");
+                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
                 action.run();
                 if (action.getSelectedFileName() != null) compareFileText.setText(action.getSelectedFileName());
             }
@@ -182,16 +182,16 @@ public class CompareDialog extends Dialog {
 		compareMemberText.setText(member.getName());
 		
 		Button memberBrowseButton = new Button(compareGroup, SWT.PUSH);
-		memberBrowseButton.setText("Browse...");
+		memberBrowseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.0")); //$NON-NLS-1$
 		memberBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
                 action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
                 if (compareLibraryText.getText().trim().length() > 0)
                     action.setRootLibrary(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection(), compareLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC");
+                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
                 if (compareLibraryText.getText().trim().length() > 0 && compareFileText.getText().trim().length() > 0) 
-                    action.addFileFilter(compareLibraryText.getText().trim().toUpperCase() + "/" + compareFileText.getText().toUpperCase() + "(*) MBRTYPE(*)");
+                    action.addFileFilter(compareLibraryText.getText().trim().toUpperCase() + "/" + compareFileText.getText().toUpperCase() + "(*) MBRTYPE(*)"); //$NON-NLS-1$ //$NON-NLS-2$
                 action.run();
                 if (action.getSelectedMemberName() != null) compareMemberText.setText(action.getSelectedMemberName());
             }

@@ -142,7 +142,7 @@ public class MergeDialog extends Dialog {
 		maintenanceLibraryText.setLayoutData(gd);
 		
 		Button maintenanceLibraryBrowseButton = new Button(maintenanceGroup, SWT.PUSH);
-		maintenanceLibraryBrowseButton.setText("Browse...");
+		maintenanceLibraryBrowseButton.setText(ExtensionsPlugin.getResourceString("MergeDialog.0")); //$NON-NLS-1$
 		maintenanceLibraryBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
@@ -162,14 +162,14 @@ public class MergeDialog extends Dialog {
 		maintenanceFileText.setText(member.getFile());
 		
 		Button maintenanceFileBrowseButton = new Button(maintenanceGroup, SWT.PUSH);
-		maintenanceFileBrowseButton.setText("Browse...");
+		maintenanceFileBrowseButton.setText(ExtensionsPlugin.getResourceString("MergeDialog.0")); //$NON-NLS-1$
 		maintenanceFileBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
                 action.setDefaultConnection(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection());
                 if (maintenanceLibraryText.getText().trim().length() > 0)
                     action.setRootLibrary(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection(), maintenanceLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC");
+                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
                 action.run();
                 if (action.getSelectedFileName() != null) maintenanceFileText.setText(action.getSelectedFileName());
             }
@@ -185,16 +185,16 @@ public class MergeDialog extends Dialog {
 		maintenanceMemberText.setText(member.getName());
 		
 		Button maintenanceMemberBrowseButton = new Button(maintenanceGroup, SWT.PUSH);
-		maintenanceMemberBrowseButton.setText("Browse...");
+		maintenanceMemberBrowseButton.setText(ExtensionsPlugin.getResourceString("MergeDialog.0")); //$NON-NLS-1$
 		maintenanceMemberBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
                 action.setDefaultConnection(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection());
                 if (maintenanceLibraryText.getText().trim().length() > 0)
                     action.setRootLibrary(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection(), maintenanceLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC");
+                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
                 if (maintenanceLibraryText.getText().trim().length() > 0 && maintenanceFileText.getText().trim().length() > 0) 
-                    action.addFileFilter(maintenanceLibraryText.getText().trim().toUpperCase() + "/" + maintenanceFileText.getText().toUpperCase() + "(*) MBRTYPE(*)");
+                    action.addFileFilter(maintenanceLibraryText.getText().trim().toUpperCase() + "/" + maintenanceFileText.getText().toUpperCase() + "(*) MBRTYPE(*)"); //$NON-NLS-1$ //$NON-NLS-2$
                 action.run();
                 if (action.getSelectedMemberName() != null) maintenanceMemberText.setText(action.getSelectedMemberName());
             }
@@ -224,7 +224,7 @@ public class MergeDialog extends Dialog {
 		rootLibraryText.setLayoutData(gd);
 		
 		Button rootLibraryBrowseButton = new Button(rootGroup, SWT.PUSH);
-		rootLibraryBrowseButton.setText("Browse...");
+		rootLibraryBrowseButton.setText(ExtensionsPlugin.getResourceString("MergeDialog.0")); //$NON-NLS-1$
 		rootLibraryBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
@@ -244,14 +244,14 @@ public class MergeDialog extends Dialog {
 		rootFileText.setText(member.getFile());
 		
 		Button rootFileBrowseButton = new Button(rootGroup, SWT.PUSH);
-		rootFileBrowseButton.setText("Browse...");
+		rootFileBrowseButton.setText(ExtensionsPlugin.getResourceString("MergeDialog.0")); //$NON-NLS-1$
 		rootFileBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
                 action.setDefaultConnection(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection());
                 if (rootLibraryText.getText().trim().length() > 0)
                     action.setRootLibrary(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection(), rootLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC");
+                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
                 action.run();
                 if (action.getSelectedFileName() != null) rootFileText.setText(action.getSelectedFileName());
             }
@@ -267,16 +267,16 @@ public class MergeDialog extends Dialog {
 		rootMemberText.setText(member.getName());
 		
 		Button rootMemberBrowseButton = new Button(rootGroup, SWT.PUSH);
-		rootMemberBrowseButton.setText("Browse...");
+		rootMemberBrowseButton.setText(ExtensionsPlugin.getResourceString("MergeDialog.0")); //$NON-NLS-1$
 		rootMemberBrowseButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
                 action.setDefaultConnection(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection());
                 if (rootLibraryText.getText().trim().length() > 0)
                     action.setRootLibrary(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection(), rootLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC");
+                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
                 if (rootLibraryText.getText().trim().length() > 0 && rootFileText.getText().trim().length() > 0) 
-                    action.addFileFilter(rootLibraryText.getText().trim().toUpperCase() + "/" + rootFileText.getText().toUpperCase() + "(*) MBRTYPE(*)");
+                    action.addFileFilter(rootLibraryText.getText().trim().toUpperCase() + "/" + rootFileText.getText().toUpperCase() + "(*) MBRTYPE(*)"); //$NON-NLS-1$ //$NON-NLS-2$
                 action.run();
                 if (action.getSelectedMemberName() != null) rootMemberText.setText(action.getSelectedMemberName());
             }
