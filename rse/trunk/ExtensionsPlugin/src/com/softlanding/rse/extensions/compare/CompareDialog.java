@@ -202,6 +202,12 @@ public class CompareDialog extends Dialog {
 		}
 		compareConnectionCombo.select(compareConnectionCombo.indexOf(member.getISeriesConnection().getConnectionName()));
 		
+		compareConnectionCombo.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                okButton.setEnabled(canFinish());
+            }
+		});
+		
 		Composite editGroup = new Composite(rtnGroup, SWT.NONE);
 		GridLayout editLayout = new GridLayout();
 		editLayout.numColumns = 2;
@@ -277,7 +283,8 @@ public class CompareDialog extends Dialog {
                 compareMemberText.getText().trim().length() == 0) return false;
         if (compareLibraryText.getText().trim().equalsIgnoreCase(member.getLibraryName()) &&
                 compareFileText.getText().trim().equalsIgnoreCase(member.getFile()) &&
-                compareMemberText.getText().trim().equalsIgnoreCase(member.getName())) return false;
+                compareMemberText.getText().trim().equalsIgnoreCase(member.getName()) &&
+                compareConnectionCombo.getText().equals(member.getISeriesConnection().getConnectionName())) return false;
         return true;
     }
     

@@ -18,6 +18,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -302,6 +303,15 @@ public class MergeDialog extends Dialog {
 		rootFileText.addModifyListener(modifyListener);
 		rootMemberText.addModifyListener(modifyListener);
 		
+		SelectionListener selectionListener = new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                okButton.setEnabled(canFinish());
+            }
+		};
+		
+		maintenanceConnectionCombo.addSelectionListener(selectionListener);
+		rootConnectionCombo.addSelectionListener(selectionListener);
+		
 		maintenanceLibraryText.setFocus();
 		
 		return rtnGroup;
@@ -352,7 +362,16 @@ public class MergeDialog extends Dialog {
                 rootMemberText.getText().trim().length() == 0) return false;
         if (maintenanceLibraryText.getText().trim().equalsIgnoreCase(rootLibraryText.getText().trim()) &&
                 maintenanceFileText.getText().trim().equalsIgnoreCase(rootFileText.getText().trim()) &&
-                maintenanceMemberText.getText().trim().equalsIgnoreCase(rootMemberText.getText().trim())) return false;
+                maintenanceMemberText.getText().trim().equalsIgnoreCase(rootMemberText.getText().trim()) &&
+                maintenanceConnectionCombo.getSelectionIndex() == rootConnectionCombo.getSelectionIndex()) return false;
+        if (maintenanceLibraryText.getText().trim().equalsIgnoreCase(member.getLibraryName()) &&
+                maintenanceFileText.getText().trim().equalsIgnoreCase(member.getFile()) &&
+                maintenanceMemberText.getText().trim().equalsIgnoreCase(member.getName()) &&
+                maintenanceConnectionCombo.getText().equals(member.getISeriesConnection().getConnectionName())) return false;
+        if (rootLibraryText.getText().trim().equalsIgnoreCase(member.getLibraryName()) &&
+                rootFileText.getText().trim().equalsIgnoreCase(member.getFile()) &&
+                rootMemberText.getText().trim().equalsIgnoreCase(member.getName()) &&
+                rootConnectionCombo.getText().equals(member.getISeriesConnection().getConnectionName())) return false;        
         return true;
     }
 
