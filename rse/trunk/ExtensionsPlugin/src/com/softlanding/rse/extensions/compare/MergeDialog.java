@@ -16,6 +16,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -30,6 +32,9 @@ import org.eclipse.swt.widgets.Text;
 
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
+import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectFileObjectAction;
+import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectLibraryAction;
+import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectMemberAction;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class MergeDialog extends Dialog {
@@ -116,7 +121,7 @@ public class MergeDialog extends Dialog {
 		Group maintenanceGroup = new Group(rtnGroup, SWT.NONE);
 		maintenanceGroup.setText(ExtensionsPlugin.getResourceString("MergeDialog.6")); //$NON-NLS-1$
 		GridLayout maintenanceLayout = new GridLayout();
-		maintenanceLayout.numColumns = 2;
+		maintenanceLayout.numColumns = 3;
 		maintenanceGroup.setLayout(maintenanceLayout);
 		maintenanceGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 
 		
@@ -125,6 +130,7 @@ public class MergeDialog extends Dialog {
 		maintenanceConnectionCombo = new Combo(maintenanceGroup, SWT.READ_ONLY);
 		gd = new GridData();
 		gd.widthHint = 200;
+		gd.horizontalSpan = 2;
 		maintenanceConnectionCombo.setLayoutData(gd);
 		
 		Label maintenanceLibraryLabel = new Label(maintenanceGroup, SWT.NONE);
@@ -135,6 +141,17 @@ public class MergeDialog extends Dialog {
 		gd.widthHint = 75;
 		maintenanceLibraryText.setLayoutData(gd);
 		
+		Button maintenanceLibraryBrowseButton = new Button(maintenanceGroup, SWT.PUSH);
+		maintenanceLibraryBrowseButton.setText("Browse...");
+		maintenanceLibraryBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection());
+                action.run();
+                if (action.getSelectedLibraryName() != null) maintenanceLibraryText.setText(action.getSelectedLibraryName());
+            }
+		});
+		
 		Label maintenanceFileLabel = new Label(maintenanceGroup, SWT.NONE);
 		maintenanceFileLabel.setText(ExtensionsPlugin.getResourceString("MergeDialog.9")); //$NON-NLS-1$
 		maintenanceFileText = new Text(maintenanceGroup, SWT.BORDER);
@@ -143,6 +160,20 @@ public class MergeDialog extends Dialog {
 		gd.widthHint = 75;
 		maintenanceFileText.setLayoutData(gd);
 		maintenanceFileText.setText(member.getFile());
+		
+		Button maintenanceFileBrowseButton = new Button(maintenanceGroup, SWT.PUSH);
+		maintenanceFileBrowseButton.setText("Browse...");
+		maintenanceFileBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection());
+                if (maintenanceLibraryText.getText().trim().length() > 0)
+                    action.setRootLibrary(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection(), maintenanceLibraryText.getText().trim().toUpperCase());
+                action.setFileType("*FILE:PF-SRC");
+                action.run();
+                if (action.getSelectedFileName() != null) maintenanceFileText.setText(action.getSelectedFileName());
+            }
+		});
 		
 		Label maintenanceMemberLabel = new Label(maintenanceGroup, SWT.NONE);
 		maintenanceMemberLabel.setText(ExtensionsPlugin.getResourceString("MergeDialog.10")); //$NON-NLS-1$
@@ -153,10 +184,26 @@ public class MergeDialog extends Dialog {
 		maintenanceMemberText.setLayoutData(gd);
 		maintenanceMemberText.setText(member.getName());
 		
+		Button maintenanceMemberBrowseButton = new Button(maintenanceGroup, SWT.PUSH);
+		maintenanceMemberBrowseButton.setText("Browse...");
+		maintenanceMemberBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection());
+                if (maintenanceLibraryText.getText().trim().length() > 0)
+                    action.setRootLibrary(iSeriesConnections[maintenanceConnectionCombo.getSelectionIndex()].getSystemConnection(), maintenanceLibraryText.getText().trim().toUpperCase());
+                action.setFileType("*FILE:PF-SRC");
+                if (maintenanceLibraryText.getText().trim().length() > 0 && maintenanceFileText.getText().trim().length() > 0) 
+                    action.addFileFilter(maintenanceLibraryText.getText().trim().toUpperCase() + "/" + maintenanceFileText.getText().toUpperCase() + "(*) MBRTYPE(*)");
+                action.run();
+                if (action.getSelectedMemberName() != null) maintenanceMemberText.setText(action.getSelectedMemberName());
+            }
+		});
+		
 		Group rootGroup = new Group(rtnGroup, SWT.NONE);
 		rootGroup.setText(ExtensionsPlugin.getResourceString("MergeDialog.11")); //$NON-NLS-1$
 		GridLayout rootLayout = new GridLayout();
-		rootLayout.numColumns = 2;
+		rootLayout.numColumns = 3;
 		rootGroup.setLayout(rootLayout);
 		rootGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 		
 
@@ -165,6 +212,7 @@ public class MergeDialog extends Dialog {
 		rootConnectionCombo = new Combo(rootGroup, SWT.READ_ONLY);
 		gd = new GridData();
 		gd.widthHint = 200;
+		gd.horizontalSpan = 2;
 		rootConnectionCombo.setLayoutData(gd);
 		
 		Label rootLibraryLabel = new Label(rootGroup, SWT.NONE);
@@ -175,6 +223,17 @@ public class MergeDialog extends Dialog {
 		gd.widthHint = 75;
 		rootLibraryText.setLayoutData(gd);
 		
+		Button rootLibraryBrowseButton = new Button(rootGroup, SWT.PUSH);
+		rootLibraryBrowseButton.setText("Browse...");
+		rootLibraryBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection());
+                action.run();
+                if (action.getSelectedLibraryName() != null) rootLibraryText.setText(action.getSelectedLibraryName());
+            }
+		});
+		
 		Label rootFileLabel = new Label(rootGroup, SWT.NONE);
 		rootFileLabel.setText(ExtensionsPlugin.getResourceString("MergeDialog.14")); //$NON-NLS-1$
 		rootFileText = new Text(rootGroup, SWT.BORDER);
@@ -184,6 +243,20 @@ public class MergeDialog extends Dialog {
 		rootFileText.setLayoutData(gd);
 		rootFileText.setText(member.getFile());
 		
+		Button rootFileBrowseButton = new Button(rootGroup, SWT.PUSH);
+		rootFileBrowseButton.setText("Browse...");
+		rootFileBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection());
+                if (rootLibraryText.getText().trim().length() > 0)
+                    action.setRootLibrary(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection(), rootLibraryText.getText().trim().toUpperCase());
+                action.setFileType("*FILE:PF-SRC");
+                action.run();
+                if (action.getSelectedFileName() != null) rootFileText.setText(action.getSelectedFileName());
+            }
+		});
+		
 		Label rootMemberLabel = new Label(rootGroup, SWT.NONE);
 		rootMemberLabel.setText(ExtensionsPlugin.getResourceString("MergeDialog.15")); //$NON-NLS-1$
 		rootMemberText = new Text(rootGroup, SWT.BORDER);
@@ -191,7 +264,23 @@ public class MergeDialog extends Dialog {
 		gd = new GridData();
 		gd.widthHint = 75;
 		rootMemberText.setLayoutData(gd);
-		rootMemberText.setText(member.getName());		
+		rootMemberText.setText(member.getName());
+		
+		Button rootMemberBrowseButton = new Button(rootGroup, SWT.PUSH);
+		rootMemberBrowseButton.setText("Browse...");
+		rootMemberBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection());
+                if (rootLibraryText.getText().trim().length() > 0)
+                    action.setRootLibrary(iSeriesConnections[rootConnectionCombo.getSelectionIndex()].getSystemConnection(), rootLibraryText.getText().trim().toUpperCase());
+                action.setFileType("*FILE:PF-SRC");
+                if (rootLibraryText.getText().trim().length() > 0 && rootFileText.getText().trim().length() > 0) 
+                    action.addFileFilter(rootLibraryText.getText().trim().toUpperCase() + "/" + rootFileText.getText().toUpperCase() + "(*) MBRTYPE(*)");
+                action.run();
+                if (action.getSelectedMemberName() != null) rootMemberText.setText(action.getSelectedMemberName());
+            }
+		});
 		
 		for (int i = 0; i < iSeriesConnections.length; i++) {
 		    maintenanceConnectionCombo.add(iSeriesConnections[i].getConnectionName());

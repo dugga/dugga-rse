@@ -17,6 +17,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -31,6 +33,9 @@ import org.eclipse.swt.widgets.Text;
 
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
+import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectFileObjectAction;
+import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectLibraryAction;
+import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectMemberAction;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class CompareDialog extends Dialog {
@@ -113,7 +118,7 @@ public class CompareDialog extends Dialog {
 		Group compareGroup = new Group(rtnGroup, SWT.NONE);
 		compareGroup.setText(ExtensionsPlugin.getResourceString("CompareDialog.6")); //$NON-NLS-1$
 		GridLayout compareLayout = new GridLayout();
-		compareLayout.numColumns = 2;
+		compareLayout.numColumns = 3;
 		compareGroup.setLayout(compareLayout);
 		compareGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 
 		
@@ -122,6 +127,7 @@ public class CompareDialog extends Dialog {
 		compareConnectionCombo = new Combo(compareGroup, SWT.READ_ONLY);
 		gd = new GridData();
 		gd.widthHint = 200;
+		gd.horizontalSpan = 2;
 		compareConnectionCombo.setLayoutData(gd);
 		
 		Label compareLibraryLabel = new Label(compareGroup, SWT.NONE);
@@ -132,6 +138,17 @@ public class CompareDialog extends Dialog {
 		gd.widthHint = 75;
 		compareLibraryText.setLayoutData(gd);
 		
+		Button libraryBrowseButton = new Button(compareGroup, SWT.PUSH);
+		libraryBrowseButton.setText("Browse...");
+		libraryBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
+                action.run();
+                if (action.getSelectedLibraryName() != null) compareLibraryText.setText(action.getSelectedLibraryName());
+            }
+		});
+		
 		Label compareFileLabel = new Label(compareGroup, SWT.NONE);
 		compareFileLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.9")); //$NON-NLS-1$
 		compareFileText = new Text(compareGroup, SWT.BORDER);
@@ -139,7 +156,21 @@ public class CompareDialog extends Dialog {
 		gd = new GridData();
 		gd.widthHint = 75;
 		compareFileText.setLayoutData(gd);
-		compareFileText.setText(member.getFile());
+		compareFileText.setText(member.getFile());		
+		
+		Button fileBrowseButton = new Button(compareGroup, SWT.PUSH);
+		fileBrowseButton.setText("Browse...");
+		fileBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
+                if (compareLibraryText.getText().trim().length() > 0)
+                    action.setRootLibrary(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection(), compareLibraryText.getText().trim().toUpperCase());
+                action.setFileType("*FILE:PF-SRC");
+                action.run();
+                if (action.getSelectedFileName() != null) compareFileText.setText(action.getSelectedFileName());
+            }
+		});
 		
 		Label compareMemberLabel = new Label(compareGroup, SWT.NONE);
 		compareMemberLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.10")); //$NON-NLS-1$
@@ -149,6 +180,22 @@ public class CompareDialog extends Dialog {
 		gd.widthHint = 75;
 		compareMemberText.setLayoutData(gd);
 		compareMemberText.setText(member.getName());
+		
+		Button memberBrowseButton = new Button(compareGroup, SWT.PUSH);
+		memberBrowseButton.setText("Browse...");
+		memberBrowseButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
+                action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
+                if (compareLibraryText.getText().trim().length() > 0)
+                    action.setRootLibrary(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection(), compareLibraryText.getText().trim().toUpperCase());
+                action.setFileType("*FILE:PF-SRC");
+                if (compareLibraryText.getText().trim().length() > 0 && compareFileText.getText().trim().length() > 0) 
+                    action.addFileFilter(compareLibraryText.getText().trim().toUpperCase() + "/" + compareFileText.getText().toUpperCase() + "(*) MBRTYPE(*)");
+                action.run();
+                if (action.getSelectedMemberName() != null) compareMemberText.setText(action.getSelectedMemberName());
+            }
+		});
 		
 		for (int i = 0; i < iSeriesConnections.length; i++) {
 		    compareConnectionCombo.add(iSeriesConnections[i].getConnectionName());
