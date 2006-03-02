@@ -10,15 +10,37 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.compare;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Calendar;
 
-import org.eclipse.compare.*;
-import org.eclipse.compare.structuremergeviewer.*;
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jface.util.*;
-import org.eclipse.swt.graphics.*;
+import org.eclipse.compare.BufferedContent;
+import org.eclipse.compare.CompareUI;
+import org.eclipse.compare.IEditableContent;
+import org.eclipse.compare.IModificationDate;
+import org.eclipse.compare.ITypedElement;
+import org.eclipse.compare.ResourceNode;
+import org.eclipse.compare.structuremergeviewer.IStructureComparator;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.util.Assert;
+import org.eclipse.swt.graphics.Image;
 
 public class MemberNode extends BufferedContent
 			implements IStructureComparator, ITypedElement, IEditableContent, IModificationDate {
@@ -148,6 +170,13 @@ public class MemberNode extends BufferedContent
 	}
 	
 	public void commit(IProgressMonitor pm) throws Exception {
+	    Calendar calendar = Calendar.getInstance();
+	    String day = Integer.toString(calendar.get(Calendar.DATE));
+	    while (day.length() < 2) day = "0" + day;
+	    String year = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
+	    String month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
+	    while (month.length() < 2) month = "0" + month;
+	    String yymmdd = year + month + day;
 		IResource resource= getResource();
 		if (resource instanceof IFile) {
 		    IFile file= (IFile) resource;
@@ -168,7 +197,7 @@ public class MemberNode extends BufferedContent
 				    else if (seq < 999999) seq++;
 				    String sequence = Integer.toString(seq);
 				    while (sequence.length() < 6) sequence = "0" + sequence; //$NON-NLS-1$
-				    updatedContents.append(sequence + "000000" + s + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+				    updatedContents.append(sequence + yymmdd + s + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				in.close();
 				is= new ByteArrayInputStream(updatedContents.toString().getBytes());
