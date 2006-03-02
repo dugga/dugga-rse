@@ -14,7 +14,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -22,10 +21,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -33,18 +30,14 @@ import org.eclipse.swt.widgets.Text;
 
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
-import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectFileObjectAction;
-import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectLibraryAction;
-import com.ibm.etools.iseries.core.ui.actions.select.ISeriesSelectMemberAction;
+import com.ibm.etools.iseries.core.ui.widgets.ISeriesConnectionCombo;
+import com.ibm.etools.iseries.core.ui.widgets.ISeriesMemberPrompt;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class CompareDialog extends Dialog {
     private ISeriesMember member;
-    private ISeriesConnection[] iSeriesConnections;
-    private Combo compareConnectionCombo;
-    private Text compareLibraryText;
-    private Text compareFileText;
-    private Text compareMemberText;
+    private ISeriesConnectionCombo compareConnectionCombo;
+    private ISeriesMemberPrompt compareMemberPrompt;
     private Button editButton;
     private Button browseButton;
     private ISeriesConnection compareConnection;
@@ -60,9 +53,7 @@ public class CompareDialog extends Dialog {
         this.member = member;
     }
     
-    public Control createDialogArea(Composite parent) {
-        getRseConnections();
-        
+    public Control createDialogArea(Composite parent) {       
 		Composite rtnGroup = (Composite)super.createDialogArea(parent);
 		parent.getShell().setText(ExtensionsPlugin.getResourceString("CompareAction.0")); //$NON-NLS-1$
 		
@@ -118,93 +109,28 @@ public class CompareDialog extends Dialog {
 		Group compareGroup = new Group(rtnGroup, SWT.NONE);
 		compareGroup.setText(ExtensionsPlugin.getResourceString("CompareDialog.6")); //$NON-NLS-1$
 		GridLayout compareLayout = new GridLayout();
-		compareLayout.numColumns = 3;
+		compareLayout.numColumns = 1;
 		compareGroup.setLayout(compareLayout);
 		compareGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 
-		
-		Label compareConnectionLabel = new Label(compareGroup, SWT.NONE);
-		compareConnectionLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.7")); //$NON-NLS-1$
-		compareConnectionCombo = new Combo(compareGroup, SWT.READ_ONLY);
+
+		compareConnectionCombo = new ISeriesConnectionCombo(compareGroup, member.getISeriesConnection(), true);
 		gd = new GridData();
-		gd.widthHint = 200;
-		gd.horizontalSpan = 2;
 		compareConnectionCombo.setLayoutData(gd);
 		
-		Label compareLibraryLabel = new Label(compareGroup, SWT.NONE);
-		compareLibraryLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.8")); //$NON-NLS-1$
-		compareLibraryText = new Text(compareGroup, SWT.BORDER);
-		compareLibraryText.setTextLimit(10);
 		gd = new GridData();
-		gd.widthHint = 75;
-		compareLibraryText.setLayoutData(gd);
+		gd.widthHint = 200;
+		compareConnectionCombo.getCombo().setLayoutData(gd);
 		
-		Button libraryBrowseButton = new Button(compareGroup, SWT.PUSH);
-		libraryBrowseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.0")); //$NON-NLS-1$
-		libraryBrowseButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                ISeriesSelectLibraryAction action = new ISeriesSelectLibraryAction(getShell());
-                action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
-                action.run();
-                if (action.getSelectedLibraryName() != null) compareLibraryText.setText(action.getSelectedLibraryName());
-            }
-		});
-		
-		Label compareFileLabel = new Label(compareGroup, SWT.NONE);
-		compareFileLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.9")); //$NON-NLS-1$
-		compareFileText = new Text(compareGroup, SWT.BORDER);
-		compareFileText.setTextLimit(10);
-		gd = new GridData();
-		gd.widthHint = 75;
-		compareFileText.setLayoutData(gd);
-		compareFileText.setText(member.getFile());		
-		
-		Button fileBrowseButton = new Button(compareGroup, SWT.PUSH);
-		fileBrowseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.0")); //$NON-NLS-1$
-		fileBrowseButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                ISeriesSelectFileObjectAction action = new ISeriesSelectFileObjectAction(getShell());
-                action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
-                if (compareLibraryText.getText().trim().length() > 0)
-                    action.setRootLibrary(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection(), compareLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
-                action.run();
-                if (action.getSelectedFileName() != null) compareFileText.setText(action.getSelectedFileName());
-            }
-		});
-		
-		Label compareMemberLabel = new Label(compareGroup, SWT.NONE);
-		compareMemberLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.10")); //$NON-NLS-1$
-		compareMemberText = new Text(compareGroup, SWT.BORDER);
-		compareMemberText.setTextLimit(10);
-		gd = new GridData();
-		gd.widthHint = 75;
-		compareMemberText.setLayoutData(gd);
-		compareMemberText.setText(member.getName());
-		
-		Button memberBrowseButton = new Button(compareGroup, SWT.PUSH);
-		memberBrowseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.0")); //$NON-NLS-1$
-		memberBrowseButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                ISeriesSelectMemberAction action = new ISeriesSelectMemberAction(getShell());
-                action.setDefaultConnection(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection());
-                if (compareLibraryText.getText().trim().length() > 0)
-                    action.setRootLibrary(iSeriesConnections[compareConnectionCombo.getSelectionIndex()].getSystemConnection(), compareLibraryText.getText().trim().toUpperCase());
-                action.setFileType("*FILE:PF-SRC"); //$NON-NLS-1$
-                if (compareLibraryText.getText().trim().length() > 0 && compareFileText.getText().trim().length() > 0) 
-                    action.addFileFilter(compareLibraryText.getText().trim().toUpperCase() + "/" + compareFileText.getText().toUpperCase() + "(*) MBRTYPE(*)"); //$NON-NLS-1$ //$NON-NLS-2$
-                action.run();
-                if (action.getSelectedMemberName() != null) compareMemberText.setText(action.getSelectedMemberName());
-            }
-		});
-		
-		for (int i = 0; i < iSeriesConnections.length; i++) {
-		    compareConnectionCombo.add(iSeriesConnections[i].getConnectionName());
-		}
-		compareConnectionCombo.select(compareConnectionCombo.indexOf(member.getISeriesConnection().getConnectionName()));
-		
+		compareMemberPrompt = new ISeriesMemberPrompt(compareGroup, SWT.NONE, false, true, ISeriesMemberPrompt.FILETYPE_SRC);
+		compareMemberPrompt.setFileName(member.getFile());
+		compareMemberPrompt.setLibraryName(member.getLibraryName());
+		compareMemberPrompt.setMemberName(member.getName());
+		compareMemberPrompt.setSystemConnection(compareConnectionCombo.getSystemConnection());
+
 		compareConnectionCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 okButton.setEnabled(canFinish());
+                compareMemberPrompt.setSystemConnection(compareConnectionCombo.getSystemConnection());
             }
 		});
 		
@@ -232,12 +158,11 @@ public class CompareDialog extends Dialog {
                 okButton.setEnabled(canFinish());
             }		    
 		};
-		
-		compareLibraryText.addModifyListener(modifyListener);
-		compareFileText.addModifyListener(modifyListener);
-		compareMemberText.addModifyListener(modifyListener);
-		
-		compareLibraryText.setFocus();
+
+		compareMemberPrompt.getMemberCombo().addModifyListener(modifyListener);
+		compareMemberPrompt.getFileCombo().addModifyListener(modifyListener);
+		compareMemberPrompt.getLibraryCombo().addModifyListener(modifyListener);
+		compareMemberPrompt.getLibraryCombo().setFocus();
 		
 		return rtnGroup;
     }
@@ -253,10 +178,10 @@ public class CompareDialog extends Dialog {
         if (editButton.getSelection()) settings.put("CompareDialog.mode", "e"); //$NON-NLS-1$ //$NON-NLS-2$
         else settings.put("CompareDialog.mode", "b"); //$NON-NLS-1$ //$NON-NLS-2$
         openForEdit = editButton.getSelection();
-        compareConnection = iSeriesConnections[compareConnectionCombo.getSelectionIndex()];
-        compareLibrary = compareLibraryText.getText().trim().toUpperCase();
-        compareFile = compareFileText.getText().trim().toUpperCase();
-        compareMember = compareMemberText.getText().trim().toUpperCase();
+        compareConnection = ISeriesConnection.getConnection(compareConnectionCombo.getSystemConnection());
+        compareLibrary = compareMemberPrompt.getLibraryName();
+        compareFile = compareMemberPrompt.getFileName();
+        compareMember = compareMemberPrompt.getMemberName();
         super.okPressed();
     }
     
@@ -268,23 +193,14 @@ public class CompareDialog extends Dialog {
 		}
 		return button;
 	}
-	
-    private void getRseConnections() {
-        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
-            public void run() {
-                iSeriesConnections = ISeriesConnection.getConnections();
-            }           
-        });
-    }
-    
+
     private boolean canFinish() {
-        if (compareLibraryText.getText().trim().length() == 0 ||
-                compareFileText.getText().trim().length() == 0 ||
-                compareMemberText.getText().trim().length() == 0) return false;
-        if (compareLibraryText.getText().trim().equalsIgnoreCase(member.getLibraryName()) &&
-                compareFileText.getText().trim().equalsIgnoreCase(member.getFile()) &&
-                compareMemberText.getText().trim().equalsIgnoreCase(member.getName()) &&
-                compareConnectionCombo.getText().equals(member.getISeriesConnection().getConnectionName())) return false;
+        if (compareMemberPrompt.getMemberName() == null || compareMemberPrompt.getMemberName().trim().length() == 0) return false;
+         if (compareMemberPrompt.getMemberName().equalsIgnoreCase(member.getName()) &&
+                 compareMemberPrompt.getFileName().equalsIgnoreCase(member.getFile()) &&
+                 compareMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibraryName()) &&
+                 compareConnectionCombo.getSystemConnection().getHostName().equalsIgnoreCase(member.getISeriesConnection().getHostName()))
+             	 return false;
         return true;
     }
     
