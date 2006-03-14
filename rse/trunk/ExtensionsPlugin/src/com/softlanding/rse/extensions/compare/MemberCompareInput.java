@@ -22,12 +22,16 @@ import org.eclipse.compare.structuremergeviewer.DiffNode;
 import org.eclipse.compare.structuremergeviewer.DiffTreeViewer;
 import org.eclipse.compare.structuremergeviewer.IDiffContainer;
 import org.eclipse.compare.structuremergeviewer.IStructureComparator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 
+import com.ibm.etools.iseries.core.ISeriesTempFileListener;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
 import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
@@ -45,6 +49,7 @@ public class MemberCompareInput extends CompareEditorInput {
 	private DiffTreeViewer fDiffViewer;
 	private boolean neverSaved = true;
 	private boolean isSaving = false;
+	private ISeriesEditableSrcPhysicalFileMember left;
 
 	public MemberCompareInput(CompareConfiguration config, ISeriesMember leftMember, ISeriesMember rightMember) {
 		super(config);
@@ -55,7 +60,7 @@ public class MemberCompareInput extends CompareEditorInput {
 	protected Object prepareInput(IProgressMonitor monitor)
 		throws InvocationTargetException, InterruptedException {
 			try {
-				ISeriesEditableSrcPhysicalFileMember left = new ISeriesEditableSrcPhysicalFileMember(leftMember);
+				left = new ISeriesEditableSrcPhysicalFileMember(leftMember);
 				ISeriesEditableSrcPhysicalFileMember right = new ISeriesEditableSrcPhysicalFileMember(rightMember);
 				left.download(monitor);
 				right.download(monitor);
@@ -143,19 +148,30 @@ public class MemberCompareInput extends CompareEditorInput {
 	}
 	
     public void saveChanges(IProgressMonitor pm) throws CoreException {
+        ISeriesTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
         isSaving = true;
         super.saveChanges(pm);
         try {
             fLeft.commit(pm);
         } catch (Exception e) {}
         neverSaved = false;
+        try {
+            left.upload(pm);
+        } catch (Exception e) {
+            MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("MemberCompareInput.3"), e.getMessage()); //$NON-NLS-1$
+        }
         ((MyDiffNode)fRoot).fireChange();
         isSaving = false;
+        ISeriesTempFileListener.getListener().removeIgnoreFile((IFile)fLeftResource);
     }
     
     public boolean isSaveNeeded() {
         if (!getCompareConfiguration().isLeftEditable()) return false;
         return super.isSaveNeeded();
+    }
+    
+    public ISeriesEditableSrcPhysicalFileMember getLeft() {
+        return left;
     }
     
     public static class MyDiffNode extends DiffNode {

@@ -172,10 +172,10 @@ public class MemberNode extends BufferedContent
 	public void commit(IProgressMonitor pm) throws Exception {
 	    Calendar calendar = Calendar.getInstance();
 	    String day = Integer.toString(calendar.get(Calendar.DATE));
-	    while (day.length() < 2) day = "0" + day;
+	    while (day.length() < 2) day = "0" + day; //$NON-NLS-1$
 	    String year = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
 	    String month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
-	    while (month.length() < 2) month = "0" + month;
+	    while (month.length() < 2) month = "0" + month; //$NON-NLS-1$
 	    String yymmdd = year + month + day;
 		IResource resource= getResource();
 		if (resource instanceof IFile) {
