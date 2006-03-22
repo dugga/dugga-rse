@@ -11,6 +11,8 @@
 package com.softlanding.rse.extensions.compare;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.compare.CompareConfiguration;
@@ -154,8 +156,16 @@ public class MergeCompareInput extends CompareEditorInput {
         neverSaved = false;
         try {
             left.upload(pm);
+            left.closeStream();
         } catch (Exception e) {
-            MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("MemberCompareInput.3"), e.getMessage()); //$NON-NLS-1$
+        	String message = e.getMessage();
+        	if (message == null || message.trim().length() == 0) {
+        		StringWriter sw = new StringWriter();
+        		PrintWriter pw = new PrintWriter(sw);
+        		e.printStackTrace(pw);
+        		message = sw.toString();
+        	}
+            MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("MemberCompareInput.3"), message); //$NON-NLS-1$
         }
         ((MyDiffNode)fRoot).fireChange();
         isSaving = false;
