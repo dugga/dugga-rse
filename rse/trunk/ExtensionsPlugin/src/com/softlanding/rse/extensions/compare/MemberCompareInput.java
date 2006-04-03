@@ -65,6 +65,10 @@ public class MemberCompareInput extends CompareEditorInput {
 				left = new ISeriesEditableSrcPhysicalFileMember(leftMember);
 				ISeriesEditableSrcPhysicalFileMember right = new ISeriesEditableSrcPhysicalFileMember(rightMember);
 				left.download(monitor);
+				
+				if (getCompareConfiguration().isLeftEditable())
+				    left.openStream();
+				
 				right.download(monitor);
 				fLeftResource = left.getLocalResource();
 				fRightResource = right.getLocalResource();
@@ -94,6 +98,7 @@ public class MemberCompareInput extends CompareEditorInput {
 	                }            
 	            });
 				fRoot = d.findDifferences(fThreeWay, monitor, null, fAncestor, fLeft, fRight);
+				ISeriesTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
 				return fRoot;
 			} catch (Exception e) {
 				System.out.println(e);
@@ -150,7 +155,6 @@ public class MemberCompareInput extends CompareEditorInput {
 	}
 	
     public void saveChanges(IProgressMonitor pm) throws CoreException {
-        ISeriesTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
         isSaving = true;
         super.saveChanges(pm);
         try {
@@ -159,7 +163,6 @@ public class MemberCompareInput extends CompareEditorInput {
         neverSaved = false;
         try {
             left.upload(pm);
-            left.closeStream();
         } catch (Exception e) {
         	String message = e.getMessage();
         	if (message == null || message.trim().length() == 0) {
@@ -172,7 +175,15 @@ public class MemberCompareInput extends CompareEditorInput {
         }
         ((MyDiffNode)fRoot).fireChange();
         isSaving = false;
+    }
+    
+    public void removeIgnoreFile() {
         ISeriesTempFileListener.getListener().removeIgnoreFile((IFile)fLeftResource);
+        try {
+            left.closeStream();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public boolean isSaveNeeded() {

@@ -19,9 +19,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import com.ibm.etools.iseries.core.ISeriesSystemPlugin;
@@ -66,11 +69,25 @@ public class MergeAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
             				return;
                         }
                         CompareConfiguration cc = new CompareConfiguration();
-                		MergeCompareInput fInput = new MergeCompareInput(cc, rootMember, dialog.getTargetMember(), maintenanceMember);
+                		final MergeCompareInput fInput = new MergeCompareInput(cc, rootMember, dialog.getTargetMember(), maintenanceMember);
                 		fInput.initializeCompareConfiguration();
+                		ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().addPartListener(new IPartListener() {
+                            public void partClosed(IWorkbenchPart part) {
+                                if (part instanceof EditorPart) {
+                                    EditorPart editorPart = (EditorPart)part;
+                                    if (editorPart.getEditorInput() == fInput) {
+                                        fInput.removeIgnoreFile();
+                                        ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().removePartListener(this);
+                                    }
+                                }
+                            }                            
+                		    public void partActivated(IWorkbenchPart part) {}
+                            public void partBroughtToTop(IWorkbenchPart part) {}
+                            public void partDeactivated(IWorkbenchPart part) {}
+                            public void partOpened(IWorkbenchPart part) {}
+                		});
                 		CompareUI.openCompareEditorOnPage(fInput, ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage());
                 		fInput.cleanup();
-                		fInput = null;
                     } catch (Exception e) { e.printStackTrace(); }
                 }               
             });
