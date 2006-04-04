@@ -25,8 +25,10 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -215,6 +217,14 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 	}	
 
 	public static void log(Exception e) {
-		getDefault().getLog().log(new Status(IStatus.ERROR, ExtensionsPlugin.ID, 0, ExtensionsPlugin.getResourceString("simpleInternal"), e)); //$NON-NLS-1$
+		String msg = e.getMessage();
+		if (msg == null || msg.trim().length() == 0)
+			msg = ExtensionsPlugin.getResourceString("pluginError.internal");
+		ExtensionsPlugin.log(msg,e);
+	}
+
+	public static void log(String msg, Exception e) {
+		getDefault().getLog().log(new Status(IStatus.ERROR, ExtensionsPlugin.ID, 0, msg, e)); //$NON-NLS-1$
+        MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("pluginError"), msg + ExtensionsPlugin.getResourceString("pluginError.log")); //$NON-NLS-1$
 	}
 }
