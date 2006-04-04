@@ -22,7 +22,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -60,6 +62,7 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 	
 	public static final String PREFERENCE_COMPARE_MERGE_WARNING = "com.softlanding.rse.extensions.compareMergeWarning"; //$NON-NLS-1$
 	public static final boolean DEFAULT_COMPARE_MERGE_WARNING = true;
+	private static final String ID = "com.softlanding.rse.extensions";
 	/**
 	 * The constructor.
 	 */
@@ -198,5 +201,20 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		reg.put(IMAGE_ERROR, getImageDescriptor(IMAGE_ERROR));
 		reg.put(IMAGE_WARNING, getImageDescriptor(IMAGE_WARNING));
 	}
+	/**
+	 * Convenience method for logging statuses to the plugin log
+	 * 
+	 * @param status  the status to log
+	 */
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
+	
+	public static void log(String msg) {
+		getDefault().getLog().log(new Status(IStatus.INFO, ExtensionsPlugin.ID, 0, msg, null));
+	}	
 
+	public static void log(Exception e) {
+		getDefault().getLog().log(new Status(IStatus.ERROR, ExtensionsPlugin.ID, 0, ExtensionsPlugin.getResourceString("simpleInternal"), e)); //$NON-NLS-1$
+	}
 }

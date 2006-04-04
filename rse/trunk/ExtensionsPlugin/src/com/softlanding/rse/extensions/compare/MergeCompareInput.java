@@ -11,8 +11,6 @@
 package com.softlanding.rse.extensions.compare;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.compare.CompareConfiguration;
@@ -27,8 +25,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
 
 import com.ibm.etools.iseries.core.ISeriesTempFileListener;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
@@ -160,14 +156,7 @@ public class MergeCompareInput extends CompareEditorInput {
         try {
             left.upload(pm);
         } catch (Exception e) {
-        	String message = e.getMessage();
-        	if (message == null || message.trim().length() == 0) {
-        		StringWriter sw = new StringWriter();
-        		PrintWriter pw = new PrintWriter(sw);
-        		e.printStackTrace(pw);
-        		message = sw.toString();
-        	}
-            MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("MemberCompareInput.3"), message); //$NON-NLS-1$
+        	ExtensionsPlugin.log(e);
         }
         ((MyDiffNode)fRoot).fireChange();
         isSaving = false;
@@ -178,8 +167,8 @@ public class MergeCompareInput extends CompareEditorInput {
         try {
             left.closeStream();
         } catch (Exception e) {
-            e.printStackTrace();
-        }
+        	ExtensionsPlugin.log(e);
+       }
     }
     
     public ISeriesEditableSrcPhysicalFileMember getLeft() {
