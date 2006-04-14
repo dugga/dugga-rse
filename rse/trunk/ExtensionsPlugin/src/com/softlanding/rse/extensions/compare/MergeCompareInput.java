@@ -22,16 +22,18 @@ import org.eclipse.compare.structuremergeviewer.DiffNode;
 import org.eclipse.compare.structuremergeviewer.IDiffContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.ui.IFileEditorInput;
 
 import com.ibm.etools.iseries.core.ISeriesTempFileListener;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
 import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
-public class MergeCompareInput extends CompareEditorInput {
+public class MergeCompareInput extends CompareEditorInput implements IFileEditorInput {
 	private Object fRoot;
 	private MemberNode fAncestor;
 	private MemberNode fLeft;
@@ -184,5 +186,20 @@ public class MergeCompareInput extends CompareEditorInput {
             super.fireChange();
         }
     }
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IFileEditorInput#getFile()
+	 */
+	public IFile getFile() {
+		return left.getLocalResource();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IStorageEditorInput#getStorage()
+	 */
+	public IStorage getStorage() throws CoreException {
+		return left.getLocalResource();
+	}
+
 
 }
