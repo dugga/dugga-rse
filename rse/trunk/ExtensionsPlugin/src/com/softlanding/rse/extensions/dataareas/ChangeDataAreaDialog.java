@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2005-2006 SoftLanding Systems, Inc. and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     SoftLanding - initial API and implementation
+ *******************************************************************************/
 package com.softlanding.rse.extensions.dataareas;
 
 import java.math.BigDecimal;
@@ -50,11 +60,11 @@ public class ChangeDataAreaDialog extends Dialog {
                     qwcrdtaa = new Qwcrdtaa(ChangeDataAreaDialog.this.dataArea);
                     qwcrdtaa.callProgram();
                     String dataAreaName = ChangeDataAreaDialog.this.dataArea.getName();
-                    while (dataAreaName.length() < 10) dataAreaName = dataAreaName + " ";
+                    while (dataAreaName.length() < 10) dataAreaName = dataAreaName + " "; //$NON-NLS-1$
                     String libraryName = ChangeDataAreaDialog.this.dataArea.getLibraryName();
-                    while (libraryName.length() < 10) libraryName = libraryName + " ";
+                    while (libraryName.length() < 10) libraryName = libraryName + " "; //$NON-NLS-1$
                     AS400 as400 = ChangeDataAreaDialog.this.dataArea.getISeriesConnection().getAS400ToolboxObject(getShell());
-                    QSYSObjectPathName path = new QSYSObjectPathName(ChangeDataAreaDialog.this.dataArea.getLibraryName(), ChangeDataAreaDialog.this.dataArea.getName(), "DTAARA");
+                    QSYSObjectPathName path = new QSYSObjectPathName(ChangeDataAreaDialog.this.dataArea.getLibraryName(), ChangeDataAreaDialog.this.dataArea.getName(), "DTAARA"); //$NON-NLS-1$
                     if (qwcrdtaa.getType().equals(Qwcrdtaa.CHAR)) {
                         characterDataArea = new CharacterDataArea(as400, path.getPath());
                         value = characterDataArea.read();
@@ -78,7 +88,7 @@ public class ChangeDataAreaDialog extends Dialog {
     
     public Control createDialogArea(Composite parent) {       
 		Composite rtnGroup = (Composite)super.createDialogArea(parent);
-		parent.getShell().setText("Change Data Area");
+		parent.getShell().setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.0")); //$NON-NLS-1$
 		
 		GridLayout rtnLayout = new GridLayout();
 		rtnLayout.numColumns = 1;
@@ -90,10 +100,10 @@ public class ChangeDataAreaDialog extends Dialog {
 		headerLayout.numColumns = 2;
 		headerGroup.setLayout(headerLayout);
 		headerGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		headerGroup.setText("Data area:");
+		headerGroup.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.1")); //$NON-NLS-1$
 		
 		Label dataAreaLabel = new Label(headerGroup, SWT.NONE);
-		dataAreaLabel.setText("Name:");
+		dataAreaLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.2")); //$NON-NLS-1$
 		Text dataAreaText = new Text(headerGroup, SWT.BORDER);
 		dataAreaText.setEditable(false);
 		GridData gd = new GridData();
@@ -102,7 +112,7 @@ public class ChangeDataAreaDialog extends Dialog {
 		dataAreaText.setText(dataArea.getName());
 		
 		Label libraryLabel = new Label(headerGroup, SWT.NONE);
-		libraryLabel.setText("Library:");
+		libraryLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.3")); //$NON-NLS-1$
 		Text libraryText = new Text(headerGroup, SWT.BORDER);
 		libraryText.setEditable(false);
 		gd = new GridData();
@@ -111,7 +121,7 @@ public class ChangeDataAreaDialog extends Dialog {
 		libraryText.setText(dataArea.getLibraryName());
 		
 		Label typeLabel = new Label(headerGroup, SWT.NONE);
-		typeLabel.setText("Type:");
+		typeLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.4")); //$NON-NLS-1$
 		Text typeText = new Text(headerGroup, SWT.BORDER);
 		typeText.setEditable(false);
 		gd = new GridData();
@@ -120,7 +130,7 @@ public class ChangeDataAreaDialog extends Dialog {
 		typeText.setText(qwcrdtaa.getType());
 		
 		Group valueGroup = new Group(rtnGroup, SWT.NONE);
-		valueGroup.setText("Value:");
+		valueGroup.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.5")); //$NON-NLS-1$
 		GridLayout valueLayout = new GridLayout();
 		valueLayout.numColumns = 1;
 		valueGroup.setLayout(valueLayout);
@@ -128,9 +138,9 @@ public class ChangeDataAreaDialog extends Dialog {
 		
 		if (qwcrdtaa.getType().equals(Qwcrdtaa.LGL)) {
 		    trueButton = new Button(valueGroup, SWT.RADIO);
-		    trueButton.setText("true");
+		    trueButton.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.6")); //$NON-NLS-1$
 		    falseButton = new Button(valueGroup, SWT.RADIO);
-		    falseButton.setText("false");
+		    falseButton.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.7")); //$NON-NLS-1$
 		    if (logicalValue) trueButton.setSelection(true);
 		    else falseButton.setSelection(true);
 		} else {

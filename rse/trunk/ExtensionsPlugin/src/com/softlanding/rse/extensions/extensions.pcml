@@ -18,5 +18,33 @@
 		<data name="lengthOfData" type="int" length="4" usage="input" init="2000" />
 		<data name="errorCode" type="int" length="4" usage="input" init="0" />
 	</program>
+	
+	<struct name="qmhqrdqdReceiver">
+		<data name="bytesReturned" type="int" length="4" usage="output" />
+		<data name="bytesAvailable" type="int" length="4" usage="output" />
+		<data name="messageLength" type="int" length="4" usage="output" />
+		<data name="keyLength" type="int" length="4" usage="output" />
+		<data name="sequence" type="char" length="1" usage="output" />
+		<data name="includeSender" type="char" length="1" usage="output" />
+		<data name="force" type="char" length="1" usage="output" />
+		<data name="description" type="char" length="50" usage="output" />
+		<data name="type" type="char" length="1" usage="output" />
+		<data name="automaticReclaim" type="char" length="1" usage="output" />
+		<data name="reserved" type="char" length="1" usage="output" />
+		<data name="numberMessages" type="int" length="4" usage="output" />
+		<data name="numberAllocated" type="int" length="4" usage="output" />
+		<data name="dataQueue" type="char" length="10" usage="output" />
+		<data name="library" type="char" length="10" usage="output" />
+		<data name="maximumEntries" type="int" length="4" usage="output" />
+		<data name="initialEntries" type="int" length="4" usage="output" />
+		<data name="maximumEntriesSpecified" type="int" length="4" usage="output" />
+	</struct>
+	
+	<program name="qmhqrdqd" path="/QSYS.lib/QMHQRDQD.pgm">
+		<data name="receiver" type="struct" struct="qmhqrdqdReceiver" usage="output" />
+		<data name="receiverLength" type="int" length="4" usage="input" />
+		<data name="format" type="char" length="8" usage="input" init="RDQD0100" />
+		<data name="dataQueue" type="char" length="20" usage="input" />
+	</program>
 
 </pcml>

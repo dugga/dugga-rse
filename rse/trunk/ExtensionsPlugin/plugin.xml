@@ -175,12 +175,34 @@
             </separator>
          </menu> 
          <action
-               label="Change Data Area"
+               label="%changeDataArea"
                class="com.softlanding.rse.extensions.dataareas.ChangeDataAreaAction"
                menubarPath="com.softlanding.rse.extensions.menu/group1"
                id="com.softlanding.rse.extensions.dataareas.ChangeDataAreaAction">
          </action>                             
-      </objectContribution>      
+      </objectContribution>
+      <objectContribution
+            subsystemfactoryid="ibm.files400"
+            subtypefilter="*"
+            typecategoryfilter="OBJECTS"
+            typefilter="*DTAQ"
+            namefilter="*"
+            id="com.softlanding.rse.extensions.subsystems.objects.actions">
+         <menu
+               label="%rseExtensions"
+               menubarPath="additions"
+               id="com.softlanding.rse.extensions.menu">             
+            <separator
+                  name="group1">
+            </separator>
+         </menu> 
+         <action
+               label="%displayDataQueue"
+               class="com.softlanding.rse.extensions.dtaqs.DisplayDataQueueAction"
+               menubarPath="com.softlanding.rse.extensions.menu/group1"
+               id="com.softlanding.rse.extensions.dtaqs.DisplayDataQueueAction">
+         </action>                             
+      </objectContribution>                  
       <objectContribution
             subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
             subtypefilter="*"
