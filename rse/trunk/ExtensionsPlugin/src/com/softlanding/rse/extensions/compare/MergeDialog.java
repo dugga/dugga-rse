@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.compare;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.PluginVersionIdentifier;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -22,6 +24,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -182,6 +185,21 @@ public class MergeDialog extends Dialog {
 		rootMemberPrompt.getMemberCombo().addModifyListener(modifyListener);
 		rootMemberPrompt.getFileCombo().addModifyListener(modifyListener);
 		rootMemberPrompt.getLibraryCombo().addModifyListener(modifyListener);
+        String rseVersion = (String) Platform.getBundle("com.ibm.etools.iseries.core").getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION); 
+        PluginVersionIdentifier current = new PluginVersionIdentifier(rseVersion); 
+        PluginVersionIdentifier required = new PluginVersionIdentifier(6, 0, 1, "2"); 
+                
+        if (required.isGreaterThan(current)) 
+        { 
+                Composite warningGroup = new Composite(rtnGroup, SWT.NONE); 
+                GridLayout warningLayout = new GridLayout(); 
+                warningLayout.numColumns = 2; 
+                warningGroup.setLayout(warningLayout); 
+                warningGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));                 
+                                
+                new Label(warningGroup, SWT.NONE).setImage(Display.getDefault().getSystemImage(SWT.ICON_WARNING)); 
+                new Label(warningGroup, SWT.WRAP).setText(ExtensionsPlugin.getResourceString("MergeDialog.20")); //$NON-NLS-1$                                 
+        } 
 
 		maintenanceMemberPrompt.getLibraryCombo().setFocus();
 		
