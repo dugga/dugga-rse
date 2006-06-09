@@ -2,7 +2,7 @@
 <feature
       id="com.softlanding.rse.extensions"
       label="%featureName"
-      version="6.0.0.2"
+      version="6.1.0.0"
       provider-name="%providerName"
       image="update.gif"
       colocation-affinity="com.softlanding.rse.extensions">
@@ -14,7 +14,7 @@
    </description>
 
    <copyright>
-      (c) Copyright SoftLanding Systems, Inc. 2005.  All rights reserved.
+      (c) Copyright SoftLanding Systems, Inc. 2006.  All rights reserved.
    </copyright>
 
    <license url="%licenseURL">
@@ -46,6 +46,6 @@
          id="com.softlanding.rse.extensions"
          download-size="452"
          install-size="500"
-         version="6.0.0.2"/>
+         version="6.1.0.0"/>
 
 </feature>
