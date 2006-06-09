@@ -3,5 +3,5 @@
       autobuild="false"
       scrub-output="false"
       use-console="true">
-   <feature id="com.softlanding.rse.extensions" version="6.1.0.0"/>
+   <feature id="com.softlanding.rse.extensions" version="6.0.0.2"/>
 </site-build>
