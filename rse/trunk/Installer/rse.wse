@@ -28,9 +28,9 @@ item: Global
   FTP Cluster Size=20
   Per-User Version ID=1
   Dialogs Version=7
-  Version File=6.0.0.2
+  Version File=6.1.0.0
   Version Description=Extensions for RSE
-  Version Copyright=2005 SoftLanding Systems
+  Version Copyright=2006 SoftLanding Systems
   Version Company=SoftLanding Systems
   Crystal Format=10111100101100000010001001001001
   Crystal Destination=00000000000000000000000000001011
@@ -92,7 +92,7 @@ item: Set Variable
 end
 item: Set Variable
   Variable=VERSION
-  Value=6.0.0.2
+  Value=6.1.0.0
   Flags=10000000
 end
 item: Remark
