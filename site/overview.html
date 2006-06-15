@@ -25,6 +25,9 @@ subsystems look and behave similarly to the other connection subsystems that WDS
 <li>The ability to manage and view iSeries <a href="#spooledfiles">spooled files.</a></li>
 <li>The ability to manage and view iSeries <a href="#messages">messages.</a></li>
 <li>A new "<a href="#editing">perspective</a>" that is optimized for source editing.</li>
+<li>Graphical <a href="#compare">compare and merge</a> editors for iSeries source code.</li>
+<li>A custom editor for editing the contents of <a href="#dtaara">data areas.</a></li>
+<li>A custom dialog for displaying the properties and contents of <a href="#dtaq">data queues.</a></li>
 </ol>
 <p>A description of each feature follows.</p>
 <div class="h3" id="spooledfiles" title="spooledfiles">
@@ -84,6 +87,51 @@ the icon for the Outline view.  Your screen now looks something like this:</p>
 and click on a field's or procedure name's line number.  This takes you to that part of the source, and the Outline view
 slides back out of sight.  (You can also click the minimize button in the view, or click back in
 your editor, to close the view.)  Of course, the perspective switcher makes it easy to just switch back to your other perspective to access to the views there.  Perspectives, and fast perspective switching, are among the main architectural features in the Eclipse-based IDEs.</p>
+</div>
+
+<div class="h3" id="compare" title="compare">
+<h3>Graphical Compare/Merge Editors</h3>
+<p>The RSE Extensions provides a graphical compare/merge editor for iSeries source code.  These editors are built on top of the 
+powerful compare/merge features that are provided with Eclipse for Java source code.  The RSE Extensions handles retrieving and locking
+your source member fron your iSeries source file.  It then has to strip the first 12 source file bytes (sequence and date) from the local
+file so that the Eclipse compare engine can properly analyze the differences of the files.  When the editor is saved, the source is put
+back in the source file and the lock released. The sequence and date fields in the member are reset to new values as part of this process.
+</p>
+<p>To access these editors, right-click on the member in your development source file and choose RSE Extensions -&gt; Compare or Merge, depending
+on the action you want to perform.</p>
+<img src="images/overview/compare-1.png" alt="Compare menu" />
+<p>You will be presented with one of these dialogs, depending on which option
+you choose.</p>
+<img src="images/overview/compare-2.png" alt="Compare dialogs" />
+<p>The values you enter into these dialogs are fairly self-explanatory, especially
+if you have used PDM option 54 and 55.  A notable enhancement to those options,
+however, is that each source member can come from a different iSeries system.  This
+is because the members are just retrieved and compared on your local workstation.  Once you
+click OK, the members are downloaded and compared and opened in the Eclipse compare or merge
+editor.</p>
+<img src="images/overview/compare-3.png" alt="Compare editor" />
+<p>The editor contains all of the same compare/merge features that you get when using it for
+Java source.  The only negative to the editor is that it is not "aware" of the iSeries languages
+you are comparing/merging.  So you do not get the color-coding or other editor features you get
+when using the LPEX editor.  Hopefully, when/if IBM provides these features as part of WDSC itself,
+those editor features will be available in their implementation.</p>
+</div>
+
+<div class="h3" id="dtaara" title="dtaara">
+<h3>Change Data Area</h3>
+<p>The RSE Extensions provides a custom dialog for editing data areas.  Just right-click on a *DTAARA
+object and choose RSE Extensions -&gt; Change Data Area.  This brings up a dialog that shows the
+data area attributes and lets you edit the contents.  This can be particularly useful for data areas
+with lots of text that you want to edit.</p>
+<img src="images/overview/dtaara-1.png" alt="Data Area Editor" />
+</div>
+
+<div class="h3" id="dtaq" title="dtaq">
+<h3>Display Data Queue</h3>
+<p>The RSE Extensions provides a custom dialog for displaying data queues.  Just right-click on a *DTAQ
+object and choose RSE Extensions -&gt; Display Data Queue.  This brings up a dialog that shows the
+data queue attributes and also a preview of the first entry in the queue.</p>
+<img src="images/overview/dtaq-1.png" alt="Data Queue Dialog" />
 </div>
 
 </div>
