@@ -43,10 +43,10 @@ public class MonitoredMessageQueue extends MessageQueue {
 	}
 	
 	public QueuedMessage[] getFilteredMessages() throws Exception {
-		Enumeration enum = getMessages();
+		Enumeration enumer = getMessages();
 		ArrayList messages = new ArrayList();
-		while (enum.hasMoreElements()) {
-			QueuedMessage message = (QueuedMessage)enum.nextElement();
+		while (enumer.hasMoreElements()) {
+			QueuedMessage message = (QueuedMessage)enumer.nextElement();
 			if (includeMessage(message))
 				messages.add(message);
 		}

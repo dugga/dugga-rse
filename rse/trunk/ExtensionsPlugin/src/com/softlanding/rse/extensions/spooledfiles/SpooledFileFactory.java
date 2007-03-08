@@ -59,10 +59,10 @@ public class SpooledFileFactory {
 		if (filter.getUserFilter() != null) splfList.setUserFilter(filter.getUserFilter());
 		else splfList.setUserFilter("*ALL"); //$NON-NLS-1$
 		splfList.openSynchronously();
-		Enumeration enum = splfList.getObjects();
+		Enumeration enumer = splfList.getObjects();
 		ArrayList splfs = new ArrayList();
-		while(enum.hasMoreElements()) {
-			SpooledFile splf = (SpooledFile)enum.nextElement();
+		while(enumer.hasMoreElements()) {
+			SpooledFile splf = (SpooledFile)enumer.nextElement();
 			if ( splf != null ) splfs.add(splf);
 		}
 		SpooledFile[] spooledFiles = new SpooledFile[splfs.size()];
