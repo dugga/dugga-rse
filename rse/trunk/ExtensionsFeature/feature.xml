@@ -6,6 +6,7 @@
       provider-name="%providerName"
       image="update.gif"
       colocation-affinity="com.softlanding.rse.extensions">
+
    <install-handler/>
 
    <description>
@@ -43,8 +44,8 @@
 
    <plugin
          id="com.softlanding.rse.extensions"
-         download-size="452"
-         install-size="500"
-         version="6.1.0.0"/>
+         download-size="0"
+         install-size="0"
+         version="6.1.1"/>
 
 </feature>
