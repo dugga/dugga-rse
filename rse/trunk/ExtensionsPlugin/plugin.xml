@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin>
+<plugin
+   id="com.softlanding.rse.extensions"
+   name="%featureName"
+   version="6.1.1"
+>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
