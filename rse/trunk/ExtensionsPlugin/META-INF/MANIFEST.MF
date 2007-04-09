@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: SoftLanding Extensions to RSE
 Bundle-SymbolicName: com.softlanding.rse.extensions;singleton:=true
-Bundle-Version: 6.1.0.0
+Bundle-Version: 6.1.1
 Bundle-ClassPath: runtime/extensions.jar,
  runtime/activation.jar,
  runtime/mail.jar
