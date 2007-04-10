@@ -24,6 +24,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -87,12 +88,28 @@ public class MergeAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
                             public void partOpened(IWorkbenchPart part) {}
                 		});
                 		CompareUI.openCompareEditorOnPage(fInput, ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage());
+                		if (!editorOpen(fInput)) fInput.removeIgnoreFile();                		
                 		fInput.cleanup();
                     } catch (Exception e) { e.printStackTrace(); }
                 }               
             });
         }
     }
+    
+    private boolean editorOpen(MergeCompareInput input) {
+		IWorkbench workbench= PlatformUI.getWorkbench();
+		IWorkbenchWindow[] windows= workbench.getWorkbenchWindows();
+		for (int i= 0; i < windows.length; i++) {
+		    IWorkbenchPage[] pages= windows[i].getPages();
+		    for (int x= 0; x < pages.length; x++) {
+		        IEditorPart[] editors = pages[x].getEditors();
+		        for (int z= 0; z < editors.length; z++) {
+		            if (editors[z].getEditorInput() == input) return true;
+		        }
+		    }
+		}
+        return false;
+    }    
     
     protected static IEditorPart findMemberInEditor(ISeriesEditableSrcPhysicalFileMember left) {
         IFile member = (IFile)left.getLocalResource();
