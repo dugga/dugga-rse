@@ -1,7 +1,7 @@
-An expected installation of WDSC could not be located. (Only WDSC Version 6
-can be recognized.)  You must complete the installation routine, then install the
-RSE Extensions manually using the instructions provided after the installation
-routine completes.
+An expected installation of WDSC could not be located. (Only instances of WDSC
+Version 6 are able to be recognized.)  You must complete the installation routine,
+then install the RSE Extensions manually using the instructions provided after the
+installation routine completes.
 
 
 
