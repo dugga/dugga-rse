@@ -92,7 +92,7 @@ item: Set Variable
 end
 item: Set Variable
   Variable=VERSION
-  Value=6.1.0.0
+  Value=6.1.1
   Flags=10000000
 end
 item: Remark
@@ -1597,6 +1597,94 @@ item: Wizard Block
   Y Position=0
   Filler Color=8421440
   Flags=00000011
+end
+item: If/While Statement
+  Variable=WDSC_FOLDER
+  Value=Not installed
+end
+item: Custom Dialog Set
+  Name=Add and Extension Location
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE% - Version: %VERSION%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE%
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=Helv
+    Font Size=8
+    Flags=0000000100000000
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Static
+      Rectangle=71 191 286 192
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Editbox
+      Rectangle=10 46 275 171
+      Value=%MAINDIR%\Readme_extensions.txt
+      Help Context=16711681
+      Create Flags=01010000101000000000100000000100
+    end
+    item: Static
+      Rectangle=0 187 71 195
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=Wise Installation Wizard®
+    end
+    item: Static
+      Rectangle=10 5 235 25
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Flags=0000000000000001
+      Name=Arial
+      Font Style=-12 0 0 0 700 0 0 0 0 3 2 1 34
+      Text=Add an Extension Location
+      Text French=Fichier Lisez-moi
+      Text German=Liesmich-Datei
+      Text Portuguese=Ficheiro Leia-me
+      Text Spanish=Archivo Léeme
+      Text Italian=File Leggimi  
+      Text Danish=Vigtigt fil
+      Text Dutch=Leesmij-bestand
+      Text Norwegian=Informasjonsfil
+      Text Swedish=Läs mig-fil
+    end
+    item: Push Button
+      Rectangle=75 200 145 215
+      Alternate=0notepad%MAINDIR%\readme_extensions.txt
+      Action=6
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000000
+      Text=Open Readme
+    end
+  end
+end
+item: End Block
 end
 item: Custom Dialog Set
   Name=Finished

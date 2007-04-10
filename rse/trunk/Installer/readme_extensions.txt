@@ -7,14 +7,14 @@ WDSC 7.x
 
 To complete the installation on WDSC 7.x or other Eclipse
 3.2-based IDEs, you must define the plug-in to that IDE.
-You do this by creating an "Eclipse Extenstion Location."
+You do this by creating an "Eclipse Extension Location."
 
 Start your IDE and go to: Help -> Software Updates -> Manage Configuration
 
 Once there, select the "Add an Extension Location" option.
 
 Select the appropriate location based on where you installed
-the RSE Extenstions. The default path would be:
+the RSE Extensions. The default path would be:
 
 C:\Program Files\SoftLanding\RSE Extensions\eclipse
 
