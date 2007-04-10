@@ -1,6 +1,6 @@
 Software User Agreement
 
-20th June, 2005
+10th April, 2007
 Usage Of Content
 
 USE OF THE CONTENT IS GOVERNED BY THE TERMS AND CONDITIONS
@@ -66,11 +66,11 @@ REFER TO THE CPL OR OTHER LICENSE AGREEMENTS, NOTICES OR TERMS
 AND CONDITIONS. SOME OF THESE OTHER LICENSE AGREEMENTS MAY INCLUDE
 (BUT ARE NOT LIMITED TO):
 
-    * Eclipse Public License Version 1.0 
+    * Eclipse Public License Version 1.0
       (available at http://www.eclipse.org/legal/epl-v10.html)
-    * Apache Software License 1.1 
+    * Apache Software License 1.1
       (available at http://www.apache.org/licenses/LICENSE)
-    * IBM Public License 1.0 
+    * IBM Public License 1.0
       (available at http://oss.software.ibm.com/developerworks/opensource/license10.html)
 
 IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND

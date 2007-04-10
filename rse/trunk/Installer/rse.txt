@@ -1,9 +1,13 @@
-An installation of WDSC 6.0 could not be located.  The installation can
-continue, but the RSE Extensions will not be automatically installed into
-WDSC for you.  If you have WDSC 6 installed, you can manually finish the
-installation by copying the file com.softlanding.rse.extensions.link from
-the root of the installation folder to the eclipse\links folder under the
-root of your WDSC 6 installation.
+An expected installation of WDSC could not be located. (Only WDSC Version 6
+can be recognized.)  You must complete the installation routine, then install the
+RSE Extensions manually using the instructions provided after the installation
+routine completes.
+
+
+
+------------------
+Detecting WDSC 6.x
+------------------
 
 For reference purposes, this is how we determine if WDSC 6 is installed:
 
@@ -18,5 +22,3 @@ HKEY_LOCAL_MACHINE\SOFTWARE\IBM\Rational\Software Development Platform\products\
 base for WDSC 6.  We then confirm that the folder exists and also that there
 is a sub-folder named rwdi_shared.  The presence of this sub-folder tells
 us that WDSC 6 is installed.
-
-
