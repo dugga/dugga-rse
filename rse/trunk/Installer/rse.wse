@@ -92,7 +92,7 @@ item: Set Variable
 end
 item: Set Variable
   Variable=VERSION
-  Value=6.1.1
+  Value=6.1.2
   Flags=10000000
 end
 item: Remark
