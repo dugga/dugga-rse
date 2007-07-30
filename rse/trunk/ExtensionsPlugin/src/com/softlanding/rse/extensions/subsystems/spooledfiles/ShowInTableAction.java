@@ -46,7 +46,7 @@ public class ShowInTableAction extends SystemBaseAction {
 		SpooledFileSubSystem subSystem = (SpooledFileSubSystem)SubSystemHelpers.getParentSubSystem(systemFilterReference);
 		try {
 			//subSystem.connect();
-			subSystem.getSystem().connect(null);
+			//subSystem.getSystem().connect(null);  // changed to comment - fixed WDSC 7.0 BUG PRH
 			AS400 as400 = ISeriesConnection.getConnection(subSystem.getSystemConnection()).getAS400ToolboxObject(getShell());
 			SpooledFileFactory factory = new SpooledFileFactory(as400);
 			SpooledFilesView.setSpooledFileFactory(factory);

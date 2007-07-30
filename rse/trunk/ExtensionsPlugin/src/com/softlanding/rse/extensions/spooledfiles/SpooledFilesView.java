@@ -120,6 +120,7 @@ public class SpooledFilesView extends ViewPart implements IMenuListener {
 	
 	public void dispose() {
 		disposed = true;
+		view = null;  //clear current view PRH
 		super.dispose();
 	}
 	
