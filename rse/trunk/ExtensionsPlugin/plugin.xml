@@ -3,7 +3,7 @@
 <plugin
    id="com.softlanding.rse.extensions"
    name="%featureName"
-   version="6.1.1"
+   version="6.1.2"
 >
    <extension
          point="org.eclipse.ui.perspectives">
