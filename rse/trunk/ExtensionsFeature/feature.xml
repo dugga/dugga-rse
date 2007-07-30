@@ -2,7 +2,7 @@
 <feature
       id="com.softlanding.rse.extensions"
       label="%featureName"
-      version="6.1.1"
+      version="6.1.2"
       provider-name="%providerName"
       image="update.gif"
       colocation-affinity="com.softlanding.rse.extensions">
