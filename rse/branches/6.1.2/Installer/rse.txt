@@ -1,0 +1,24 @@
+An expected installation of WDSC could not be located. (Only instances of WDSC
+Version 6 are able to be recognized.)  You must complete the installation routine,
+then install the RSE Extensions manually using the instructions provided after the
+installation routine completes.
+
+
+
+------------------
+Detecting WDSC 6.x
+------------------
+
+For reference purposes, this is how we determine if WDSC 6 is installed:
+
+1)  Check the following two registry keys to determine that the base RAD or
+RWD product is installed, and into what folder:
+
+HKEY_LOCAL_MACHINE\SOFTWARE\IBM\Rational\Software Development Platform\products\com.ibm.rational.application.developer\location
+
+HKEY_LOCAL_MACHINE\SOFTWARE\IBM\Rational\Software Development Platform\products\com.ibm.rational.web.developer\location
+
+2)  Step 1 gives us the root install location for RAD/RWD which is the
+base for WDSC 6.  We then confirm that the folder exists and also that there
+is a sub-folder named rwdi_shared.  The presence of this sub-folder tells
+us that WDSC 6 is installed.
