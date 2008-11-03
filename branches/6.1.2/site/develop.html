@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>Developing for the RSE Extensions</title>
+</head>
+
+<body>
+<div class="develop">
+
+<h1 style="text-align: center;">Developing for the RSE Extensions</h1>
+<p>This document describes how to check out the
+source for the RSE Extensions, and how to do basic development activity.</p>
+
+<div class="h2" id="overview" title="overview">
+<h2>Overview</h2>
+<p>The source for the RSE Extensions is hosted in a <a 
+href="http://www.softlanding.com/subversion/index.htm">Subversion</a> repository
+under OS/400.  The project itself is developed from within WDSC 6.0.  To gain
+access to the source code, you need to first install <a
+href="http://subclipse.tigris.org/">Subclipse</a>, the Subversion
+client for WDSC 6.0/Eclipse 3.x.  The installation instructions for Subclipse
+can be found here: <a href="http://subclipse.tigris.org/install.html">
+http://subclipse.tigris.org/install.html</a></p>
+<p>The rest of this document assumes that you have installed Subclipse
+and restarted WDSC.</p>
+<h3>Enable Necessary Capabilities</h3>
+<p>A new feature in WDSC 6.0 is something called "capabilities."  WDSC contains a lot of
+tools; capabilities offer a way to expose to users only the functionality that they need.   
+<p>Two sets of capabilities we need are turned off
+by default in WDSC.  They are called Team Support and Plug-in Development
+support.</p>  
+<p>To turn them on, choose Window -&gt; Preferences to open the WDSC preferences.  Then choose
+Workbench -&gt; Capabilities.  This screen appears:</p>
+<img src="images/subclipse/step-1.png" alt="Develop screen" />
+
+<p>Check the boxes for <strong>Team</strong> and <strong>Eclipse Developer</strong>; then click OK.</p>
+<h3>Connect to the Repository</h3>
+<p>To access the source, you need to define a connection to the Subversion repository
+that hosts this project.  The first step in that process is to open the
+SVN Repository Exploring perspective.  Choose Window -&gt; Open Perspective
+-&gt; Other.  A screen like this appears:</p>
+<img src="images/subclipse/step-2.png" alt="Develop screen" />
+
+<p>Select <strong>SVN Repository Exploring</strong> perspective and click OK.  You should see
+something like this:</p>
+<img src="images/subclipse/step-3.png" alt="Develop screen" />
+
+<p>Now you can define a connection to the repository.  Click the New Connection icon
+<img src="images/subclipse/newlocation_wiz.gif" alt="New connection" />
+in the toolbar of the SVN Repository view.  The
+Add SVN Repository dialog appears:</p>
+<img src="images/subclipse/step-4.png" alt="Develop screen" />
+
+<p>In the URL field, enter this value:</p> 
+<p>http://support.softlanding.com/opensource/rse/trunk</p> 
+That URL is where this project is stored in the repository.  Do not click OK yet.
+
+<p>The next step is to specify the root URL of the Subversion repository.  Click the
+<strong>Browse...</strong> button.  This screen appears:</p>
+<img src="images/subclipse/step-5.png" alt="Develop screen" />
+
+<p>Select the value shown in the screenshot -- http://support.softlanding.com/opensource --
+and click OK.  That returns you to the dialog, which now looks
+like this:</p>
+<img src="images/subclipse/step-6.png" alt="Develop screen" />
+
+<p>Click OK to add the SVN Repository.  (Keep in mind that you could have specified
+the root URL in both locations.  By specifying a location within the
+repository, you save some navigation steps later.)  After you click OK,
+you should see your new connection in the list.  Expand it to show the projects.
+It should look like this:</p>
+<img src="images/subclipse/step-7.png" alt="Develop screen" />
+
+<h3>Check out the Source</h3>
+<p>As shown in the above screenshot, right click on the two projects and choose
+<strong>Checkout As Project</strong>.  This copies the source for the two projects from
+the repository into your local WDSC workspace.  When the checkout process
+is complete, use the same technique described earlier to switch to the Plug-in
+Development perspective.  You should see something like this:</p>
+<img src="images/subclipse/step-8.png" alt="Develop screen" />
+
+<h3>Start Developing</h3>
+<p>At this point, the source for the project has been checked out to your workspace
+and you can start making changes.  Let's make a very simple change to
+ illustrate WDSC's plug-in development process.</p>
+<p>For this change, we will modify the plug-in to write some text to
+System.out when the plug-in starts.  This will be enough to show the development
+and testing process for a plug-in.  To begin, open the source for the main plug-in class
+which is named ExtensionsPlugin.java and is stored in the com.softlanding.rse.extensions
+package.</p>
+<img src="images/subclipse/step-9.png" alt="Develop screen" />
+
+<p>Find the startup() method.  Add the code that is highlighted above, and click Save.</p>
+<p>Now that we've made a change, our next step is to test.  WDSC includes something called a Run-time Workbench.  This
+allows you to start a second instance of WDSC in which you can test any plug-in that you are
+developing.  As shown in the next screen, choose Run -&gt; Run...</p>
+<img src="images/subclipse/step-10.png" alt="Develop screen" />
+
+<p>The Run dialog appears.  This is where you define your launch configuration.
+(Note that you need only define your launch configuration once.  After that, you can easily relaunch using the Runtime Workbench option on the Run As... submenu.)  You can also launch in Debug mode to debug your changes.</p>
+<img src="images/subclipse/step-11.png" alt="Develop screen" />
+
+<p>In the above dialog, click <strong>Run-time Workbench</strong>, then <strong>New</strong>.</p>
+<img src="images/subclipse/step-12.png" alt="Develop screen" />
+
+<p>You might want to customize the location of the run-time workspace, but other than that
+you can accept the default values.</p>  
+<p><strong>Do NOT change the run-time workspace to point to your main
+workspace.</strong></p>  
+<p>Click Apply, and then OK to Run.  This will start a second instance of WDSC.</p>
+<img src="images/subclipse/step-13.png" alt="Develop screen" />
+
+<p>If you were doing a real change, you would now likely test or debug it in the second instance of WDSC.
+In this case, what we care about actually appears in the first instance, in the Console view.  As you see
+in the above screenshot, the message we added appears.</p>  
+<p>(If the Console view is not open, choose Window -&gt; Show View -&gt; Other.  It is located under the "Basic" grouping.)</p>
+</div>
+
+<h2>Submit Patches</h2>
+<p>If there is enough interest/demand, this section will eventually expand to include information about 
+submitting patches.  For now, here are some simple instructions.  Right click on the project
+and choose Team -&gt; Create Patch.  Follow the wizard and save your patch to a text file.  Then
+email the file to dougd at softlanding dot com.  You get the idea.</p>
+<p>Thanks!</p>
+
+</div>
+
+</body>
+</html>

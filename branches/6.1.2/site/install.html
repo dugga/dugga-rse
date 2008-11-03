@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>Installing/Updating the RSE Extensions</title>
+</head>
+
+<body>
+<div class="install">
+
+<h1 style="text-align: center;">Installation/Update Instructions</h1>
+<p>These instructions guide you through the RSE Extensions installation
+and update process in WDSC 6.0.</p>
+
+<p>If you have WDSC 7.x or other Eclipse 3.2-based IDEs, you must complete this installation routine, then manually install the RSE Extensions into your IDE.  You do this by creating an &quot;Eclipse Extension Location.&quot;  Instructions to do this can be found near the end of this document.</p>
+
+<div class="h2" id="install" title="install">
+<h2>Installing the RSE Extensions</h2>
+
+<h3>Download</h3>
+<p>Download the installer.  The latest version is always available at <a
+href="http://support.softlanding.com/opensource/rse_extensions.exe">
+http://support.softlanding.com/opensource/rse_extensions.exe</a>.  Once you have
+it downloaded, double click to launch the installer.</p>
+
+<h3>Step 1:</h3>
+<p>The installer is a standard Windows install wizard; the screens are self-explanatory.</p>
+<img src="images/install/install-1.png" alt="Install screen" />
+
+<h3>Step 2:</h3>
+<p>This screen shows the user agreement.  As the heading indicates, the RSE Extensions are
+available under the terms of the IBM CPL v1.0, a fairly standard open source license
+agreement -- the same agreement under which Eclipse was originally licensed.  (Eclipse now
+has its own version, called the Eclipse Public License, or EPL.)</p>
+<img src="images/install/install-2.png" alt="Install screen" />
+
+<h3>Step 3:</h3>
+<p>Confirm the installation directory.  It doesn't matter what directory you install into,
+as long as it is a new directory.  <strong>Do not</strong> install the RSE Extensions into one of the WDSC
+directories.</p>
+<img src="images/install/install-3.png" alt="Install screen" />
+
+<h3>Step 4:</h3>
+<p>This screen just confirms that the installer detects WDSC 6.0 on your computer.  If the installer does not find it, you
+would see a different screen (not shown).</p>
+<img src="images/install/install-4.png" alt="Install screen" />
+
+<h3>Step 5:</h3>
+<p>Another confirmation screen.</p>
+<img src="images/install/install-5.png" alt="Install screen" />
+
+<h3>Step 6:</h3>
+<p>The final screen, which appears after the install has completed.</p>
+<img src="images/install/install-6.png" alt="Install screen" />
+
+<h3>Post-installation instructions for WDSC 7.0 or other Eclipse 3.2-based IDEs</h3>
+<p>WDSC 7.0 requires that you manually complete the installation by creating an &quot;Eclipse Extension Location.&quot;</p>
+<ul>
+  <li> Start your IDE and go to: Help -&gt; Software Updates -&gt; Manage Configuration </li>
+  <li> Once there, select the &quot;Add an Extension Location&quot; option </li>
+  <li> Select the appropriate location based on where you installed the RSE Extenstions. The default path would be: 
+  <br /> C:\Program Files\SoftLanding\RSE Extensions\eclipse</br> </li>
+</ul>
+<p>Your IDE may then require a restart for the plug-ins to become available.</p>
+
+<h3>After the installer completes</h3>
+<p>When the installer has finished, restart WDSC.  Read the <a href="http://support.softlanding.com/opensource/site/overview.html">overview</a> and,
+if you want to participate in the development of the RSE Extensions, the <a href="http://support.softlanding.com/opensource/site/develop.html">development instructions</a>.</p>
+
+</div>
+
+<div class="h2" id="update" title="update">
+<h2>Updating the RSE Extensions</h2>
+
+<p>WDSC 6.0 and above have a feature in the Preferences that you can set to automatically check for updates.  You can use this feature to update your RSE Extensions, as long as you are not behind a proxy server that does not allow this activity.
+You can check for updates manually by choosing Software Updates -&gt; Find and
+Install from the Help menu.  Follow the instructions provided by the wizard.</p>
+<p>If you are behind a proxy server that will not allow WDSC's Updates feature to work, then you can install updates by downloading and installing the latest version, as described above.  When you do this, the installer detects
+that the RSE Extensions are already installed, and skips most of the wizard screens.</p>
+
+</div>
+
+</div>
+
+</body></html>
