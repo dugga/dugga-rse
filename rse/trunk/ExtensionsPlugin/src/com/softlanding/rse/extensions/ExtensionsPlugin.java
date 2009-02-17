@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.rse.ui.SystemBasePlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -38,11 +39,13 @@ import com.softlanding.rse.extensions.spooledfiles.ISaveToFile;
 import com.softlanding.rse.extensions.spooledfiles.SaveToFileDelegate;
 import com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileAdapterFactory;
 import com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileResource;
+import com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileSubSystemConfigurationAdapterFactory;
+import com.softlanding.rse.extensions.messages.QueuedMessageSubSystemConfigurationAdapterFactory;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class ExtensionsPlugin extends AbstractUIPlugin {
+public class ExtensionsPlugin extends SystemBasePlugin {
 	//The shared instance.
 	private static ExtensionsPlugin plugin;
 	//Resource bundle.
@@ -133,7 +136,8 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 	
-	public static ImageDescriptor getImageDescriptor(String name) {
+	@Override
+	public ImageDescriptor getImageDescriptor(String name) {
 		String iconPath = "icons/"; //$NON-NLS-1$
 		try {
 			URL url = new URL(installURL, iconPath + name);
@@ -143,7 +147,7 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
 	}
-	
+
 	public static String getTempProject() {
 		return "spooledFiles"; //$NON-NLS-1$
 	}
@@ -187,21 +191,27 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		manager.registerAdapters(spooledFactory, SpooledFileResource.class);
 		QueuedMessageAdapterFactory messagesFactory = new QueuedMessageAdapterFactory();
 		manager.registerAdapters(messagesFactory, QueuedMessageResource.class);
+		
+		SpooledFileSubSystemConfigurationAdapterFactory spooledFileSubSystemConfigurationAdapterFactory = new SpooledFileSubSystemConfigurationAdapterFactory();
+		spooledFileSubSystemConfigurationAdapterFactory.registerWithManager(manager);
+        QueuedMessageSubSystemConfigurationAdapterFactory queuedMessageSubSystemConfigurationAdapterFactory = new QueuedMessageSubSystemConfigurationAdapterFactory();
+        queuedMessageSubSystemConfigurationAdapterFactory.registerWithManager(manager);
+
 	}
 	
-	protected void initializeImageRegistry(ImageRegistry reg) {
-		super.initializeImageRegistry(reg);
-		reg.put(IMAGE_REFRESH, getImageDescriptor(IMAGE_REFRESH));
-		reg.put(IMAGE_SPOOLED_FILE, getImageDescriptor(IMAGE_SPOOLED_FILE));
-		reg.put(IMAGE_SPOOLED_FILES, getImageDescriptor(IMAGE_SPOOLED_FILES));
-		reg.put(IMAGE_SPOOLED_FILE_FILTER, getImageDescriptor(IMAGE_SPOOLED_FILE_FILTER));
-		reg.put(IMAGE_MESSAGE, getImageDescriptor(IMAGE_MESSAGE));
-		reg.put(IMAGE_MESSAGES, getImageDescriptor(IMAGE_MESSAGES));
-		reg.put(IMAGE_MESSAGES_CONNECTED, getImageDescriptor(IMAGE_MESSAGES_CONNECTED));
-		reg.put(IMAGE_MESSAGE_FILTER, getImageDescriptor(IMAGE_MESSAGE_FILTER));
-		reg.put(IMAGE_INQUIRY, getImageDescriptor(IMAGE_INQUIRY));
-		reg.put(IMAGE_ERROR, getImageDescriptor(IMAGE_ERROR));
-		reg.put(IMAGE_WARNING, getImageDescriptor(IMAGE_WARNING));
+	protected void initializeImageRegistry() {
+		String path = getIconPath();
+		putImageInRegistry("IMAGE_REFRESH", path + IMAGE_REFRESH);
+		putImageInRegistry("IMAGE_SPOOLED_FILE", path + IMAGE_SPOOLED_FILE);
+		putImageInRegistry("IMAGE_SPOOLED_FILES", path + IMAGE_SPOOLED_FILES);
+		putImageInRegistry("IMAGE_SPOOLED_FILE_FILTER", path + IMAGE_SPOOLED_FILE_FILTER);
+		putImageInRegistry("IMAGE_MESSAGE", path + IMAGE_MESSAGE);
+		putImageInRegistry("IMAGE_MESSAGES", path + IMAGE_MESSAGES);
+		putImageInRegistry("IMAGE_MESSAGES_CONNECTED", path + IMAGE_MESSAGES_CONNECTED);
+		putImageInRegistry("IMAGE_MESSAGE_FILTER", path + IMAGE_MESSAGE_FILTER);
+		putImageInRegistry("IMAGE_INQUIRY", path + IMAGE_INQUIRY);
+		putImageInRegistry("IMAGE_ERROR", path + IMAGE_ERROR);
+		putImageInRegistry("IMAGE_WARNING", path + IMAGE_WARNING);
 	}
 	/**
 	 * Convenience method for logging statuses to the plugin log
@@ -227,4 +237,5 @@ public class ExtensionsPlugin extends AbstractUIPlugin {
 		getDefault().getLog().log(new Status(IStatus.ERROR, ExtensionsPlugin.ID, 0, msg, e)); //$NON-NLS-1$
         MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("pluginError"), msg + ExtensionsPlugin.getResourceString("pluginError.log")); //$NON-NLS-1$
 	}
+
 }

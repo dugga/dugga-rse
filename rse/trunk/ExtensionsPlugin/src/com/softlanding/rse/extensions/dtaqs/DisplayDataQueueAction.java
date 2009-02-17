@@ -13,19 +13,19 @@ package com.softlanding.rse.extensions.dtaqs;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 
-import com.ibm.etools.iseries.core.api.ISeriesObject;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSObject;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class DisplayDataQueueAction extends
-        ISeriesAbstractQSYSPopupMenuExtensionAction {
+        ISeriesAbstractQSYSPopupMenuAction {
 
     public DisplayDataQueueAction() {
         super();
     }
 
     public void run() {
-        final ISeriesObject[] objects = getSelectedObjects();
+        final IQSYSObject[] objects = getSelectedObjects();
         BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
             public void run() {
                 try {

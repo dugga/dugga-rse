@@ -16,9 +16,13 @@ import java.io.FileOutputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.rse.ui.SystemMenuManager;
+import org.eclipse.rse.ui.view.*;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -26,15 +30,11 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import com.ibm.as400.access.PrintObject;
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.systems.core.ui.SystemMenuManager;
-import com.ibm.etools.systems.core.ui.view.AbstractSystemViewAdapter;
-import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SaveToFile;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileModel;
 
-public class SpooledFileResourceAdapter
-	extends AbstractSystemViewAdapter
+public class SpooledFileResourceAdapter	extends AbstractSystemViewAdapter
 	implements ISystemRemoteElementAdapter {
 
 	public SpooledFileResourceAdapter() {
@@ -45,7 +45,7 @@ public class SpooledFileResourceAdapter
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return ExtensionsPlugin.getImageDescriptor(ExtensionsPlugin.IMAGE_SPOOLED_FILE);
+		return ExtensionsPlugin.getDefault().getImageDescriptor(ExtensionsPlugin.IMAGE_SPOOLED_FILE);
 	}
 	
 	public boolean handleDoubleClick(Object object) {
@@ -121,7 +121,8 @@ public class SpooledFileResourceAdapter
 		return true;
 	}
 
-	public Object[] getChildren(Object o) {
+	@Override
+	public Object[] getChildren(IAdaptable arg0, IProgressMonitor arg1) {
 		return new Object[0];
 	}
 
@@ -219,20 +220,34 @@ public class SpooledFileResourceAdapter
 		return false;
 	}
 
-	public Object getRemoteParent(Shell arg0, Object arg1) throws Exception {
-		return null;
-	}
-
-	public String[] getRemoteParentNamesInUse(Shell shell, Object element)
-		throws Exception {
-		return null;	
-
-	}
-
 	/* (non-Javadoc)
 	 * @see com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter#supportsUserDefinedActions(java.lang.Object)
 	 */
 	public boolean supportsUserDefinedActions(Object arg0) {
 		return false;
+	}
+
+	@Override
+	public boolean hasChildren(IAdaptable arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Object getRemoteParent(Object arg0, IProgressMonitor arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[] getRemoteParentNamesInUse(Object arg0, IProgressMonitor arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getSubSystemConfigurationId(Object arg0) {
+		return "com.softlanding.rse.extensions.spooledfiles.subsystems.factory"; //$NON-NLS-1$
 	}
 }

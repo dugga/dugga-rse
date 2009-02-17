@@ -31,9 +31,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ui.IFileEditorInput;
 
-import com.ibm.etools.iseries.core.ISeriesTempFileListener;
-import com.ibm.etools.iseries.core.api.ISeriesMember;
-import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
+import com.ibm.etools.iseries.rse.ui.resources.QSYSEditableRemoteSourceFileMember;
+import com.ibm.etools.iseries.rse.ui.resources.QSYSTempFileListener;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class MemberCompareInput extends CompareEditorInput implements IFileEditorInput {
@@ -42,16 +42,16 @@ public class MemberCompareInput extends CompareEditorInput implements IFileEdito
 	private IStructureComparator fAncestor;
 	private MemberNode fLeft;
 	private MemberNode fRight;
-	private ISeriesMember leftMember;
-	private ISeriesMember rightMember;
+	private IQSYSMember leftMember;
+	private IQSYSMember rightMember;
 	private IResource fLeftResource;
 	private IResource fRightResource;
 	private DiffTreeViewer fDiffViewer;
 	private boolean neverSaved = true;
 	private boolean isSaving = false;
-	private ISeriesEditableSrcPhysicalFileMember left;
+	private QSYSEditableRemoteSourceFileMember left;
 
-	public MemberCompareInput(CompareConfiguration config, ISeriesMember leftMember, ISeriesMember rightMember) {
+	public MemberCompareInput(CompareConfiguration config, IQSYSMember leftMember, IQSYSMember rightMember) {
 		super(config);
 		this.leftMember = leftMember;
 		this.rightMember = rightMember;
@@ -60,8 +60,8 @@ public class MemberCompareInput extends CompareEditorInput implements IFileEdito
 	protected Object prepareInput(IProgressMonitor monitor)
 		throws InvocationTargetException, InterruptedException {
 			try {
-				left = new ISeriesEditableSrcPhysicalFileMember(leftMember);
-				ISeriesEditableSrcPhysicalFileMember right = new ISeriesEditableSrcPhysicalFileMember(rightMember);
+				left = new QSYSEditableRemoteSourceFileMember(leftMember);
+				QSYSEditableRemoteSourceFileMember right = new QSYSEditableRemoteSourceFileMember(rightMember);
 				left.download(monitor);
 				
 				if (getCompareConfiguration().isLeftEditable())
@@ -96,7 +96,7 @@ public class MemberCompareInput extends CompareEditorInput implements IFileEdito
 	                }            
 	            });
 				fRoot = d.findDifferences(fThreeWay, monitor, null, fAncestor, fLeft, fRight);
-				ISeriesTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
+				QSYSTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
 				return fRoot;
 			} catch (Exception e) {
 				System.out.println(e);
@@ -169,7 +169,7 @@ public class MemberCompareInput extends CompareEditorInput implements IFileEdito
     }
     
     public void removeIgnoreFile() {
-        ISeriesTempFileListener.getListener().removeIgnoreFile((IFile)fLeftResource);
+        QSYSTempFileListener.getListener().removeIgnoreFile((IFile)fLeftResource);
         try {
             left.closeStream();
         } catch (Exception e) {
@@ -182,7 +182,7 @@ public class MemberCompareInput extends CompareEditorInput implements IFileEdito
         return super.isSaveNeeded();
     }
     
-    public ISeriesEditableSrcPhysicalFileMember getLeft() {
+    public QSYSEditableRemoteSourceFileMember getLeft() {
         return left;
     }
     

@@ -17,11 +17,11 @@ import com.ibm.as400.access.AS400Message;
 import com.ibm.as400.access.CommandCall;
 import com.ibm.as400.access.SpooledFile;
 import com.ibm.as400.ui.util.CommandPrompter;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
-import com.ibm.etools.iseries.core.util.clprompter.CLPrompter;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
+import com.ibm.etools.iseries.rse.util.clprompter.*;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
-public class ChangePopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class ChangePopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public ChangePopupMenuExtensionAction() {
 		super();

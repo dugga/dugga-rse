@@ -11,48 +11,27 @@
 package com.softlanding.rse.extensions.subsystems.spooledfiles;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.rse.core.model.*;
+import org.eclipse.rse.core.subsystems.*;
+import org.eclipse.rse.services.clientserver.messages.*;
+import org.eclipse.rse.ui.*;
 import org.eclipse.swt.widgets.Shell;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.iseries.core.IISeriesSubSystem;
-import com.ibm.etools.iseries.core.IISeriesSubSystemCommandExecutionProperties;
-import com.ibm.etools.iseries.core.ISeriesSystemDataStore;
-import com.ibm.etools.iseries.core.ISeriesSystemManager;
-import com.ibm.etools.iseries.core.ISeriesSystemToolbox;
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
-import com.ibm.etools.systems.as400cmdsubsys.CmdSubSystem;
-import com.ibm.etools.systems.as400cmdsubsys.impl.CmdSubSystemImpl;
-import com.ibm.etools.systems.as400filesubsys.FileSubSystem;
-import com.ibm.etools.systems.as400filesubsys.impl.FileSubSystemImpl;
-import com.ibm.etools.systems.core.ISystemMessages;
-import com.ibm.etools.systems.core.SystemPlugin;
-import com.ibm.etools.systems.core.messages.SystemMessage;
-import com.ibm.etools.systems.dftsubsystem.impl.DefaultSubSystemImpl;
-import com.ibm.etools.systems.model.ISystemMessageObject;
-import com.ibm.etools.systems.model.SystemConnection;
-import com.ibm.etools.systems.model.SystemRegistry;
-import com.ibm.etools.systems.model.impl.SystemMessageObject;
-import com.ibm.etools.systems.subsystems.SubSystem;
-import com.ibm.etools.systems.subsystems.impl.AbstractSystemManager;
-import com.softlanding.rse.extensions.spooledfiles.SpooledFileFactory;
-import com.softlanding.rse.extensions.spooledfiles.SpooledFileFilter;
+import com.ibm.etools.iseries.subsystems.qsys.*;
+import com.ibm.etools.iseries.subsystems.qsys.api.*;
+import com.ibm.etools.iseries.subsystems.qsys.commands.*;
+import com.ibm.etools.iseries.subsystems.qsys.objects.*;
+import com.softlanding.rse.extensions.spooledfiles.*;
 
-public class SpooledFileSubSystem extends DefaultSubSystemImpl implements IISeriesSubSystem, ISpooledFileSubSystem {
+public class SpooledFileSubSystem extends SubSystem implements IISeriesSubSystem, ISpooledFileSubSystem {
 
-	public SpooledFileSubSystem() {
-		super();
+	public SpooledFileSubSystem(IHost host, IConnectorService connectorService) {
+		super(host, connectorService);
 	}
 	
-//    public AbstractSystemManager getSystemManager() { 
-//    	return SpooledFileSystemManager.getSpooledFileSystemManager(); 
-//    } 
-    
-    public AbstractSystemManager getSystemManager() {
-    	return ISeriesSystemManager.getTheISeriesSystemManager();
-    }
-	
-	protected Object[] internalResolveFilterString(IProgressMonitor monitor, String filterString)
+	protected Object[] internalResolveFilterString(String filterString, IProgressMonitor monitor)
          throws java.lang.reflect.InvocationTargetException,
                 java.lang.InterruptedException                
 	{	
@@ -69,7 +48,7 @@ public class SpooledFileSubSystem extends DefaultSubSystemImpl implements IISeri
 			}			
 		} catch (Exception e) {
 			handleError(e);
-            SystemMessage msg = SystemPlugin.getPluginMessage(ISystemMessages.MSG_GENERIC_E); 
+            SystemMessage msg = RSEUIPlugin.getPluginMessage(ISystemMessages.MSG_GENERIC_E); 
             msg.makeSubstitution(e.getMessage()); 
             SystemMessageObject msgObj = new SystemMessageObject(msg, ISystemMessageObject.MSGTYPE_ERROR, null); 
             return new Object[] {msgObj}; 
@@ -77,41 +56,41 @@ public class SpooledFileSubSystem extends DefaultSubSystemImpl implements IISeri
 		return spooledFileResources;
 	}  
 	
-	protected Object[] internalResolveFilterString(IProgressMonitor monitor, Object parent, String filterString)
+	protected Object[] internalResolveFilterString(Object parent, String filterString, IProgressMonitor monitor)
          throws java.lang.reflect.InvocationTargetException,
                 java.lang.InterruptedException
 	{
-		return internalResolveFilterString(monitor, filterString);
+		return internalResolveFilterString(filterString, monitor);
 	}
 	
-    public CmdSubSystem getCmdSubSystem() {
-    	SystemConnection sc = getSystemConnection();
-        SystemRegistry registry = SystemPlugin.getTheSystemRegistry();
-        SubSystem[] subsystems = registry.getSubSystems(sc);
-        SubSystem subsystem;
-        for (int ssIndx = 0; ssIndx < subsystems.length; ssIndx++) {
-        	subsystem = subsystems[ssIndx];
-            if (subsystem instanceof CmdSubSystemImpl)
-            	return (CmdSubSystemImpl) subsystem;
-        }
-        return null;
-      }
+    public QSYSCommandSubSystem getCmdSubSystem() {
+    	IHost iHost = getHost();
+    	ISubSystem[] iSubSystems = iHost.getSubSystems();
+    	ISubSystem iSubSystem;
+    	for (int ssIndx = 0; ssIndx < iSubSystems.length; ssIndx++) {
+    		iSubSystem = iSubSystems[ssIndx];
+    		if (iSubSystem instanceof QSYSCommandSubSystem)
+    			return (QSYSCommandSubSystem) iSubSystem;
+    	}
+    	return null;
+    }
       
-     public IISeriesSubSystemCommandExecutionProperties getCommandExecutionProperties() {
-      return (FileSubSystemImpl) getObjectSubSystem();
-     }
-      
-     public ISeriesSystemDataStore getISeriesSystem() {
-       return (ISeriesSystemDataStore)getSystem();
+     public QSYSObjectSubSystem getCommandExecutionProperties() {
+      return (QSYSObjectSubSystem) getObjectSubSystem();
      }
      
-     public FileSubSystem getObjectSubSystem() {
-     	return ISeriesConnection.getConnection(getSystemConnection()).getISeriesFileSubSystem();
+     public QSYSObjectSubSystem getObjectSubSystem() {
+    	 return IBMiConnection.getConnection(getHost()).getQSYSObjectSubSystem();
      }
      
       public AS400 getToolboxAS400Object() {
-          ISeriesSystemToolbox system = (ISeriesSystemToolbox) getSystem();
-          return system.getAS400Object();
+    	  AS400 as400 = null;
+		try {
+			as400 = IBMiConnection.getConnection(getHost()).getAS400ToolboxObject();
+		} catch (SystemMessageException e) {
+			e.printStackTrace();
+		}
+    	  return as400;
       }
      
      public void setShell(Shell shell) {

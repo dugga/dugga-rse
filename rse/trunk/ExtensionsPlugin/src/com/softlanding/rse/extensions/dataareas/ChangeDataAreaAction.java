@@ -10,18 +10,18 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.dataareas;
 
-import com.ibm.etools.iseries.core.api.ISeriesObject;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSObject;
 
 public class ChangeDataAreaAction extends
-        ISeriesAbstractQSYSPopupMenuExtensionAction {
+        ISeriesAbstractQSYSPopupMenuAction {
 
     public ChangeDataAreaAction() {
         super();
     }
 
     public void run() {
-        ISeriesObject[] objects = getSelectedObjects();
+        IQSYSObject[] objects = getSelectedObjects();
         for (int i = 0; i < objects.length; i++) {
             if (objects[i].getType().equals("*DTAARA")) { //$NON-NLS-1$
                 ChangeDataAreaDialog dialog = new ChangeDataAreaDialog(getShell(), objects[i]);

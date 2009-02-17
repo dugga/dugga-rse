@@ -31,29 +31,32 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
-import com.ibm.etools.iseries.core.api.ISeriesMember;
-import com.ibm.etools.iseries.core.ui.widgets.ISeriesConnectionCombo;
-import com.ibm.etools.iseries.core.ui.widgets.ISeriesMemberPrompt;
+import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
+import com.ibm.etools.iseries.rse.ui.widgets.QSYSMemberPrompt;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
+import com.ibm.etools.iseries.subsystems.qsys.objects.IRemoteObjectContextProvider;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class CompareDialog extends Dialog {
-    private ISeriesMember member;
-    private ISeriesConnectionCombo compareConnectionCombo;
-    private ISeriesMemberPrompt compareMemberPrompt;
+    private IQSYSMember member;
+    private IBMiConnectionCombo compareConnectionCombo;
+    private QSYSMemberPrompt compareMemberPrompt;
     private Button editButton;
     private Button browseButton;
-    private ISeriesConnection compareConnection;
+    private IBMiConnection compareConnection;
     private String compareLibrary;
     private String compareFile;
     private String compareMember;
     private boolean openForEdit;
     private Button okButton;
     private IDialogSettings settings;
+    private IBMiConnection connection;
 
-    public CompareDialog(Shell parentShell, ISeriesMember member) {
+    public CompareDialog(Shell parentShell, IQSYSMember member) {
         super(parentShell);
         this.member = member;
+        connection = IBMiConnection.getConnection(((IRemoteObjectContextProvider)member).getRemoteObjectContext().getObjectSubsystem().getHost());
     }
     
     public Control createDialogArea(Composite parent) {       
@@ -80,7 +83,7 @@ public class CompareDialog extends Dialog {
 		GridData gd = new GridData();
 		gd.widthHint = 200;
 		referenceConnectionText.setLayoutData(gd);
-		referenceConnectionText.setText(member.getISeriesConnection().getConnectionName());
+		referenceConnectionText.setText(connection.getConnectionName());
 		
 		Label referenceLibraryLabel = new Label(referenceGroup, SWT.NONE);
 		referenceLibraryLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.3")); //$NON-NLS-1$
@@ -89,7 +92,7 @@ public class CompareDialog extends Dialog {
 		gd = new GridData();
 		gd.widthHint = 75;
 		referenceLibraryText.setLayoutData(gd);
-		referenceLibraryText.setText(member.getLibraryName());
+		referenceLibraryText.setText(member.getLibrary());
 		
 		Label referenceFileLabel = new Label(referenceGroup, SWT.NONE);
 		referenceFileLabel.setText(ExtensionsPlugin.getResourceString("CompareDialog.4")); //$NON-NLS-1$
@@ -116,7 +119,8 @@ public class CompareDialog extends Dialog {
 		compareGroup.setLayout(compareLayout);
 		compareGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 
 
-		compareConnectionCombo = new ISeriesConnectionCombo(compareGroup, member.getISeriesConnection(), true);
+		
+		compareConnectionCombo = new IBMiConnectionCombo(compareGroup, connection, true);
 		gd = new GridData();
 		compareConnectionCombo.setLayoutData(gd);
 		
@@ -124,16 +128,16 @@ public class CompareDialog extends Dialog {
 		gd.widthHint = 200;
 		compareConnectionCombo.getCombo().setLayoutData(gd);
 		
-		compareMemberPrompt = new ISeriesMemberPrompt(compareGroup, SWT.NONE, false, true, ISeriesMemberPrompt.FILETYPE_SRC);
+		compareMemberPrompt = new QSYSMemberPrompt(compareGroup, SWT.NONE, false, true, QSYSMemberPrompt.FILETYPE_SRC);
 		compareMemberPrompt.setFileName(member.getFile());
-		compareMemberPrompt.setLibraryName(member.getLibraryName());
+		compareMemberPrompt.setLibraryName(member.getLibrary());
 		compareMemberPrompt.setMemberName(member.getName());
-		compareMemberPrompt.setSystemConnection(compareConnectionCombo.getSystemConnection());
+		compareMemberPrompt.setSystemConnection(connection.getHost());
 
 		compareConnectionCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 okButton.setEnabled(canFinish());
-                compareMemberPrompt.setSystemConnection(compareConnectionCombo.getSystemConnection());
+                compareMemberPrompt.setSystemConnection(connection.getHost());
             }
 		});
 		
@@ -148,7 +152,7 @@ public class CompareDialog extends Dialog {
 		browseButton = new Button(editGroup, SWT.RADIO);
 		browseButton.setText(ExtensionsPlugin.getResourceString("CompareDialog.12")); //$NON-NLS-1$
 	
-        String rseVersion = (String) Platform.getBundle("com.ibm.etools.iseries.core").getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION); 
+        String rseVersion = (String) Platform.getBundle("com.ibm.etools.iseries.rse.ui").getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION); 
         PluginVersionIdentifier current = new PluginVersionIdentifier(rseVersion); 
         PluginVersionIdentifier required = new PluginVersionIdentifier(6, 0, 1, "2"); 
                 
@@ -198,7 +202,7 @@ public class CompareDialog extends Dialog {
         if (editButton.getSelection()) settings.put("CompareDialog.mode", "e"); //$NON-NLS-1$ //$NON-NLS-2$
         else settings.put("CompareDialog.mode", "b"); //$NON-NLS-1$ //$NON-NLS-2$
         openForEdit = editButton.getSelection();
-        compareConnection = ISeriesConnection.getConnection(compareConnectionCombo.getSystemConnection());
+        compareConnection = connection;
         compareLibrary = compareMemberPrompt.getLibraryName();
         compareFile = compareMemberPrompt.getFileName();
         compareMember = compareMemberPrompt.getMemberName();
@@ -218,17 +222,17 @@ public class CompareDialog extends Dialog {
         if (compareMemberPrompt.getMemberName() == null || compareMemberPrompt.getMemberName().trim().length() == 0) return false;
          if (compareMemberPrompt.getMemberName().equalsIgnoreCase(member.getName()) &&
                  compareMemberPrompt.getFileName().equalsIgnoreCase(member.getFile()) &&
-                 compareMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibraryName()) &&
-                 compareConnectionCombo.getSystemConnection().getHostName().equalsIgnoreCase(member.getISeriesConnection().getHostName()))
+                 compareMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibrary()) &&
+                 compareConnectionCombo.getISeriesConnection().getHostName().equalsIgnoreCase(connection.getHostName()))
              	 return false;
         return true;
     }
     
-    public ISeriesMember getReferenceMember() {
+    public IQSYSMember getReferenceMember() {
         return member;
     }
 
-    public ISeriesConnection getCompareConnection() {
+    public IBMiConnection getCompareConnection() {
         return compareConnection;
     }
     public String getCompareFile() {

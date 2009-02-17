@@ -1,0 +1,59 @@
+package com.softlanding.rse.extensions.subsystems.spooledfiles;
+
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.rse.core.filters.ISystemFilter;
+import org.eclipse.rse.core.filters.ISystemFilterPool;
+import org.eclipse.rse.core.subsystems.ISubSystemConfiguration;
+import org.eclipse.rse.ui.SystemMenuManager;
+import org.eclipse.rse.ui.filters.actions.SystemChangeFilterAction;
+import org.eclipse.rse.ui.filters.actions.SystemNewFilterAction;
+import org.eclipse.rse.ui.view.SubSystemConfigurationAdapter;
+import org.eclipse.swt.widgets.Shell;
+
+import com.softlanding.rse.extensions.ExtensionsPlugin;
+import com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileResource;
+
+/**
+ * Adds functionality to the basic SubSystemConfiguration.
+ */
+public class SpooledFileSubSystemConfigurationAdapter extends SubSystemConfigurationAdapter
+{
+
+	/**
+	 * Constructor for SpooledFileSubSystemConfigurationAdapter.
+	 */
+	public SpooledFileSubSystemConfigurationAdapter()
+	{
+		super();
+	}
+
+	protected IAction[] getNewFilterPoolFilterActions(SystemMenuManager menu,
+			IStructuredSelection selection, Shell shell, String menuGroup,
+			ISubSystemConfiguration config, ISystemFilterPool selectedPool) {
+		SystemNewFilterAction filterAction = (SystemNewFilterAction)super.getNewFilterPoolFilterAction(config, selectedPool, shell);
+		filterAction.setWizardPageTitle(ExtensionsPlugin.getResourceString("Spooled_File_Filter_5")); //$NON-NLS-1$
+		filterAction.setPage1Description(ExtensionsPlugin.getResourceString("Create_a_new_filter_to_list_spooled_files_6")); //$NON-NLS-1$
+		filterAction.setType(ExtensionsPlugin.getResourceString("Spooled_File_Filter_7")); //$NON-NLS-1$
+		filterAction.setText(ExtensionsPlugin.getResourceString("Spooled_file_filter_8") + "..."); //$NON-NLS-1$ //$NON-NLS-2$
+		filterAction.setFilterStringEditPane(new SpooledFileFilterStringEditPane(shell));       		  	
+		IAction[] actions = new IAction[1];
+		actions[0] = filterAction;
+		return actions;
+	}
+
+	protected IAction getChangeFilterAction(ISubSystemConfiguration factory, ISystemFilter selectedFilter, Shell shell)
+	{
+		SystemChangeFilterAction action = (SystemChangeFilterAction)super.getChangeFilterAction(factory, selectedFilter, shell);
+		String type = selectedFilter.getType();
+		action.setDialogTitle(ExtensionsPlugin.getResourceString("Change_Spooled_File_Filter_10")); //$NON-NLS-1$
+		action.setFilterStringEditPane(new SpooledFileFilterStringEditPane(shell));
+		return action;
+	}	        
+
+	public ImageDescriptor getSystemFilterImage(ISystemFilter filter)
+	{
+		return ExtensionsPlugin.getDefault().getImageDescriptor(ExtensionsPlugin.IMAGE_SPOOLED_FILE_FILTER);
+	}	    	
+}

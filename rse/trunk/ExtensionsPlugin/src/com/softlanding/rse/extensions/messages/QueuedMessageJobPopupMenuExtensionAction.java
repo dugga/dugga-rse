@@ -10,15 +10,13 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.messages;
 
+import org.eclipse.rse.internal.ui.view.*;
 import com.ibm.as400.access.QueuedMessage;
-import com.ibm.etools.iseries.core.ISeriesViewHelpers;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
-import com.ibm.etools.systems.core.SystemPerspectiveHelpers;
-import com.ibm.etools.systems.core.ui.view.SystemView;
-import com.ibm.etools.systems.core.ui.view.SystemViewPart;
+import com.ibm.etools.iseries.rse.ui.QSYSViewHelpers;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 
 
-public class QueuedMessageJobPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class QueuedMessageJobPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public QueuedMessageJobPopupMenuExtensionAction() {
 		super();
@@ -33,7 +31,7 @@ public class QueuedMessageJobPopupMenuExtensionAction extends ISeriesAbstractQSY
 				SystemPerspectiveHelpers.showView(SystemViewPart.ID);
 				SystemViewPart viewPart = (SystemViewPart)SystemPerspectiveHelpers.findView(SystemViewPart.ID);
 				SystemView view = viewPart.getSystemView();
-				ISeriesViewHelpers.selectAndReveal(view, getISeriesConnection(), queuedMessage.getFromJobNumber().trim() + "/" + queuedMessage.getUser().trim() + "/" + queuedMessage.getFromJobName(), true); //$NON-NLS-1$ //$NON-NLS-2$
+				QSYSViewHelpers.selectAndReveal(view, getISeriesConnection(), queuedMessage.getFromJobNumber().trim() + "/" + queuedMessage.getUser().trim() + "/" + queuedMessage.getFromJobName(), true); //$NON-NLS-1$ //$NON-NLS-2$
 				break;
 			}
 		}

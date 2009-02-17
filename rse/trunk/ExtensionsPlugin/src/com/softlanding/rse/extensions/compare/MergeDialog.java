@@ -30,21 +30,23 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
-import com.ibm.etools.iseries.core.api.ISeriesMember;
-import com.ibm.etools.iseries.core.ui.widgets.ISeriesConnectionCombo;
-import com.ibm.etools.iseries.core.ui.widgets.ISeriesMemberPrompt;
+import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
+import com.ibm.etools.iseries.rse.ui.widgets.QSYSMemberPrompt;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
+import com.ibm.etools.iseries.subsystems.qsys.objects.IRemoteObjectContextProvider;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class MergeDialog extends Dialog {
-    private ISeriesMember member;
-    private ISeriesConnectionCombo maintenanceConnectionCombo;
-    private ISeriesMemberPrompt maintenanceMemberPrompt;
-    private ISeriesConnectionCombo rootConnectionCombo;
-    private ISeriesMemberPrompt rootMemberPrompt;
+    private IQSYSMember member;
+    private IBMiConnectionCombo maintenanceConnectionCombo;
+    private QSYSMemberPrompt maintenanceMemberPrompt;
+    private IBMiConnectionCombo rootConnectionCombo;
+    private QSYSMemberPrompt rootMemberPrompt;
     private Button okButton;
-    private ISeriesConnection maintenanceConnection;
-    private ISeriesConnection rootConnection;
+    private IBMiConnection maintenanceConnection;
+    private IBMiConnection rootConnection;
+    private IBMiConnection memberConnection;
     private String maintenanceLibrary;
     private String maintenanceFile;
     private String maintenanceMember;
@@ -52,9 +54,10 @@ public class MergeDialog extends Dialog {
     private String rootFile;
     private String rootMember;
 
-    public MergeDialog(Shell parentShell, ISeriesMember member) {
+    public MergeDialog(Shell parentShell, IQSYSMember member) {
         super(parentShell);
         this.member = member;
+        memberConnection = IBMiConnection.getConnection(((IRemoteObjectContextProvider)member).getRemoteObjectContext().getObjectSubsystem().getHost());
     }
     
     public Control createDialogArea(Composite parent) {
@@ -81,7 +84,7 @@ public class MergeDialog extends Dialog {
 		GridData gd = new GridData();
 		gd.widthHint = 200;
 		targetConnectionText.setLayoutData(gd);
-		targetConnectionText.setText(member.getISeriesConnection().getConnectionName());
+		targetConnectionText.setText(memberConnection.getConnectionName());
 		
 		Label targetLibraryLabel = new Label(targetGroup, SWT.NONE);
 		targetLibraryLabel.setText(ExtensionsPlugin.getResourceString("MergeDialog.3")); //$NON-NLS-1$
@@ -90,7 +93,7 @@ public class MergeDialog extends Dialog {
 		gd = new GridData();
 		gd.widthHint = 75;
 		targetLibraryText.setLayoutData(gd);
-		targetLibraryText.setText(member.getLibraryName());
+		targetLibraryText.setText(member.getLibrary());
 		
 		Label targetFileLabel = new Label(targetGroup, SWT.NONE);
 		targetFileLabel.setText(ExtensionsPlugin.getResourceString("MergeDialog.4")); //$NON-NLS-1$
@@ -117,7 +120,7 @@ public class MergeDialog extends Dialog {
 		maintenanceGroup.setLayout(maintenanceLayout);
 		maintenanceGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 
 
-		maintenanceConnectionCombo = new ISeriesConnectionCombo(maintenanceGroup, member.getISeriesConnection(), true);
+		maintenanceConnectionCombo = new IBMiConnectionCombo(maintenanceGroup, memberConnection, true);
 		gd = new GridData();
 		maintenanceConnectionCombo.setLayoutData(gd);
 		
@@ -125,16 +128,16 @@ public class MergeDialog extends Dialog {
 		gd.widthHint = 200;
 		maintenanceConnectionCombo.getCombo().setLayoutData(gd);
 
-		maintenanceMemberPrompt = new ISeriesMemberPrompt(maintenanceGroup, SWT.NONE, false, true, ISeriesMemberPrompt.FILETYPE_SRC);
+		maintenanceMemberPrompt = new QSYSMemberPrompt(maintenanceGroup, SWT.NONE, false, true, QSYSMemberPrompt.FILETYPE_SRC);
 		maintenanceMemberPrompt.setFileName(member.getFile());
-		maintenanceMemberPrompt.setLibraryName(member.getLibraryName());
+		maintenanceMemberPrompt.setLibraryName(member.getLibrary());
 		maintenanceMemberPrompt.setMemberName(member.getName());
-		maintenanceMemberPrompt.setSystemConnection(maintenanceConnectionCombo.getSystemConnection());
+		maintenanceMemberPrompt.setSystemConnection(maintenanceConnectionCombo.getHost());
 
 		maintenanceConnectionCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 okButton.setEnabled(canFinish());
-                maintenanceMemberPrompt.setSystemConnection(maintenanceConnectionCombo.getSystemConnection());
+                maintenanceMemberPrompt.setSystemConnection(maintenanceConnectionCombo.getHost());
             }
 		});
 		
@@ -145,7 +148,7 @@ public class MergeDialog extends Dialog {
 		rootGroup.setLayout(rootLayout);
 		rootGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL)); 		
 
-		rootConnectionCombo = new ISeriesConnectionCombo(rootGroup, member.getISeriesConnection(), true);
+		rootConnectionCombo = new IBMiConnectionCombo(rootGroup, memberConnection, true);
 		gd = new GridData();
 		rootConnectionCombo.setLayoutData(gd);
 		
@@ -153,23 +156,23 @@ public class MergeDialog extends Dialog {
 		gd.widthHint = 200;
 		rootConnectionCombo.getCombo().setLayoutData(gd);
 
-		rootMemberPrompt = new ISeriesMemberPrompt(rootGroup, SWT.NONE, false, true, ISeriesMemberPrompt.FILETYPE_SRC);
+		rootMemberPrompt = new QSYSMemberPrompt(rootGroup, SWT.NONE, false, true, QSYSMemberPrompt.FILETYPE_SRC);
 		rootMemberPrompt.setFileName(member.getFile());
-		rootMemberPrompt.setLibraryName(member.getLibraryName());
+		rootMemberPrompt.setLibraryName(member.getLibrary());
 		rootMemberPrompt.setMemberName(member.getName());
-		rootMemberPrompt.setSystemConnection(rootConnectionCombo.getSystemConnection());
+		rootMemberPrompt.setSystemConnection(rootConnectionCombo.getHost());
 
 		maintenanceConnectionCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 okButton.setEnabled(canFinish());
-                maintenanceMemberPrompt.setSystemConnection(maintenanceConnectionCombo.getSystemConnection());
+                maintenanceMemberPrompt.setSystemConnection(maintenanceConnectionCombo.getHost());
             }
 		});
 		
 		rootConnectionCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 okButton.setEnabled(canFinish());
-                rootMemberPrompt.setSystemConnection(rootConnectionCombo.getSystemConnection());
+                rootMemberPrompt.setSystemConnection(rootConnectionCombo.getHost());
             }
 		});
 		
@@ -185,7 +188,7 @@ public class MergeDialog extends Dialog {
 		rootMemberPrompt.getMemberCombo().addModifyListener(modifyListener);
 		rootMemberPrompt.getFileCombo().addModifyListener(modifyListener);
 		rootMemberPrompt.getLibraryCombo().addModifyListener(modifyListener);
-        String rseVersion = (String) Platform.getBundle("com.ibm.etools.iseries.core").getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION); 
+        String rseVersion = (String) Platform.getBundle("com.ibm.etools.iseries.rse.ui").getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION); 
         PluginVersionIdentifier current = new PluginVersionIdentifier(rseVersion); 
         PluginVersionIdentifier required = new PluginVersionIdentifier(6, 0, 1, "2"); 
                 
@@ -214,8 +217,8 @@ public class MergeDialog extends Dialog {
                 return;
             }
         }
-        maintenanceConnection = ISeriesConnection.getConnection(maintenanceConnectionCombo.getSystemConnection());        
-        rootConnection = ISeriesConnection.getConnection(rootConnectionCombo.getSystemConnection());        
+        maintenanceConnection = IBMiConnection.getConnection(maintenanceConnectionCombo.getHost());        
+        rootConnection = IBMiConnection.getConnection(rootConnectionCombo.getHost());        
         maintenanceLibrary = maintenanceMemberPrompt.getLibraryName();
         maintenanceFile = maintenanceMemberPrompt.getFileName();
         maintenanceMember = maintenanceMemberPrompt.getMemberName();        
@@ -244,19 +247,19 @@ public class MergeDialog extends Dialog {
         if (maintenanceMemberPrompt.getMemberName().equalsIgnoreCase(rootMemberPrompt.getMemberName()) &&
                 maintenanceMemberPrompt.getFileName().equalsIgnoreCase(rootMemberPrompt.getFileName()) &&
                 maintenanceMemberPrompt.getLibraryName().equalsIgnoreCase(rootMemberPrompt.getLibraryName()) &&
-                maintenanceConnectionCombo.getSystemConnection().getHostName().equals(rootConnectionCombo.getSystemConnection().getHostName())) return false;
-        if (maintenanceMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibraryName()) &&
+                maintenanceConnectionCombo.getHost().getHostName().equals(rootConnectionCombo.getHost().getHostName())) return false;
+        if (maintenanceMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibrary()) &&
                 maintenanceMemberPrompt.getFileName().equalsIgnoreCase(member.getFile()) &&
                 maintenanceMemberPrompt.getMemberName().equalsIgnoreCase(member.getName()) &&
-                maintenanceConnectionCombo.getSystemConnection().getHostName().equals(member.getISeriesConnection().getHostName())) return false;        
-        if (rootMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibraryName()) &&
+                maintenanceConnectionCombo.getHost().getHostName().equals(memberConnection.getHostName())) return false;        
+        if (rootMemberPrompt.getLibraryName().equalsIgnoreCase(member.getLibrary()) &&
                 rootMemberPrompt.getFileName().equalsIgnoreCase(member.getFile()) &&
                 rootMemberPrompt.getMemberName().equalsIgnoreCase(member.getName()) &&
-                rootConnectionCombo.getSystemConnection().getHostName().equals(member.getISeriesConnection().getHostName())) return false;                
+                rootConnectionCombo.getHost().getHostName().equals(memberConnection.getHostName())) return false;                
         return true;
     }
 
-    public ISeriesConnection getMaintenanceConnection() {
+    public IBMiConnection getMaintenanceConnection() {
         return maintenanceConnection;
     }
     public String getMaintenanceFile() {
@@ -268,7 +271,7 @@ public class MergeDialog extends Dialog {
     public String getMaintenanceMember() {
         return maintenanceMember;
     }
-    public ISeriesConnection getRootConnection() {
+    public IBMiConnection getRootConnection() {
         return rootConnection;
     }
     public String getRootFile() {
@@ -280,7 +283,7 @@ public class MergeDialog extends Dialog {
     public String getRootMember() {
         return rootMember;
     }
-    public ISeriesMember getTargetMember() {
+    public IQSYSMember getTargetMember() {
         return member;
     }
 }

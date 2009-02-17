@@ -13,9 +13,9 @@ package com.softlanding.rse.extensions.messages;
 import org.eclipse.swt.widgets.Display;
 
 import com.ibm.as400.access.QueuedMessage;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 
-public class QueuedMessageDetailsPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class QueuedMessageDetailsPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public QueuedMessageDetailsPopupMenuExtensionAction() {
 		super();

@@ -11,49 +11,57 @@
 package com.softlanding.rse.extensions.messages;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.rse.core.model.*;
+import org.eclipse.rse.core.subsystems.*;
+import org.eclipse.rse.internal.core.model.*;
+import org.eclipse.rse.services.clientserver.messages.*;
+import org.eclipse.rse.ui.*;
+import org.eclipse.rse.ui.model.ISystemRegistryUI;
 import org.eclipse.swt.widgets.Shell;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.MessageQueue;
 import com.ibm.as400.access.QueuedMessage;
-import com.ibm.etools.iseries.core.IISeriesSubSystem;
-import com.ibm.etools.iseries.core.IISeriesSubSystemCommandExecutionProperties;
-import com.ibm.etools.iseries.core.ISeriesSystemDataStore;
-import com.ibm.etools.iseries.core.ISeriesSystemManager;
-import com.ibm.etools.iseries.core.ISeriesSystemToolbox;
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
-import com.ibm.etools.systems.as400cmdsubsys.CmdSubSystem;
-import com.ibm.etools.systems.as400cmdsubsys.impl.CmdSubSystemImpl;
-import com.ibm.etools.systems.as400filesubsys.FileSubSystem;
-import com.ibm.etools.systems.as400filesubsys.impl.FileSubSystemImpl;
-import com.ibm.etools.systems.core.ISystemMessages;
-import com.ibm.etools.systems.core.SystemPlugin;
-import com.ibm.etools.systems.core.messages.SystemMessage;
-import com.ibm.etools.systems.dftsubsystem.impl.DefaultSubSystemImpl;
-import com.ibm.etools.systems.model.ISystemMessageObject;
-import com.ibm.etools.systems.model.SystemConnection;
-import com.ibm.etools.systems.model.SystemRegistry;
-import com.ibm.etools.systems.model.impl.SystemMessageObject;
-import com.ibm.etools.systems.subsystems.CommunicationsEvent;
-import com.ibm.etools.systems.subsystems.ICommunicationsListener;
-import com.ibm.etools.systems.subsystems.ISystem;
-import com.ibm.etools.systems.subsystems.SubSystem;
-import com.ibm.etools.systems.subsystems.impl.AbstractSystemManager;
+import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
+import com.ibm.etools.iseries.subsystems.qsys.commands.QSYSCommandSubSystem;
+import com.ibm.etools.iseries.subsystems.qsys.objects.IQSYSSubSystemCommandExecutionProperties;
+import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 
-public class QueuedMessageSubSystem extends DefaultSubSystemImpl implements IISeriesSubSystem, IQueuedMessageSubSystem {
+public class QueuedMessageSubSystem extends SubSystem implements IISeriesSubSystem, IQueuedMessageSubSystem {
 
-private ISystem theSystem;
+private IHost theHost;
 private MonitoredMessageQueue monitoredMessageQueue;
 
-	public QueuedMessageSubSystem() {
-		super();
+	public QueuedMessageSubSystem(IHost host, IConnectorService connectorService) {
+		super(host, connectorService);
+		connectorService.addCommunicationsListener(new ICommunicationsListener() {
+			  public void communicationsStateChange(CommunicationsEvent ce) {
+			  if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
+				  String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
+				  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
+					  QueuedMessageFilter filter = new QueuedMessageFilter();
+					  filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
+					  AS400 as400 = new AS400(getToolboxAS400Object());
+					  String removeString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.REMOVE);
+					  boolean remove = false;
+					  if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
+					  monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
+					  monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
+				  }
+			  }
+			  if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
+				  if (monitoredMessageQueue != null)
+					  monitoredMessageQueue.stopMonitoring();
+			  }
+		  }
+		  public boolean isPassiveCommunicationsListener() {
+			  return true;
+		  }
+	  });
 	}
 
-	public AbstractSystemManager getSystemManager() {
-		return ISeriesSystemManager.getTheISeriesSystemManager();
-	}
-	
-	protected Object[] internalResolveFilterString(IProgressMonitor monitor, String filterString)
+	protected Object[] internalResolveFilterString(String filterString, IProgressMonitor monitor)
 		 throws java.lang.reflect.InvocationTargetException,
 				java.lang.InterruptedException                
 	{	
@@ -70,7 +78,7 @@ private MonitoredMessageQueue monitoredMessageQueue;
 			}			
 		} catch (Exception e) {
 			handleError(e);
-            SystemMessage msg = SystemPlugin.getPluginMessage(ISystemMessages.MSG_GENERIC_E); 
+            SystemMessage msg = RSEUIPlugin.getPluginMessage(ISystemMessages.MSG_GENERIC_E); 
             msg.makeSubstitution(e.getMessage()); 
             SystemMessageObject msgObj = new SystemMessageObject(msg, ISystemMessageObject.MSGTYPE_ERROR, null); 
             return new Object[] {msgObj}; 
@@ -78,78 +86,92 @@ private MonitoredMessageQueue monitoredMessageQueue;
 		return queuedMessageResources;
 	}  
 	
-	protected Object[] internalResolveFilterString(IProgressMonitor monitor, Object parent, String filterString)
+	protected Object[] internalResolveFilterString(Object parent, String filterString, IProgressMonitor monitor)
 		 throws java.lang.reflect.InvocationTargetException,
 				java.lang.InterruptedException
 	{
-		return internalResolveFilterString(monitor, filterString);
+		return internalResolveFilterString(filterString, monitor);
 	}
 	
-	public CmdSubSystem getCmdSubSystem() {
-		SystemConnection sc = getSystemConnection();
-		SystemRegistry registry = SystemPlugin.getTheSystemRegistry();
-		SubSystem[] subsystems = registry.getSubSystems(sc);
+	public QSYSCommandSubSystem getCmdSubSystem() {
+		IHost iHost = getHost();
+		ISubSystem[] iSubSystems = iHost.getSubSystems();
 		SubSystem subsystem;
-		for (int ssIndx = 0; ssIndx < subsystems.length; ssIndx++) {
-			subsystem = subsystems[ssIndx];
-			if (subsystem instanceof CmdSubSystemImpl)
-				return (CmdSubSystemImpl) subsystem;
+		for (int ssIndx = 0; ssIndx < iSubSystems.length; ssIndx++) {
+			subsystem = (SubSystem) iSubSystems[ssIndx];
+			if (subsystem instanceof QSYSCommandSubSystem)
+				return (QSYSCommandSubSystem) subsystem;
 		}
 		return null;
 	  }
       
-	 public IISeriesSubSystemCommandExecutionProperties getCommandExecutionProperties() {
-	  return (FileSubSystemImpl) getObjectSubSystem();
+	public ISubSystem getObjectSubSystem() {
+		IHost iHost = getHost();
+		ISubSystem[] iSubSystems = iHost.getSubSystems();
+		ISubSystem iSubSystem;
+		for (int ssIndx = 0; ssIndx < iSubSystems.length; ssIndx++) {
+			iSubSystem = iSubSystems[ssIndx];
+			if (iSubSystem instanceof QSYSObjectSubSystem)
+				return iSubSystem;
+		}
+		return null;
+	}
+	
+	
+	 public QSYSObjectSubSystem getCommandExecutionProperties() {
+	  return IBMiConnection.getConnection(getHost()).getQSYSObjectSubSystem();
 	 }
       
-	 public ISeriesSystemDataStore getISeriesSystem() {
-	 	ISeriesSystemDataStore iSeriesSystemDataStore = (ISeriesSystemDataStore)getSystem();
-	   	return iSeriesSystemDataStore;
-	 }
-     
-	 public FileSubSystem getObjectSubSystem() {
-		return ISeriesConnection.getConnection(getSystemConnection()).getISeriesFileSubSystem();
-	 }
-     
 	  public AS400 getToolboxAS400Object() {
-		  ISeriesSystemToolbox system = (ISeriesSystemToolbox) getSystem();
-		  return system.getAS400Object();
+		  AS400 as400 = null;
+		try {
+			as400 = IBMiConnection.getConnection(getHost()).getAS400ToolboxObject();
+		} catch (SystemMessageException e) {
+			e.printStackTrace();
+		}
+		  return as400;
 	  }
-	  
-	  public ISystem getSystem() {
-	  	ISystem system = super.getSystem();
-	  	if (theSystem == null) {
-	  		String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
-	  		if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
-		  		theSystem = system;
-				theSystem.addCommunicationsListener(new ICommunicationsListener() {
-					public void communicationsStateChange(CommunicationsEvent ce) {
-						if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
-							String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
-							if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
-								QueuedMessageFilter filter = new QueuedMessageFilter();
-								filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
-								AS400 as400 = new AS400(getToolboxAS400Object());
-								String removeString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.REMOVE);
-								boolean remove = false;
-								if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
-								monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
-								monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
-							}
-						}
-						if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
-							if (monitoredMessageQueue != null)
-								monitoredMessageQueue.stopMonitoring();
-						}
-					}
-					public boolean isPassiveCommunicationsListener() {
-						return true;
-					}
-				});
-	  		}
-	  	}
-	  	return system;
-	  }
+
+//	  public IHost getHost() {
+//		  IHost iHost = super.getHost();
+//		  if (theHost == null) {
+//			  String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
+//			  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
+//				  theHost = iHost;
+//				  ISubSystem[] iSubSystems = iHost.getSubSystems();
+//				  ISubSystem iSubSystem;
+//				  for (int ssIndx = 0; ssIndx < iSubSystems.length; ssIndx++) {
+//					  iSubSystem = iSubSystems[ssIndx];
+//					  if (iSubSystem instanceof QueuedMessageSubSystem)
+//						  iSubSystem.getConnectorService().addCommunicationsListener(new ICommunicationsListener() {
+//							  public void communicationsStateChange(CommunicationsEvent ce) {
+//								  if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
+//									  String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
+//									  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
+//										  QueuedMessageFilter filter = new QueuedMessageFilter();
+//										  filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
+//										  AS400 as400 = new AS400(getToolboxAS400Object());
+//										  String removeString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.REMOVE);
+//										  boolean remove = false;
+//										  if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
+//										  monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
+//										  monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
+//									  }
+//								  }
+//								  if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
+//									  if (monitoredMessageQueue != null)
+//										  monitoredMessageQueue.stopMonitoring();
+//								  }
+//							  }
+//							  public boolean isPassiveCommunicationsListener() {
+//								  return true;
+//							  }
+//						  });
+//				  }	
+//			  }
+//		  }
+//		  return iHost;
+//	  }
      
 	 public void setShell(Shell shell) {
 		this.shell = shell;

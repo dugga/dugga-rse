@@ -11,13 +11,11 @@
 package com.softlanding.rse.extensions.subsystems.spooledfiles;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.rse.ui.view.AbstractSystemRemoteAdapterFactory;
+import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import com.ibm.etools.systems.core.ui.view.AbstractSystemRemoteAdapterFactory;
-import com.ibm.etools.systems.core.ui.view.ISystemViewElementAdapter;
-
-public class SpooledFileAdapterFactory
-	extends AbstractSystemRemoteAdapterFactory
+public class SpooledFileAdapterFactory	extends AbstractSystemRemoteAdapterFactory
 	implements IAdapterFactory {
 		
 	private SpooledFileResourceAdapter spooledFileAdapter = new SpooledFileResourceAdapter();

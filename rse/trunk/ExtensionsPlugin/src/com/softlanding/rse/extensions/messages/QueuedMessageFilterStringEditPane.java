@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.messages;
 
+import org.eclipse.rse.services.clientserver.messages.SystemMessage;
+import org.eclipse.rse.ui.SystemWidgetHelpers;
+import org.eclipse.rse.ui.filters.*;
+import org.eclipse.rse.ui.messages.SystemMessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -24,10 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.ibm.as400.access.QueuedMessage;
-import com.ibm.etools.systems.core.messages.SystemMessage;
-import com.ibm.etools.systems.core.ui.SystemWidgetHelpers;
-import com.ibm.etools.systems.core.ui.messages.SystemMessageDialog;
-import com.ibm.etools.systems.filters.ui.SystemFilterStringEditPane;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class QueuedMessageFilterStringEditPane

@@ -10,16 +10,17 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.dtaqs;
 
-import org.eclipse.swt.widgets.Display;
-
+import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
+import com.ibm.as400.access.AS400;
 import com.ibm.as400.data.PcmlException;
 import com.ibm.as400.data.ProgramCallDocument;
-import com.ibm.etools.iseries.core.api.ISeriesObject;
-import com.ibm.etools.systems.core.messages.SystemMessageException;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSObject;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
+import com.ibm.etools.iseries.subsystems.qsys.objects.IRemoteObjectContextProvider;
 
 public class Qmhqrdqd {
     private ProgramCallDocument pcml;
-    private ISeriesObject dataQueue;
+    private IQSYSObject dataQueue;
     private int bytesReturned;
     private int bytesAvailable;
     private int messageLength;
@@ -44,17 +45,18 @@ public class Qmhqrdqd {
     public static final String LIFO = "L";
     public static final String DDM = "1";
 
-    public Qmhqrdqd(ISeriesObject dataQueue) throws PcmlException, SystemMessageException {
+    public Qmhqrdqd(IQSYSObject dataQueue) throws PcmlException, SystemMessageException {
         super();
         this.dataQueue = dataQueue;
-        pcml = new ProgramCallDocument(dataQueue.getISeriesConnection().getAS400ToolboxObject(Display.getCurrent().getActiveShell()), "com.softlanding.rse.extensions.extensions", this.getClass().getClassLoader());
+        AS400 as400 = IBMiConnection.getConnection(((IRemoteObjectContextProvider)dataQueue).getRemoteObjectContext().getObjectSubsystem().getHost()).getAS400ToolboxObject();
+        pcml = new ProgramCallDocument(as400, "com.softlanding.rse.extensions.extensions", this.getClass().getClassLoader());
     }
     
     public boolean callProgram() throws PcmlException {
         pcml.setValue("qmhqrdqd.receiverLength", new Integer((pcml.getOutputsize("qmhqrdqd.receiver"))));
         String dataQueueName = dataQueue.getName();
         while (dataQueueName.length() < 10) dataQueueName = dataQueueName + " ";
-        String libraryName = dataQueue.getLibraryName();
+        String libraryName = dataQueue.getLibrary();
         while (libraryName.length() < 10) libraryName = libraryName + " ";
         pcml.setValue("qmhqrdqd.dataQueue", dataQueueName + libraryName);
         boolean returnCode = pcml.callProgram("qmhqrdqd");

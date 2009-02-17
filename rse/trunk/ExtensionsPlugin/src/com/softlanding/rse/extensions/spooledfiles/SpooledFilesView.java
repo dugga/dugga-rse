@@ -88,7 +88,7 @@ public class SpooledFilesView extends ViewPart implements IMenuListener {
 		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
 		RefreshAction refreshAction = new RefreshAction();
 		refreshAction.setToolTipText(ExtensionsPlugin.getResourceString("Refresh_5")); //$NON-NLS-1$
-		refreshAction.setImageDescriptor(ExtensionsPlugin.getImageDescriptor(ExtensionsPlugin.IMAGE_REFRESH));
+		refreshAction.setImageDescriptor(ExtensionsPlugin.getDefault().getImageDescriptor(ExtensionsPlugin.IMAGE_REFRESH));
 		toolbarManager.add(refreshAction);
 	}
 	

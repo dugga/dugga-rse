@@ -3,12 +3,12 @@
 <plugin
    id="com.softlanding.rse.extensions"
    name="%featureName"
-   version="6.1.2"
+   version="7.5.0"
 >
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="iSeries Editing"
+            name="IBM i Editing"
             icon="icons/perspective.gif"
             class="com.softlanding.rse.extensions.perspective.EditingPerspectiveFactory"
             id="com.softlanding.rse.extensions.perspective.EditingPerspectiveFactory">
@@ -44,7 +44,7 @@
    </extension>   
    
    <extension point="org.eclipse.ui.preferencePages">
-   		<page name="%rseExtensions" category="com.ibm.etools.iseries.core.ui.preferences.ISeriesPreferencePage" class="com.softlanding.rse.extensions.RSEExtensionsPreferences" id="com.softlanding.rse.extensions.RSEExtensionsPreferences" /> 
+   		<page name="%rseExtensions" category="com.ibm.etools.iseries.rse.ui.preferences.IBMiPreferencePage" class="com.softlanding.rse.extensions.RSEExtensionsPreferences" id="com.softlanding.rse.extensions.RSEExtensionsPreferences" /> 
    </extension>
    
    <extension
@@ -119,27 +119,28 @@
       </objectContribution>
    </extension>
    <extension
-         point="com.ibm.etools.systems.core.subsystemfactory">
-      <factory
-            systemtypes="iSeries"
-            name="%subsystemName"
+         point="org.eclipse.rse.core.subsystemConfigurations">
+      <configuration
+            systemTypeIds="org.eclipse.rse.systemtype.iseries"
+            name="%subsystemName" 
             iconlive="icons/spooled_files_connected.gif"
             icon="icons/spooled_files.gif"
             category="spooled files"
             class="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileSubSystemFactory"
             vendor="SoftLanding Systems, Inc."
             id="com.softlanding.rse.extensions.spooledfiles.subsystems.factory">
-      </factory>
+      </configuration>
    </extension>
    <extension
-         point="com.ibm.etools.systems.core.popupMenus">
+         point="org.eclipse.ui.popupMenus">
       <objectContribution
+            id="com.softlanding.rse.extensions.menu"
+            nameFilter="*"
+            objectClass="com.ibm.etools.iseries.services.qsys.api.IQSYSSourceMember"
             subsystemfactoryid="ibm.files400"
             subtypefilter="*"
             typecategoryfilter="MEMBERS"
-            typefilter="*"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.subsystems.members.actions">
+            typefilter="*">
          <menu
                label="%rseExtensions"
                menubarPath="additions"
@@ -164,12 +165,12 @@
          </action>                    
       </objectContribution>
       <objectContribution
+            id="com.softlanding.rse.extensions.menu"
+            nameFilter="*dtaara"
+            objectClass="com.ibm.etools.iseries.services.qsys.api.IQSYSObject"
             subsystemfactoryid="ibm.files400"
             subtypefilter="*"
-            typecategoryfilter="OBJECTS"
-            typefilter="*DTAARA"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.subsystems.objects.actions">
+            typecategoryfilter="OBJECTS">
          <menu
                label="%rseExtensions"
                menubarPath="additions"
@@ -186,12 +187,12 @@
          </action>                             
       </objectContribution>
       <objectContribution
+            id="com.softlanding.rse.extensions.menu"
+            nameFilter="*dtaq"
+            objectClass="com.ibm.etools.iseries.services.qsys.api.IQSYSObject"
             subsystemfactoryid="ibm.files400"
             subtypefilter="*"
-            typecategoryfilter="OBJECTS"
-            typefilter="*DTAQ"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.subsystems.objects.actions">
+            typecategoryfilter="OBJECTS">
          <menu
                label="%rseExtensions"
                menubarPath="additions"
@@ -204,16 +205,17 @@
                label="%displayDataQueue"
                class="com.softlanding.rse.extensions.dtaqs.DisplayDataQueueAction"
                menubarPath="com.softlanding.rse.extensions.menu/group1"
-               id="com.softlanding.rse.extensions.dtaqs.DisplayDataQueueAction">
+               id="com.softlanding.rse.extensions.dtaqs.DisplayDataQueueAction">               
          </action>                             
       </objectContribution>                  
       <objectContribution
+            id="com.softlanding.rse.extensions.subsystems.spooledfiles.menu"
+            nameFilter="*"
+            objectClass="com.softlanding.extensions.spooledfiles.subsystems.SpooledFileSubSystem"
             subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
             subtypefilter="*"
             typecategoryfilter="*"
-            typefilter="*"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.subsystems.spooledfiles.actions">
+            typefilter="*">
          <menu
                label="Actions"
                id="com.softlanding.rse.extensions.subsystems.spooledfiles.menu">
@@ -279,12 +281,13 @@
          </action>
       </objectContribution>
       <objectContribution
+            id="com.softlanding.rse.extensions.subsystems.spooledfiles.JobPopupMenuExtensionAction"
+            nameFilter="*"
+            objectClass="com.ibm.etools.iseries.subsystems.qsys.jobs.IRemoteJobContextProvider"
             subsystemfactoryid="ibm.jobs400"
             subtypefilter="*"
             typecategoryfilter="JOBS"
-            typefilter="*"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.subsystems.spooledfiles.jobs">
+            typefilter="*">
          <action
                label="%spooledFiles"
                icon="icons/spooled_files.gif"
@@ -311,40 +314,42 @@
       </type>
    </extension>
    <extension
-         point="com.ibm.etools.systems.core.propertyPages">
+         point="org.eclipse.ui.propertyPages">
       <page
-            subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
+            class="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileProperties"
+            id="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileProperties"
             name="Spooled File Info"
+            nameFilter="*"
+            objectClass="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileResource"
+            subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
             subtypefilter="*"
             typecategoryfilter="*"
-            typefilter="*"
-            class="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileProperties"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileProperties">
+            typefilter="*">
       </page>
    </extension>
   <extension
-         point="com.ibm.etools.systems.core.subsystemfactory">
-      <factory
-            systemtypes="iSeries"
-            name="iSeries Messages"
+         point="org.eclipse.rse.core.subsystemConfigurations">
+      <configuration
+            systemTypeIds="org.eclipse.rse.systemtype.iseries"
+            name="IBM i Messages"
             iconlive="icons/messages_connected.gif"
             icon="icons/messages.gif"
             category="queued messages"
             class="com.softlanding.rse.extensions.messages.QueuedMessageSubSystemFactory"
             vendor="SoftLanding Systems, Inc."
             id="com.softlanding.rse.extensions.messages.factory">
-      </factory>
+      </configuration>
    </extension>
    <extension
-         point="com.ibm.etools.systems.core.popupMenus">
+         point="org.eclipse.ui.popupMenus">
       <objectContribution
+            id="com.softlanding.rse.extensions.messages.QueuedMessageDetailsPopupMenuExtensionAction"
+            nameFilter="*"
+            objectClass="com.softlanding.rse.extensions.messages.QueuedMessageResource"
             subsystemfactoryid="com.softlanding.rse.extensions.messages.factory"
             subtypefilter="*"
             typecategoryfilter="*"
-            typefilter="*"
-            namefilter="*"
-            id="com.softlanding.rse.extensions.messages.queuedmessages">
+            typefilter="*">
          <action
                label="Message Details"
                class="com.softlanding.rse.extensions.messages.QueuedMessageDetailsPopupMenuExtensionAction"

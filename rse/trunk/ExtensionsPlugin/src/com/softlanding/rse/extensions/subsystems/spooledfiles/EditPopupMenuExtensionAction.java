@@ -20,11 +20,11 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.IWorkbenchPage;
 
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SaveToFile;
 
-public class EditPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class EditPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public EditPopupMenuExtensionAction() {
 		super();

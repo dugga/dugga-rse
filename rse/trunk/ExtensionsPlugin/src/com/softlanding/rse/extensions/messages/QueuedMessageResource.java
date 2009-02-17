@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.messages;
 
+import org.eclipse.rse.core.subsystems.*;
+
 import com.ibm.as400.access.QueuedMessage;
-import com.ibm.etools.systems.subsystems.SubSystem;
-import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
 
 public class QueuedMessageResource extends AbstractResource {

@@ -10,19 +10,22 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.subsystems.spooledfiles;
 
+import org.eclipse.rse.core.subsystems.*;
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.systems.subsystems.SubSystem;
-import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
 public class SpooledFileResource extends AbstractResource {
 	private SpooledFile spooledFile;
 
-	public SpooledFileResource(SubSystem subSystem) {
-		super(subSystem);
+	public SpooledFileResource(ISubSystem parentSubSystem) {
+		super(parentSubSystem);
 	}
 
 	public SpooledFileResource() {
 		super();
+	}
+
+	public SpooledFileResource(SpooledFileSubSystem spooledFileSubSystem) {
+		super(spooledFileSubSystem);
 	}
 
 	public SpooledFile getSpooledFile() {

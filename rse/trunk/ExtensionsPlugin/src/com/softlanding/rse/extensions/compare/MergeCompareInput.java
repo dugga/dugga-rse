@@ -28,9 +28,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ui.IFileEditorInput;
 
-import com.ibm.etools.iseries.core.ISeriesTempFileListener;
-import com.ibm.etools.iseries.core.api.ISeriesMember;
-import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
+import com.ibm.etools.iseries.rse.ui.resources.QSYSEditableRemoteSourceFileMember;
+import com.ibm.etools.iseries.rse.ui.resources.QSYSTempFileListener;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class MergeCompareInput extends CompareEditorInput implements IFileEditorInput {
@@ -38,17 +38,17 @@ public class MergeCompareInput extends CompareEditorInput implements IFileEditor
 	private MemberNode fAncestor;
 	private MemberNode fLeft;
 	private MemberNode fRight;
-	private ISeriesMember ancestorMember;
-	private ISeriesMember leftMember;
-	private ISeriesMember rightMember;
+	private IQSYSMember ancestorMember;
+	private IQSYSMember leftMember;
+	private IQSYSMember rightMember;
 	private IResource fAncestorResource;
 	private IResource fLeftResource;
 	private IResource fRightResource;
 	private boolean neverSaved = true;
 	private boolean isSaving = false;
-	private ISeriesEditableSrcPhysicalFileMember left;
+	private QSYSEditableRemoteSourceFileMember left;
 
-	public MergeCompareInput(CompareConfiguration config, ISeriesMember ancestorMember, ISeriesMember leftMember, ISeriesMember rightMember) {
+	public MergeCompareInput(CompareConfiguration config, IQSYSMember ancestorMember, IQSYSMember leftMember, IQSYSMember rightMember) {
 		super(config);
 		this.ancestorMember = ancestorMember;
 		this.leftMember = leftMember;
@@ -58,9 +58,9 @@ public class MergeCompareInput extends CompareEditorInput implements IFileEditor
 	protected Object prepareInput(IProgressMonitor monitor)
 		throws InvocationTargetException, InterruptedException {
 			try {
-				left = new ISeriesEditableSrcPhysicalFileMember(leftMember);
-				ISeriesEditableSrcPhysicalFileMember right = new ISeriesEditableSrcPhysicalFileMember(rightMember);
-				ISeriesEditableSrcPhysicalFileMember ancestor = new ISeriesEditableSrcPhysicalFileMember(ancestorMember);
+				left = new QSYSEditableRemoteSourceFileMember(leftMember);
+				QSYSEditableRemoteSourceFileMember right = new QSYSEditableRemoteSourceFileMember(rightMember);
+				QSYSEditableRemoteSourceFileMember ancestor = new QSYSEditableRemoteSourceFileMember(ancestorMember);
 				left.download(monitor);
 				
 				left.openStream();
@@ -95,7 +95,7 @@ public class MergeCompareInput extends CompareEditorInput implements IFileEditor
 	                }            
 	            });
 				fRoot = d.findDifferences(true, monitor, null, fAncestor, fLeft, fRight);
-				ISeriesTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
+				QSYSTempFileListener.getListener().addIgnoreFile((IFile)fLeftResource);
 				return fRoot;
 			} catch (Exception e) {
 				System.out.println(e);
@@ -165,7 +165,7 @@ public class MergeCompareInput extends CompareEditorInput implements IFileEditor
     }
     
     public void removeIgnoreFile() {
-        ISeriesTempFileListener.getListener().removeIgnoreFile((IFile)fLeftResource);
+        QSYSTempFileListener.getListener().removeIgnoreFile((IFile)fLeftResource);
         try {
             left.closeStream();
         } catch (Exception e) {
@@ -173,7 +173,7 @@ public class MergeCompareInput extends CompareEditorInput implements IFileEditor
        }
     }
     
-    public ISeriesEditableSrcPhysicalFileMember getLeft() {
+    public QSYSEditableRemoteSourceFileMember getLeft() {
         return left;
     }
     

@@ -13,6 +13,7 @@ package com.softlanding.rse.extensions.dataareas;
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.layout.GridData;
@@ -31,11 +32,13 @@ import com.ibm.as400.access.CharacterDataArea;
 import com.ibm.as400.access.DecimalDataArea;
 import com.ibm.as400.access.LogicalDataArea;
 import com.ibm.as400.access.QSYSObjectPathName;
-import com.ibm.etools.iseries.core.api.ISeriesObject;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSObject;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
+import com.ibm.etools.iseries.subsystems.qsys.objects.IRemoteObjectContextProvider;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class ChangeDataAreaDialog extends Dialog {
-    private ISeriesObject dataArea;
+    private IQSYSObject dataArea;
     private CharacterDataArea characterDataArea;
     private DecimalDataArea decimalDataArea;
     private LogicalDataArea logicalDataArea;
@@ -50,10 +53,16 @@ public class ChangeDataAreaDialog extends Dialog {
     private boolean logicalValue;
     private int length;
     private boolean success;
+    private AS400 as400;
 
-    public ChangeDataAreaDialog(Shell parentShell, ISeriesObject dataArea) {
+    public ChangeDataAreaDialog(Shell parentShell, IQSYSObject dataArea) {
         super(parentShell);
         this.dataArea = dataArea;
+        try {
+			as400 = IBMiConnection.getConnection(((IRemoteObjectContextProvider)dataArea).getRemoteObjectContext().getObjectSubsystem().getHost()).getAS400ToolboxObject();
+		} catch (SystemMessageException e1) {
+			e1.printStackTrace();
+		}
         BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
             public void run() {
                 try {
@@ -61,10 +70,9 @@ public class ChangeDataAreaDialog extends Dialog {
                     qwcrdtaa.callProgram();
                     String dataAreaName = ChangeDataAreaDialog.this.dataArea.getName();
                     while (dataAreaName.length() < 10) dataAreaName = dataAreaName + " "; //$NON-NLS-1$
-                    String libraryName = ChangeDataAreaDialog.this.dataArea.getLibraryName();
+                    String libraryName = ChangeDataAreaDialog.this.dataArea.getLibrary();
                     while (libraryName.length() < 10) libraryName = libraryName + " "; //$NON-NLS-1$
-                    AS400 as400 = ChangeDataAreaDialog.this.dataArea.getISeriesConnection().getAS400ToolboxObject(getShell());
-                    QSYSObjectPathName path = new QSYSObjectPathName(ChangeDataAreaDialog.this.dataArea.getLibraryName(), ChangeDataAreaDialog.this.dataArea.getName(), "DTAARA"); //$NON-NLS-1$
+                    QSYSObjectPathName path = new QSYSObjectPathName(ChangeDataAreaDialog.this.dataArea.getLibrary(), ChangeDataAreaDialog.this.dataArea.getName(), "DTAARA"); //$NON-NLS-1$
                     if (qwcrdtaa.getType().equals(Qwcrdtaa.CHAR)) {
                         characterDataArea = new CharacterDataArea(as400, path.getPath());
                         value = characterDataArea.read();
@@ -118,7 +126,7 @@ public class ChangeDataAreaDialog extends Dialog {
 		gd = new GridData();
 		gd.widthHint = 75;
 		libraryText.setLayoutData(gd);
-		libraryText.setText(dataArea.getLibraryName());
+		libraryText.setText(dataArea.getLibrary());
 		
 		Label typeLabel = new Label(headerGroup, SWT.NONE);
 		typeLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.4")); //$NON-NLS-1$

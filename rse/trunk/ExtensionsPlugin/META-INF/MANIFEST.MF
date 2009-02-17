@@ -1,26 +1,36 @@
 Manifest-Version: 1.0
 Bundle-Name: SoftLanding Extensions to RSE
 Bundle-SymbolicName: com.softlanding.rse.extensions;singleton:=true
-Bundle-Version: 6.1.2
+Bundle-Version: 7.5.0
 Bundle-ClassPath: runtime/extensions.jar,
  runtime/activation.jar,
- runtime/mail.jar
+ runtime/mail.jar,
+ library.jar
 Bundle-Activator: com.softlanding.rse.extensions.ExtensionsPlugin
 Bundle-Vendor: SoftLanding Systems, Inc.
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
+ org.eclipse.rse.ui;bundle-version="3.0.1",
+ org.eclipse.rse.services;bundle-version="3.0.1",
+ org.eclipse.rse.files.ui;bundle-version="3.0.1",
+ org.eclipse.rse.shells.ui;bundle-version="3.0.1",
+ org.eclipse.rse.subsystems.files.core;bundle-version="3.0.1",
+ org.eclipse.rse.subsystems.shells.core;bundle-version="3.0.0",
+ org.eclipse.rse.core,
+ com.ibm.etools.iseries.rse.ui;bundle-version="7.5.0",
+ com.ibm.etools.iseries.subsystems.qsys,
+ com.ibm.etools.iseries.connectorservice;bundle-version="7.5.0",
+ com.ibm.etools.iseries.toolbox,
+ com.ibm.etools.iseries.services.qsys;bundle-version="7.5.0",
+ com.ibm.etools.iseries.edit;bundle-version="7.5.0",
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.ui.ide,
  org.eclipse.ui.views,
- com.ibm.etools.iseries.core,
- com.ibm.etools.iseries.toolbox,
- com.ibm.etools.systems.core,
- com.ibm.etools.systems.dstore.core,
- com.ibm.etools.systems.logging,
- org.eclipse.compare
+ org.eclipse.ui.ide,
+ org.eclipse.compare,
+ org.eclipse.rse
 Eclipse-AutoStart: true
 Bundle-ManifestVersion: 2

@@ -11,9 +11,9 @@
 package com.softlanding.rse.extensions.subsystems.spooledfiles;
 
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 
-public class HoldPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class HoldPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public HoldPopupMenuExtensionAction() {
 		super();

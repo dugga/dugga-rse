@@ -49,7 +49,7 @@ public class MessageHandler implements IMessageHandler {
 						String from = queuedMessageSubSystem.getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.EMAIL_FROM);
 						String port = queuedMessageSubSystem.getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.EMAIL_PORT);
 						String host = queuedMessageSubSystem.getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.EMAIL_HOST);
-						if (from == null) from = ExtensionsPlugin.getResourceString("MessageHandler.5") + queuedMessageSubSystem.getHostName(); //$NON-NLS-1$
+						if (from == null) from = ExtensionsPlugin.getResourceString("MessageHandler.5") + queuedMessageSubSystem.getHost().getHostName(); //$NON-NLS-1$
 						if (port == null) port = "25"; //$NON-NLS-1$
 						if ((eMail == null) || (eMail.trim().length() == 0) || (host == null) || (host.trim().length() == 0)) {
 							if (MessageDialog.openQuestion(Display.getDefault().getActiveShell(), ExtensionsPlugin.getResourceString("MessageHandler.7"), ExtensionsPlugin.getResourceString("MessageHandler.8"))) { //$NON-NLS-1$ //$NON-NLS-2$

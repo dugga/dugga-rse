@@ -14,9 +14,9 @@ import javax.swing.JFrame;
 
 import com.ibm.as400.access.SpooledFile;
 import com.ibm.as400.vaccess.SpooledFileViewer;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 
-public class ViewPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class ViewPopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public ViewPopupMenuExtensionAction() {
 		super();

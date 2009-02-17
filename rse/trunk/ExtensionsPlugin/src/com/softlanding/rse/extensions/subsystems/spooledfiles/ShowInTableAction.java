@@ -10,14 +10,14 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.subsystems.spooledfiles;
 
+import org.eclipse.rse.core.filters.*;
+import org.eclipse.rse.core.subsystems.*;
+import org.eclipse.rse.internal.core.filters.*;
+import org.eclipse.rse.ui.actions.*;
 import org.eclipse.swt.widgets.Shell;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
-import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-import com.ibm.etools.systems.filters.SystemFilter;
-import com.ibm.etools.systems.filters.SystemFilterReference;
-import com.ibm.etools.systems.subsystems.SubSystemHelpers;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileFactory;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileFilter;
@@ -43,11 +43,11 @@ public class ShowInTableAction extends SystemBaseAction {
 		SpooledFileFilter spooledFileFilter = new SpooledFileFilter(filterStrings[0]);
 		spooledFileFilter.setDescription(filter.getName());
 		SystemFilterReference systemFilterReference = (SystemFilterReference)getFirstSelection();
-		SpooledFileSubSystem subSystem = (SpooledFileSubSystem)SubSystemHelpers.getParentSubSystem(systemFilterReference);
+		SpooledFileSubSystem subSystem = (SpooledFileSubSystem)SubSystemHelpers.getParentSubSystemConfiguration(systemFilterReference);
 		try {
 			//subSystem.connect();
-			//subSystem.getSystem().connect(null);  // changed to comment - fixed WDSC 7.0 BUG PRH
-			AS400 as400 = ISeriesConnection.getConnection(subSystem.getSystemConnection()).getAS400ToolboxObject(getShell());
+			//subSystem.getSystem().connect(null);  // changed to comment - fixd WDSC 7.0 BUG PRH
+			AS400 as400 = subSystem.getToolboxAS400Object(); 
 			SpooledFileFactory factory = new SpooledFileFactory(as400);
 			SpooledFilesView.setSpooledFileFactory(factory);
 			SpooledFilesView.setFilter(spooledFileFilter);

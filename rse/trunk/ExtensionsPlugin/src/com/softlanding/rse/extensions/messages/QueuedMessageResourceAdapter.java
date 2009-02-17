@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.softlanding.rse.extensions.messages;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -17,11 +19,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.eclipse.rse.ui.SystemMenuManager;
+import org.eclipse.rse.ui.view.*;
 
 import com.ibm.as400.access.QueuedMessage;
-import com.ibm.etools.systems.core.ui.SystemMenuManager;
-import com.ibm.etools.systems.core.ui.view.AbstractSystemViewAdapter;
-import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 
@@ -39,9 +40,9 @@ public class QueuedMessageResourceAdapter
 	public ImageDescriptor getImageDescriptor(Object object) {
 		QueuedMessageResource queuedMessageResource = (QueuedMessageResource)object;
 		if (queuedMessageResource.getQueuedMessage().getType() == QueuedMessage.INQUIRY)
-			return ExtensionsPlugin.getImageDescriptor(ExtensionsPlugin.IMAGE_INQUIRY);
+			return ExtensionsPlugin.getDefault().getImageDescriptor(ExtensionsPlugin.IMAGE_INQUIRY);
 		else
-			return ExtensionsPlugin.getImageDescriptor(ExtensionsPlugin.IMAGE_MESSAGE);
+			return ExtensionsPlugin.getDefault().getImageDescriptor(ExtensionsPlugin.IMAGE_MESSAGE);
 	}
 	
 	public boolean handleDoubleClick(Object object) {
@@ -98,7 +99,8 @@ public class QueuedMessageResourceAdapter
 		return true;
 	}
 
-	public Object[] getChildren(Object o) {
+	@Override
+	public Object[] getChildren(IAdaptable arg0, IProgressMonitor arg1) {
 		return new Object[0];
 	}
 
@@ -204,5 +206,31 @@ public class QueuedMessageResourceAdapter
 	public boolean supportsUserDefinedActions(Object arg0) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean hasChildren(IAdaptable arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Object getRemoteParent(Object arg0, IProgressMonitor arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[] getRemoteParentNamesInUse(Object arg0, IProgressMonitor arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSubSystemConfigurationId(Object arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

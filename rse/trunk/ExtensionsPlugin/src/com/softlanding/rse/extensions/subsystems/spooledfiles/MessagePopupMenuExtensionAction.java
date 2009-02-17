@@ -16,11 +16,11 @@ import org.eclipse.swt.widgets.Display;
 
 import com.ibm.as400.access.AS400Message;
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileMessageDialog;
 
-public class MessagePopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class MessagePopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 
 	public MessagePopupMenuExtensionAction() {
 		super();

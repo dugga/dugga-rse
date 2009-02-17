@@ -31,11 +31,13 @@ import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.DataQueue;
 import com.ibm.as400.access.DataQueueEntry;
 import com.ibm.as400.access.QSYSObjectPathName;
-import com.ibm.etools.iseries.core.api.ISeriesObject;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSObject;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
+import com.ibm.etools.iseries.subsystems.qsys.objects.IRemoteObjectContextProvider;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class DisplayDataQueueDialog extends Dialog {
-    private ISeriesObject dataQueue;
+    private IQSYSObject dataQueue;
     private Qmhqrdqd qmhqrdqd;
     private DataQueue dtaq;
     private Text descriptionText;
@@ -68,7 +70,7 @@ public class DisplayDataQueueDialog extends Dialog {
     private String firstMessage;
     private boolean updatingChecks;
 
-    public DisplayDataQueueDialog(Shell parentShell, ISeriesObject dataQueue) {
+    public DisplayDataQueueDialog(Shell parentShell, IQSYSObject dataQueue) {
         super(parentShell);
         this.dataQueue = dataQueue;
         getAttributes();
@@ -106,7 +108,7 @@ public class DisplayDataQueueDialog extends Dialog {
 		gd = new GridData();
 		gd.widthHint = 75;
 		libraryText.setLayoutData(gd);
-		libraryText.setText(dataQueue.getLibraryName());
+		libraryText.setText(dataQueue.getLibrary());
 		
 		Label descriptionLabel = new Label(headerGroup, SWT.NONE);
 		descriptionLabel.setText(ExtensionsPlugin.getResourceString("DisplayDataQueueDialog.4")); //$NON-NLS-1$
@@ -284,10 +286,10 @@ public class DisplayDataQueueDialog extends Dialog {
                     maximumNumberOfEntriesSpecified = qmhqrdqd.getMaximumNumberOfEntriesSpecified();
                     String dataQueueName = DisplayDataQueueDialog.this.dataQueue.getName();
                     while (dataQueueName.length() < 10) dataQueueName = dataQueueName + " ";
-                    String libraryName = DisplayDataQueueDialog.this.dataQueue.getLibraryName();
+                    String libraryName = DisplayDataQueueDialog.this.dataQueue.getLibrary();
                     while (libraryName.length() < 10) libraryName = libraryName + " ";
-                    AS400 as400 = DisplayDataQueueDialog.this.dataQueue.getISeriesConnection().getAS400ToolboxObject(getShell());
-                    QSYSObjectPathName path = new QSYSObjectPathName(DisplayDataQueueDialog.this.dataQueue.getLibraryName(), DisplayDataQueueDialog.this.dataQueue.getName(), "DTAQ"); //$NON-NLS-1$                    
+                    AS400 as400 = IBMiConnection.getConnection(((IRemoteObjectContextProvider)dataQueue).getRemoteObjectContext().getObjectSubsystem().getHost()).getAS400ToolboxObject();
+                    QSYSObjectPathName path = new QSYSObjectPathName(DisplayDataQueueDialog.this.dataQueue.getLibrary(), DisplayDataQueueDialog.this.dataQueue.getName(), "DTAQ"); //$NON-NLS-1$                    
                     if (type.equals(Qmhqrdqd.DDM)) firstMessage = ExtensionsPlugin.getResourceString("DisplayDataQueueDialog.20"); //$NON-NLS-1$
                     else {
 	                    if (sequence.equals(Qmhqrdqd.KEYED)) firstMessage = ExtensionsPlugin.getResourceString("DisplayDataQueueDialog.21"); //$NON-NLS-1$

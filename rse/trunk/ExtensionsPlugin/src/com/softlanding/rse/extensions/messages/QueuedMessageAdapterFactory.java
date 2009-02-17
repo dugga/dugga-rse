@@ -12,9 +12,7 @@ package com.softlanding.rse.extensions.messages;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.views.properties.IPropertySource;
-
-import com.ibm.etools.systems.core.ui.view.AbstractSystemRemoteAdapterFactory;
-import com.ibm.etools.systems.core.ui.view.ISystemViewElementAdapter;
+import org.eclipse.rse.ui.view.*;
 
 public class QueuedMessageAdapterFactory
 	extends AbstractSystemRemoteAdapterFactory

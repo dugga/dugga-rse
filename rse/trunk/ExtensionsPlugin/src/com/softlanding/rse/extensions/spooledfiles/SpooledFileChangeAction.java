@@ -22,8 +22,8 @@ import com.ibm.as400.access.AS400Message;
 import com.ibm.as400.access.CommandCall;
 import com.ibm.as400.access.SpooledFile;
 import com.ibm.as400.ui.util.CommandPrompter;
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
-import com.ibm.etools.iseries.core.util.clprompter.CLPrompter;
+import com.ibm.etools.iseries.rse.util.clprompter.*;
+import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class SpooledFileChangeAction implements IObjectActionDelegate {
@@ -45,7 +45,7 @@ public class SpooledFileChangeAction implements IObjectActionDelegate {
 					CLPrompter command = new CLPrompter();
 					command.setCommandString(cmd);
 					command.setParent(Display.getCurrent().getActiveShell());
-					command.setConnection(ISeriesConnection.getConnection(splf.getSystem().getSystemName()));			
+					command.setConnection(IBMiConnection.getConnection(splf.getSystem().getSystemName()));			
 //					CommandPrompter command = new CommandPrompter(new Frame(), splf.getSystem(), cmd, false, false);
 					int rtnCode = command.showDialog();
 					if (rtnCode == CommandPrompter.CANCEL) break;

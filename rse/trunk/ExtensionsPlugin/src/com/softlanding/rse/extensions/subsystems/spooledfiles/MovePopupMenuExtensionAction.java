@@ -15,11 +15,11 @@ import org.eclipse.jface.window.Window;
 
 import com.ibm.as400.access.OutputQueue;
 import com.ibm.as400.access.SpooledFile;
-import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
+import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileMoveDialog;
 
-public class MovePopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public class MovePopupMenuExtensionAction extends ISeriesAbstractQSYSPopupMenuAction {
 	private String outputQueuePath;
 
 	public MovePopupMenuExtensionAction() {
