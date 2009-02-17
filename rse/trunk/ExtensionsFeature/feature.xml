@@ -2,7 +2,7 @@
 <feature
       id="com.softlanding.rse.extensions"
       label="%featureName"
-      version="6.1.2"
+      version="7.5.0"
       provider-name="%providerName"
       image="update.gif"
       colocation-affinity="com.softlanding.rse.extensions">
@@ -21,7 +21,7 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://support.softlanding.com/opensource/update"/>
+      <update label="%updateSiteName" url="http://support.softlanding.com/opensource/update_7.5.x"/>
       <discovery label="%updateSiteName" url="http://support.softlanding.com/opensource/update"/>
    </url>
 
@@ -41,6 +41,6 @@
          id="com.softlanding.rse.extensions"
          download-size="0"
          install-size="0"
-         version="6.1.2"/>
+         version="7.5.0"/>
 
 </feature>
