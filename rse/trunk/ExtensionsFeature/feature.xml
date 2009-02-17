@@ -22,7 +22,7 @@
 
    <url>
       <update label="%updateSiteName" url="http://support.softlanding.com/opensource/update_7.5.x"/>
-      <discovery label="%updateSiteName" url="http://support.softlanding.com/opensource/update"/>
+      <discovery label="%updateSiteName" url="http://support.softlanding.com/opensource/update_7.5.x"/>
    </url>
 
    <requires>
