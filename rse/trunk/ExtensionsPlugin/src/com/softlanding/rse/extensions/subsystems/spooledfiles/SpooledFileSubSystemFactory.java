@@ -15,9 +15,7 @@ import java.util.Vector;
 import org.eclipse.rse.core.filters.*;
 import org.eclipse.rse.core.model.*;
 import org.eclipse.rse.core.subsystems.*;
-import org.eclipse.rse.internal.core.filters.SystemFilter;
-import org.eclipse.swt.widgets.Shell;
-
+import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class SpooledFileSubSystemFactory extends SubSystemConfiguration {
@@ -31,7 +29,15 @@ public class SpooledFileSubSystemFactory extends SubSystemConfiguration {
 	}
 	
 	public IConnectorService getConnectorService(IHost host) {
-		return SpooledFileConnectorServiceManager.getInstance().getConnectorService(host, ISpooledFileSubSystem.class);
+		ISubSystem[] subSystems = host.getSubSystems();
+		for (int i = 0; i < subSystems.length; i++) {
+			ISubSystem subSystem = subSystems[i];
+			if (subSystem instanceof QSYSObjectSubSystem) {
+				return subSystem.getConnectorService();
+			}
+			
+		}
+		return null;
 	}
 	
 	public String getTranslatedFilterTypeProperty(ISystemFilter selectedFilter) {
@@ -49,11 +55,7 @@ public class SpooledFileSubSystemFactory extends SubSystemConfiguration {
 		return defaultPool;
 	}
 
-	protected Vector getAdditionalFilterActions(SystemFilter selectedFilter, Shell shell) {
-		Vector actions = new Vector();
-		ShowInTableAction showInTableAction = new ShowInTableAction(ExtensionsPlugin.getResourceString("Show_in_Table_11"), shell, selectedFilter); //$NON-NLS-1$
-		actions.add(showInTableAction);
-		return actions;
+	public boolean supportsNestedFilters() {
+		return false;
 	}
-	
 }

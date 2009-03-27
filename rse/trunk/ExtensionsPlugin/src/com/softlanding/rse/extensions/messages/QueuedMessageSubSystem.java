@@ -13,10 +13,8 @@ package com.softlanding.rse.extensions.messages;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.rse.core.model.*;
 import org.eclipse.rse.core.subsystems.*;
-import org.eclipse.rse.internal.core.model.*;
 import org.eclipse.rse.services.clientserver.messages.*;
 import org.eclipse.rse.ui.*;
-import org.eclipse.rse.ui.model.ISystemRegistryUI;
 import org.eclipse.swt.widgets.Shell;
 
 import com.ibm.as400.access.AS400;
@@ -25,41 +23,41 @@ import com.ibm.as400.access.QueuedMessage;
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 import com.ibm.etools.iseries.subsystems.qsys.commands.QSYSCommandSubSystem;
-import com.ibm.etools.iseries.subsystems.qsys.objects.IQSYSSubSystemCommandExecutionProperties;
 import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 
-public class QueuedMessageSubSystem extends SubSystem implements IISeriesSubSystem, IQueuedMessageSubSystem {
+public class QueuedMessageSubSystem extends SubSystem implements IISeriesSubSystem, IQueuedMessageSubSystem, ICommunicationsListener {
 
-private IHost theHost;
 private MonitoredMessageQueue monitoredMessageQueue;
 
 	public QueuedMessageSubSystem(IHost host, IConnectorService connectorService) {
 		super(host, connectorService);
-		connectorService.addCommunicationsListener(new ICommunicationsListener() {
-			  public void communicationsStateChange(CommunicationsEvent ce) {
-			  if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
-				  String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
-				  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
-					  QueuedMessageFilter filter = new QueuedMessageFilter();
-					  filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
-					  AS400 as400 = new AS400(getToolboxAS400Object());
-					  String removeString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.REMOVE);
-					  boolean remove = false;
-					  if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
-					  monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
-					  monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
-				  }
-			  }
-			  if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
-				  if (monitoredMessageQueue != null)
-					  monitoredMessageQueue.stopMonitoring();
-			  }
-		  }
-		  public boolean isPassiveCommunicationsListener() {
-			  return true;
-		  }
-	  });
+		getConnectorService().addCommunicationsListener(this);
 	}
+
+	public void communicationsStateChange(CommunicationsEvent ce) {
+		  if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
+			  IPropertySet set = getPropertySet(MonitoringProperties.VENDOR_ID);
+			  String monString = set.getPropertyValue(MonitoringProperties.MONITOR);
+			  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
+				  QueuedMessageFilter filter = new QueuedMessageFilter();
+				  filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
+				  AS400 as400 = new AS400(getToolboxAS400Object());
+				  String removeString = set.getPropertyValue(MonitoringProperties.REMOVE);
+				  boolean remove = false;
+				  if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
+				  monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
+				  monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
+			  }
+		  }
+		  if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
+			  if (monitoredMessageQueue != null)
+				  monitoredMessageQueue.stopMonitoring();
+		  }
+	  }
+
+	public boolean isPassiveCommunicationsListener() {
+		  return true;
+	  }
 
 	protected Object[] internalResolveFilterString(String filterString, IProgressMonitor monitor)
 		 throws java.lang.reflect.InvocationTargetException,
@@ -132,47 +130,6 @@ private MonitoredMessageQueue monitoredMessageQueue;
 		  return as400;
 	  }
 
-//	  public IHost getHost() {
-//		  IHost iHost = super.getHost();
-//		  if (theHost == null) {
-//			  String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
-//			  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
-//				  theHost = iHost;
-//				  ISubSystem[] iSubSystems = iHost.getSubSystems();
-//				  ISubSystem iSubSystem;
-//				  for (int ssIndx = 0; ssIndx < iSubSystems.length; ssIndx++) {
-//					  iSubSystem = iSubSystems[ssIndx];
-//					  if (iSubSystem instanceof QueuedMessageSubSystem)
-//						  iSubSystem.getConnectorService().addCommunicationsListener(new ICommunicationsListener() {
-//							  public void communicationsStateChange(CommunicationsEvent ce) {
-//								  if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
-//									  String monString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.MONITOR);
-//									  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
-//										  QueuedMessageFilter filter = new QueuedMessageFilter();
-//										  filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
-//										  AS400 as400 = new AS400(getToolboxAS400Object());
-//										  String removeString = getVendorAttribute(MonitoringProperties.VENDOR_ID, MonitoringProperties.REMOVE);
-//										  boolean remove = false;
-//										  if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
-//										  monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
-//										  monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
-//									  }
-//								  }
-//								  if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
-//									  if (monitoredMessageQueue != null)
-//										  monitoredMessageQueue.stopMonitoring();
-//								  }
-//							  }
-//							  public boolean isPassiveCommunicationsListener() {
-//								  return true;
-//							  }
-//						  });
-//				  }	
-//			  }
-//		  }
-//		  return iHost;
-//	  }
-     
 	 public void setShell(Shell shell) {
 		this.shell = shell;
 	 }

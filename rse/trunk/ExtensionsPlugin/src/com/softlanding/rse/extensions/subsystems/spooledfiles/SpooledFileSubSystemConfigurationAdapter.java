@@ -1,19 +1,23 @@
 package com.softlanding.rse.extensions.subsystems.spooledfiles;
 
+import java.util.Vector;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rse.core.filters.ISystemFilter;
 import org.eclipse.rse.core.filters.ISystemFilterPool;
+import org.eclipse.rse.core.filters.ISystemFilterString;
 import org.eclipse.rse.core.subsystems.ISubSystemConfiguration;
 import org.eclipse.rse.ui.SystemMenuManager;
 import org.eclipse.rse.ui.filters.actions.SystemChangeFilterAction;
 import org.eclipse.rse.ui.filters.actions.SystemNewFilterAction;
+import org.eclipse.rse.ui.propertypages.SystemChangeFilterPropertyPage;
+import org.eclipse.rse.ui.propertypages.SystemFilterStringPropertyPage;
 import org.eclipse.rse.ui.view.SubSystemConfigurationAdapter;
 import org.eclipse.swt.widgets.Shell;
 
 import com.softlanding.rse.extensions.ExtensionsPlugin;
-import com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileResource;
 
 /**
  * Adds functionality to the basic SubSystemConfiguration.
@@ -55,5 +59,27 @@ public class SpooledFileSubSystemConfigurationAdapter extends SubSystemConfigura
 	public ImageDescriptor getSystemFilterImage(ISystemFilter filter)
 	{
 		return ExtensionsPlugin.getDefault().getImageDescriptor(ExtensionsPlugin.IMAGE_SPOOLED_FILE_FILTER);
-	}	    	
+	}
+
+	public void customizeChangeFilterPropertyPage(
+			ISubSystemConfiguration config,
+			SystemChangeFilterPropertyPage page, ISystemFilter selectedFilter,
+			Shell shell) {
+		super.customizeChangeFilterPropertyPage(config, page, selectedFilter, shell);
+	}
+
+	public void customizeFilterStringPropertyPage(
+			ISubSystemConfiguration config,
+			SystemFilterStringPropertyPage page,
+			ISystemFilterString selectedFilterString, Shell shell) {
+		super.customizeFilterStringPropertyPage(config, page, selectedFilterString,
+				shell);
+	}
+
+	protected Vector getAdditionalFilterActions(ISubSystemConfiguration config,
+		ISystemFilter selectedFilter, Shell shell) {
+		Vector actions = new Vector();
+		actions.add(getChangeFilterAction(config, selectedFilter, shell));
+		return actions;
+	}
 }

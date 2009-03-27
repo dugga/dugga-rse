@@ -110,7 +110,7 @@ public class SpooledFileResourceAdapter	extends AbstractSystemViewAdapter
 		return true;
 	}
 	
-	public boolean doDelete(Shell shell, Object element) {
+	public boolean doDelete(Shell shell, Object element, IProgressMonitor monitor) {
 		SpooledFileResource spooledFileResource = (SpooledFileResource)element;
 		SpooledFile spooledFile = spooledFileResource.getSpooledFile();
 		try {
@@ -227,6 +227,10 @@ public class SpooledFileResourceAdapter	extends AbstractSystemViewAdapter
 		return false;
 	}
 
+	public String getSubSystemConfigurationId(Object arg0) {
+		return "com.softlanding.rse.extensions.spooledfiles.subsystems.factory"; //$NON-NLS-1$
+	}
+
 	@Override
 	public boolean hasChildren(IAdaptable arg0) {
 		// TODO Auto-generated method stub
@@ -247,7 +251,4 @@ public class SpooledFileResourceAdapter	extends AbstractSystemViewAdapter
 		return null;
 	}
 
-	public String getSubSystemConfigurationId(Object arg0) {
-		return "com.softlanding.rse.extensions.spooledfiles.subsystems.factory"; //$NON-NLS-1$
-	}
 }

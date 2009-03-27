@@ -18,6 +18,7 @@ import org.eclipse.rse.core.subsystems.*;
 import org.eclipse.rse.internal.core.filters.SystemFilter;
 import org.eclipse.swt.widgets.Shell;
 
+import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 
 public class QueuedMessageSubSystemFactory extends SubSystemConfiguration {
@@ -31,7 +32,15 @@ public class QueuedMessageSubSystemFactory extends SubSystemConfiguration {
 	}
 	
 	public IConnectorService getConnectorService(IHost host) {
-		return QueuedMessageConnectorServiceManager.getInstance().getConnectorService(host, IQueuedMessageSubSystem.class);
+		ISubSystem[] subSystems = host.getSubSystems();
+		for (int i = 0; i < subSystems.length; i++) {
+			ISubSystem subSystem = subSystems[i];
+			if (subSystem instanceof QSYSObjectSubSystem) {
+				return subSystem.getConnectorService();
+			}
+			
+		}
+		return null;
 	}
 	
 	public String getTranslatedFilterTypeProperty(ISystemFilter selectedFilter) {
@@ -51,10 +60,7 @@ public class QueuedMessageSubSystemFactory extends SubSystemConfiguration {
 		return defaultPool;
 	}
 	
-	protected Vector getAdditionalFilterActions(SystemFilter selectedFilter, Shell shell) {
-		Vector actions = new Vector();
-		return actions;
+	public boolean supportsNestedFilters() {
+		return false;
 	}
-	
-
 }

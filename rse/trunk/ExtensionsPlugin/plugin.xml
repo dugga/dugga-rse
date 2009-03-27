@@ -50,9 +50,13 @@
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            objectClass="com.softlanding.rse.extensions.spooledfiles.SpooledFileModel"
+            id="com.softlanding.rse.extensions.spooledfiles.actions"
             nameFilter="*"
-            id="com.softlanding.rse.extensions.spooledfiles.actions">
+            objectClass="com.softlanding.rse.extensions.spooledfiles.SpooledFileModel"
+            subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
+            subtypefilter="*"
+            typecategoryfilter="*"
+            typefilter="*">
          <action
                label="%saveToFile"
                class="com.softlanding.rse.extensions.spooledfiles.SpooledFileSaveAction"
@@ -209,9 +213,9 @@
          </action>                             
       </objectContribution>                  
       <objectContribution
-            id="com.softlanding.rse.extensions.subsystems.spooledfiles.menu"
+            id="com.softlanding.rse.extensions.spooledfiles.actions"
             nameFilter="*"
-            objectClass="com.softlanding.extensions.spooledfiles.subsystems.SpooledFileSubSystem"
+            objectClass="com.softlanding.rse.extensions.subsystems.spooledfiles.SpooledFileResource"
             subsystemfactoryid="com.softlanding.rse.extensions.spooledfiles.subsystems.factory"
             subtypefilter="*"
             typecategoryfilter="*"
@@ -368,6 +372,4 @@
             id="com.softlanding.rse.extensions.messages.MonitoringProperties">
       </page>
    </extension>
-
-
 </plugin>
