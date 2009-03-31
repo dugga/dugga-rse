@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005-2006 SoftLanding Systems, Inc. and others.
+ * Copyright (c) 2005-2009 SoftLanding Systems, Inc. and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.rse.ui.SystemBasePlugin;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.softlanding.rse.extensions.messages.QueuedMessageAdapterFactory;
