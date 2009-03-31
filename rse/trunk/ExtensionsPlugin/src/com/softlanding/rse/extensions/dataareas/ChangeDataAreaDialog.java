@@ -52,6 +52,8 @@ public class ChangeDataAreaDialog extends Dialog {
     private String value;
     private boolean logicalValue;
     private int length;
+    private int decimals;
+    private String description;
     private boolean success;
     private AS400 as400;
 
@@ -73,6 +75,7 @@ public class ChangeDataAreaDialog extends Dialog {
                     String libraryName = ChangeDataAreaDialog.this.dataArea.getLibrary();
                     while (libraryName.length() < 10) libraryName = libraryName + " "; //$NON-NLS-1$
                     QSYSObjectPathName path = new QSYSObjectPathName(ChangeDataAreaDialog.this.dataArea.getLibrary(), ChangeDataAreaDialog.this.dataArea.getName(), "DTAARA"); //$NON-NLS-1$
+                    description = ChangeDataAreaDialog.this.dataArea.getDescription();
                     if (qwcrdtaa.getType().equals(Qwcrdtaa.CHAR)) {
                         characterDataArea = new CharacterDataArea(as400, path.getPath());
                         value = characterDataArea.read();
@@ -82,6 +85,7 @@ public class ChangeDataAreaDialog extends Dialog {
                         decimalDataArea = new DecimalDataArea(as400, path.getPath());
                         value = decimalDataArea.read().toString();
                         length = decimalDataArea.getLength();
+                        decimals = decimalDataArea.getDecimalPositions();
                     }
                     if (qwcrdtaa.getType().equals(Qwcrdtaa.LGL)) {
                         logicalDataArea = new LogicalDataArea(as400, path.getPath());
@@ -137,6 +141,39 @@ public class ChangeDataAreaDialog extends Dialog {
 		typeText.setLayoutData(gd);
 		typeText.setText(qwcrdtaa.getType());
 		
+		if (!qwcrdtaa.getType().equals("*LGL")) {
+			Label lengthLabel = new Label(headerGroup, SWT.NONE);
+			lengthLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.8")); //$NON-NLS-1$
+			Text lengthText = new Text(headerGroup, SWT.BORDER);
+			lengthText.setEditable(false);
+			gd = new GridData();
+			gd.widthHint = 75;
+			lengthText.setLayoutData(gd);
+			lengthText.setText(String.valueOf(length));
+		}
+		
+		if (qwcrdtaa.getType().equals("*DEC")) {
+			Label decimalLabel = new Label(headerGroup, SWT.NONE);
+			decimalLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.9")); //$NON-NLS-1$
+			Text decimalText = new Text(headerGroup, SWT.BORDER);
+			decimalText.setEditable(false);
+			gd = new GridData();
+			gd.widthHint = 75;
+			decimalText.setLayoutData(gd);
+			decimalText.setText(String.valueOf(decimals));
+		}
+		
+		Label descriptionLabel = new Label(headerGroup, SWT.NONE);
+		descriptionLabel.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.10")); //$NON-NLS-1$
+		Text descriptionText = new Text(headerGroup, SWT.BORDER);
+		descriptionText.setEditable(false);
+		gd = new GridData();
+		if (description == " ") {
+			gd.widthHint = 75;
+		}
+		descriptionText.setLayoutData(gd);
+		descriptionText.setText(description);
+		
 		Group valueGroup = new Group(rtnGroup, SWT.NONE);
 		valueGroup.setText(ExtensionsPlugin.getResourceString("ChangeDataAreaDialog.5")); //$NON-NLS-1$
 		GridLayout valueLayout = new GridLayout();
@@ -182,7 +219,12 @@ public class ChangeDataAreaDialog extends Dialog {
                         logicalDataArea.write(trueButton.getSelection());
                     }
                     if (qwcrdtaa.getType().equals(Qwcrdtaa.CHAR)) {
-                        characterDataArea.write(valueText.getText().trim());
+                    	if (valueText.getText().trim().length() > 0) {
+                    		characterDataArea.clear();
+                    		characterDataArea.write(valueText.getText().trim());
+                    	}
+                    	else
+                    		characterDataArea.clear();
                     }
                     if (qwcrdtaa.getType().equals(Qwcrdtaa.DEC)) {
                         decimalDataArea.write(new BigDecimal(valueText.getText().trim()));

@@ -208,16 +208,19 @@ public class DisplayDataQueueDialog extends Dialog {
 		
 		includeSenderIDButton = new Button(buttonGroup, SWT.CHECK);
 		includeSenderIDButton.setText(ExtensionsPlugin.getResourceString("DisplayDataQueueDialog.15")); //$NON-NLS-1$
+		includeSenderIDButton.setEnabled(false);
 		gd = new GridData();
 		includeSenderIDButton.setLayoutData(gd);
 		
 		forceToAuxilaryStorageButton = new Button(buttonGroup, SWT.CHECK);
 		forceToAuxilaryStorageButton.setText(ExtensionsPlugin.getResourceString("DisplayDataQueueDialog.16")); //$NON-NLS-1$
+		forceToAuxilaryStorageButton.setEnabled(false);
 		gd = new GridData();
 		forceToAuxilaryStorageButton.setLayoutData(gd);
 		
 		automaticReclaimButton = new Button(buttonGroup, SWT.CHECK);
 		automaticReclaimButton.setText(ExtensionsPlugin.getResourceString("DisplayDataQueueDialog.17")); //$NON-NLS-1$
+		automaticReclaimButton.setEnabled(false);
 		gd = new GridData();
 		automaticReclaimButton.setLayoutData(gd);
 		

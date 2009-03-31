@@ -35,25 +35,27 @@ private MonitoredMessageQueue monitoredMessageQueue;
 	}
 
 	public void communicationsStateChange(CommunicationsEvent ce) {
-		  if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
-			  IPropertySet set = getPropertySet(MonitoringProperties.VENDOR_ID);
-			  String monString = set.getPropertyValue(MonitoringProperties.MONITOR);
-			  if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
-				  QueuedMessageFilter filter = new QueuedMessageFilter();
-				  filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
-				  AS400 as400 = new AS400(getToolboxAS400Object());
-				  String removeString = set.getPropertyValue(MonitoringProperties.REMOVE);
-				  boolean remove = false;
-				  if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
-				  monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
-				  monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
-			  }
-		  }
-		  if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
-			  if (monitoredMessageQueue != null)
-				  monitoredMessageQueue.stopMonitoring();
-		  }
-	  }
+		if (ce.getState() == CommunicationsEvent.AFTER_CONNECT) {
+			IPropertySet set = getPropertySet(MonitoringProperties.VENDOR_ID);
+			if (set != null) {
+				String monString = set.getPropertyValue(MonitoringProperties.MONITOR);
+				if ((monString != null) && (monString.equals("true"))) { //$NON-NLS-1$
+					QueuedMessageFilter filter = new QueuedMessageFilter();
+					filter.setMessageQueue("*CURRENT"); //$NON-NLS-1$
+					AS400 as400 = new AS400(getToolboxAS400Object());
+					String removeString = set.getPropertyValue(MonitoringProperties.REMOVE);
+					boolean remove = false;
+					if ((removeString != null) && (removeString.equals("true"))) remove = true; //$NON-NLS-1$
+					monitoredMessageQueue = new MonitoredMessageQueue(as400, filter.getPath(), filter, new MessageHandler(QueuedMessageSubSystem.this, remove));
+					monitoredMessageQueue.startMonitoring(MessageQueue.OLD, MessageQueue.ANY);
+				}
+			}
+		}
+		if (ce.getState() == CommunicationsEvent.BEFORE_DISCONNECT) {
+			if (monitoredMessageQueue != null)
+				monitoredMessageQueue.stopMonitoring();
+		}
+	}
 
 	public boolean isPassiveCommunicationsListener() {
 		  return true;
