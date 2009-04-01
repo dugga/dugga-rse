@@ -15,9 +15,6 @@ import java.util.Vector;
 import org.eclipse.rse.core.filters.*;
 import org.eclipse.rse.core.model.*;
 import org.eclipse.rse.core.subsystems.*;
-import org.eclipse.rse.internal.core.filters.SystemFilter;
-import org.eclipse.swt.widgets.Shell;
-
 import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 

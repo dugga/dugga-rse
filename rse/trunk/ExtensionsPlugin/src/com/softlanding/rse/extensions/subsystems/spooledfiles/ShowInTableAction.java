@@ -17,7 +17,6 @@ import org.eclipse.rse.ui.actions.*;
 import org.eclipse.swt.widgets.Shell;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileFactory;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileFilter;

@@ -14,7 +14,6 @@ import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.rse.ui.actions.popupmenu.ISeriesAbstractQSYSPopupMenuAction;
 import com.ibm.etools.iseries.services.qsys.api.IQSYSJob;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
-import com.ibm.etools.iseries.subsystems.qsys.objects.IRemoteObjectContextProvider;
 import com.softlanding.rse.extensions.ExtensionsPlugin;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileFactory;
 import com.softlanding.rse.extensions.spooledfiles.SpooledFileFilter;

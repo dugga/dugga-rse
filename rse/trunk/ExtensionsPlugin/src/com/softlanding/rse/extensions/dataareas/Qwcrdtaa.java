@@ -11,8 +11,6 @@
 package com.softlanding.rse.extensions.dataareas;
 
 import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
-import org.eclipse.swt.widgets.Display;
-
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.data.PcmlException;
 import com.ibm.as400.data.ProgramCallDocument;
