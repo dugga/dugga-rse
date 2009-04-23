@@ -72,7 +72,7 @@ public class QueuedMessageResourceAdapter
 		return null;
 	}
 
-	public boolean hasChildren(Object element) {
+	public boolean hasChildren(IAdaptable arg0) {
 		return false;
 	}
 	
@@ -84,7 +84,7 @@ public class QueuedMessageResourceAdapter
 		return true;
 	}
 	
-	public boolean doDelete(Shell shell, Object element) {
+	public boolean doDelete(Shell shell, Object element, IProgressMonitor monitor) {
 		QueuedMessageResource queuedMessageResource = (QueuedMessageResource)element;
 		QueuedMessage queuedMessage = queuedMessageResource.getQueuedMessage();
 		try {
@@ -204,12 +204,6 @@ public class QueuedMessageResourceAdapter
 	 * @see com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter#supportsUserDefinedActions(java.lang.Object)
 	 */
 	public boolean supportsUserDefinedActions(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean hasChildren(IAdaptable arg0) {
 		// TODO Auto-generated method stub
 		return false;
 	}

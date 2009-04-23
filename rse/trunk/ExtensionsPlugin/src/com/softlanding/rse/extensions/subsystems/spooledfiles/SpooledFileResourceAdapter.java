@@ -98,7 +98,7 @@ public class SpooledFileResourceAdapter	extends AbstractSystemViewAdapter
 		return null;
 	}
 
-	public boolean hasChildren(Object element) {
+	public boolean hasChildren(IAdaptable arg0) {
 		return false;
 	}
 	
@@ -229,12 +229,6 @@ public class SpooledFileResourceAdapter	extends AbstractSystemViewAdapter
 
 	public String getSubSystemConfigurationId(Object arg0) {
 		return "com.softlanding.rse.extensions.spooledfiles.subsystems.factory"; //$NON-NLS-1$
-	}
-
-	@Override
-	public boolean hasChildren(IAdaptable arg0) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
