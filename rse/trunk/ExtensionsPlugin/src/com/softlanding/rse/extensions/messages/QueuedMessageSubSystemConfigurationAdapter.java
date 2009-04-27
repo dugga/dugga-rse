@@ -17,6 +17,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rse.core.filters.ISystemFilter;
 import org.eclipse.rse.core.filters.ISystemFilterPool;
+import org.eclipse.rse.core.filters.ISystemFilterPoolManager;
 import org.eclipse.rse.core.subsystems.ISubSystemConfiguration;
 import org.eclipse.rse.ui.SystemMenuManager;
 import org.eclipse.rse.ui.filters.actions.SystemChangeFilterAction;
@@ -45,7 +46,18 @@ public class QueuedMessageSubSystemConfigurationAdapter extends SubSystemConfigu
 		filterAction.setPage1Description(ExtensionsPlugin.getResourceString("QueuedMessageSubSystemFactory.5")); //$NON-NLS-1$
 		filterAction.setType(ExtensionsPlugin.getResourceString("QueuedMessageSubSystemFactory.6")); //$NON-NLS-1$
 		filterAction.setText(ExtensionsPlugin.getResourceString("QueuedMessageSubSystemFactory.7")); //$NON-NLS-1$
-		filterAction.setFilterStringEditPane(new QueuedMessageFilterStringEditPane(shell));       		  	
+		filterAction.setFilterStringEditPane(new QueuedMessageFilterStringEditPane(shell));
+				
+		ISystemFilterPoolManager[] filterPoolManager = config.getSystemFilterPoolManagers();
+		ISystemFilterPool poolsToSelectFrom[] = null;
+		for (int i=0; i<filterPoolManager.length; i++) {
+			poolsToSelectFrom = filterPoolManager[i].getSystemFilterPools();
+			break;
+		}
+		if (poolsToSelectFrom != null) {
+			filterAction.setAllowFilterPoolSelection(poolsToSelectFrom);
+		}
+		
 		IAction[] actions = new IAction[1];
 		actions[0] = filterAction;
 		return actions;

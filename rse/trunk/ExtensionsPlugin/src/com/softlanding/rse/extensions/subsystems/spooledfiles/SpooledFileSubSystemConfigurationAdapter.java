@@ -17,6 +17,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rse.core.filters.ISystemFilter;
 import org.eclipse.rse.core.filters.ISystemFilterPool;
+import org.eclipse.rse.core.filters.ISystemFilterPoolManager;
 import org.eclipse.rse.core.filters.ISystemFilterString;
 import org.eclipse.rse.core.subsystems.ISubSystemConfiguration;
 import org.eclipse.rse.ui.SystemMenuManager;
@@ -51,7 +52,19 @@ public class SpooledFileSubSystemConfigurationAdapter extends SubSystemConfigura
 		filterAction.setPage1Description(ExtensionsPlugin.getResourceString("Create_a_new_filter_to_list_spooled_files_6")); //$NON-NLS-1$
 		filterAction.setType(ExtensionsPlugin.getResourceString("Spooled_File_Filter_7")); //$NON-NLS-1$
 		filterAction.setText(ExtensionsPlugin.getResourceString("Spooled_file_filter_8") + "..."); //$NON-NLS-1$ //$NON-NLS-2$
-		filterAction.setFilterStringEditPane(new SpooledFileFilterStringEditPane(shell));       		  	
+		filterAction.setFilterStringEditPane(new SpooledFileFilterStringEditPane(shell));
+		
+		ISystemFilterPoolManager[] filterPoolManager = config.getSystemFilterPoolManagers();
+		ISystemFilterPool poolsToSelectFrom[] = null;
+		for (int i=0; i<filterPoolManager.length; i++) {
+			poolsToSelectFrom = filterPoolManager[i].getSystemFilterPools();
+			break;
+		}
+		if (poolsToSelectFrom != null) {
+			filterAction.setAllowFilterPoolSelection(poolsToSelectFrom);
+		}
+		
+
 		IAction[] actions = new IAction[1];
 		actions[0] = filterAction;
 		return actions;

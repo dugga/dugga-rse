@@ -24,6 +24,7 @@ public class AddQueuedMessageSubSystem {
 		String list = "";
 		ISystemRegistry systemRegistry = SystemStartHere.getSystemRegistry();
 		ISubSystemConfiguration ssc = systemRegistry.getSubSystemConfiguration("com.softlanding.rse.extensions.messages.factory");
+		ssc.getFilterPoolManager(systemRegistry.getSystemProfileManager().getDefaultPrivateSystemProfile(), true);
 		if (ssc != null) {
 			IHost[] hosts = systemRegistry.getHosts();
 			for (int i = 0; i< hosts.length; i++) {
@@ -46,6 +47,5 @@ public class AddQueuedMessageSubSystem {
 			}
 		}
 		return list;
-	}
-	
+	}	
 }
