@@ -1914,7 +1914,7 @@ item: Custom Dialog Set
     end
     item: Editbox
       Rectangle=10 46 275 171
-      Value=%MAINDIR%\Readme_extensions.txt
+      Value=%MAINDIR%\Readme_extensions_75.txt
       Help Context=16711681
       Create Flags=01010000101000000000100000000100
     end
@@ -2019,6 +2019,7 @@ item: Custom Dialog Set
       Create Flags=01010000000000000000000000000000
       Text=%APPTITLE% has been successfully installed.
       Text=
+      Text=In order for the IBM i Messages and the IBM i Spooled Files subsystems to appear for existing connection you must go to Windows -> Preferences -> Remote Systems -> IBM i -> RSE Extensions, and use the Add button.
       Text=
       Text=Click the Finish button to exit this installation.
       Text=
