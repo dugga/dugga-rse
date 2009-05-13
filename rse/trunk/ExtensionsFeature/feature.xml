@@ -2,7 +2,7 @@
 <feature
       id="com.softlanding.rse.extensions"
       label="%featureName"
-      version="7.5.0"
+      version="7.5.0.20090401"
       provider-name="%providerName"
       image="update.gif"
       colocation-affinity="com.softlanding.rse.extensions">
@@ -42,6 +42,6 @@
          id="com.softlanding.rse.extensions"
          download-size="0"
          install-size="0"
-         version="7.5.0"/>
+         version="7.5.0.20090401"/>
 
 </feature>
