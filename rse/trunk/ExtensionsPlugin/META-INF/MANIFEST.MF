@@ -30,7 +30,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.views,
  org.eclipse.ui.ide,
- org.eclipse.compare,
- org.eclipse.rse
+ org.eclipse.compare
 Eclipse-AutoStart: true
 Bundle-ManifestVersion: 2
