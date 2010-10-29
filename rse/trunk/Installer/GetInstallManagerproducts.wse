@@ -1,0 +1,487 @@
+Document Type: WSE
+item: Global
+  Version=9.02
+  Flags=00000100
+  Split=1420
+  Languages=65 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  Copy Default=1
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=9
+  Start Gradient=0 0 255
+  End Gradient=0 0 0
+  Windows Flags=00000100000000010010110000001000
+  Message Font=Times New Roman
+  Font Size=8
+  Pages Modified=00000000001000000000000000000000
+  Disk Label=WiseInst
+  Disk Filename=SETUP
+  Patch Flags=0000000000000001
+  Patch Threshold=85
+  Patch Memory=4000
+  MIF PDF Version=1.0
+  MIF SMS Version=2.0
+  FTP Cluster Size=20
+  Per-User Version ID=1
+  Dialogs Version=9
+  Crystal Format=10111100101100000010001001001001
+  Crystal Destination=00000000000000000000000000001011
+  Step View=&Properties
+end
+item: Remark
+end
+item: Remark
+  Text=***************************************************************************************************************
+end
+item: Remark
+end
+item: Remark
+  Text=This sub routine will determine which products are installed within the IBM Installation Manager
+end
+item: Remark
+  Text=and return the location of the eclipse directory (for use in determining the links location).
+end
+item: Remark
+end
+item: Remark
+  Text=Selected products can the be x-refed to their install location using the return variables and S_LOCATION_x
+end
+item: Remark
+  Text=     where 'x' corresponds to the returned letter of the selected product
+end
+item: Remark
+end
+item: Remark
+  Text=Due to limitations of InstallManager, only the first 10 products are listed.
+end
+item: Remark
+  Text=(10 is just a random number.  This can easily be increased, but additional code to hold values will be needed.
+end
+item: Remark
+end
+item: Remark
+  Text=***************************************************************************************************************
+end
+item: Remark
+end
+item: Remark
+  Text=Get location of IBM installation manager
+end
+item: Get Registry Key Value
+  Variable=S_IBMINSTMGRLOC
+  Key=SOFTWARE\IBM\Installation Manager
+  Value Name=location
+  Flags=00000100
+end
+item: Remark
+end
+item: Remark
+  Text=Set config.ini location
+end
+item: Set Variable
+  Variable=S_CONFIGINI
+  Value=%S_IBMINSTMGRLOC%\eclipse\configuration\config.ini
+end
+item: Remark
+end
+item: Remark
+  Text=Read config.ini to get application data location
+end
+item: Check if File/Dir Exists
+  Pathname=%S_CONFIGINI%
+  Flags=00000100
+end
+item: Read/Update Text File
+  Variable=S_INIRECORD
+  Pathname=%S_CONFIGINI%
+end
+item: Parse String
+  Source=%S_INIRECORD%
+  Pattern==
+  Variable1=S_INIKEY
+  Variable2=S_INIVALUE
+end
+item: If/While Statement
+  Variable=S_INIKEY
+  Value=cic.appDataLocation
+end
+item: Set Variable
+  Variable=S_INSTALLEDXML
+  Value=%S_INIVALUE%
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=parse string to remove control characters
+end
+item: Parse String
+  Source=%S_INSTALLEDXML%
+  Pattern=\:
+  Variable1=S_LEFT
+  Variable2=S_RIGHT
+end
+item: Set Variable
+  Variable=S_INSTALLEDXML
+  Value=%S_LEFT%:%S_RIGHT%
+end
+item: If/While Statement
+  Variable=S_INSTALLEDXML
+  Value=\\
+  Flags=00010010
+end
+item: Parse String
+  Source=%S_INSTALLEDXML%
+  Pattern=\\
+  Variable1=S_LEFT
+  Variable2=S_RIGHT
+end
+item: Set Variable
+  Variable=S_INSTALLEDXML
+  Value=%S_LEFT%\%S_RIGHT%
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Read installation xml
+end
+item: Set Variable
+  Variable=S_INLOCATION
+  Value=N
+end
+item: Set Variable
+  Variable=S_ECLIPSELOCATION
+end
+item: Set Variable
+  Variable=S_PRODUCTNAME
+end
+item: Set Variable
+  Variable=S_PRODUCTVERSION
+end
+item: Set Variable
+  Variable=S_ALLDATAFOUND
+  Value=0
+end
+item: Set Variable
+  Variable=S_COUNT
+  Value=0
+end
+item: Check if File/Dir Exists
+  Pathname=%S_INSTALLEDXML%\installed.xml
+  Flags=00000100
+end
+item: Read/Update Text File
+  Variable=S_XMLRECORD
+  Pathname=%S_INSTALLEDXML%\installed.xml
+end
+item: Remark
+end
+item: Remark
+  Text=we are only getting the first 10 products.
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=11
+  Flags=00001000
+end
+item: If/While Statement
+  Variable=S_XMLRECORD
+  Value=<location
+  Flags=00000010
+end
+item: Parse String
+  Source=%S_XMLRECORD%
+  Pattern=kind=
+  Variable1=S_LEFT
+  Variable2=S_RIGHT
+end
+item: Parse String
+  Source=%S_RIGHT%
+  Pattern=9
+  Variable1=S_LEFT
+  Variable2=S_RIGHT
+  Flags=00001000
+end
+item: If/While Statement
+  Variable=S_LEFT
+  Value='product'
+end
+item: Set Variable
+  Variable=S_INLOCATION
+  Value=Y
+end
+item: End Block
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_XMLRECORD
+  Value=</location
+  Flags=00000010
+end
+item: Set Variable
+  Variable=S_INLOCATION
+  Value=N
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=parse  product, install location, and version from xml
+end
+item: If/While Statement
+  Variable=S_INLOCATION
+  Value=Y
+end
+item: If/While Statement
+  Variable=S_XMLRECORD
+  Value=name='eclipseLocation'
+  Flags=00000010
+end
+item: Parse String
+  Source=%S_XMLRECORD%
+  Pattern=value='
+  Variable1=S_LEFT
+  Variable2=S_RIGHT
+end
+item: Parse String
+  Source=%S_RIGHT%
+  Pattern='
+  Variable1=S_ECLIPSELOCATION
+end
+item: Set Variable
+  Variable=S_ALLDATAFOUND
+  Value=%S_ALLDATAFOUND%
+  Flags=00000100
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_XMLRECORD
+  Value=name='cic.info.name'
+  Flags=00000010
+end
+item: Parse String
+  Source=%S_XMLRECORD%
+  Pattern=value='
+  Variable2=S_RIGHT
+end
+item: Parse String
+  Source=%S_RIGHT%
+  Pattern='
+  Variable1=S_PRODUCTNAME
+end
+item: If/While Statement
+  Variable=S_PRODUCTNAME
+  Value=Â
+  Flags=00010010
+end
+item: Parse String
+  Source=%S_PRODUCTNAME%
+  Pattern=Â
+  Variable1=S_LEFT
+  Variable2=S_RIGHT
+end
+item: Set Variable
+  Variable=S_PRODUCTNAME
+  Value=%S_LEFT%%S_RIGHT%
+end
+item: End Block
+end
+item: Set Variable
+  Variable=S_ALLDATAFOUND
+  Value=%S_ALLDATAFOUND%
+  Flags=00000100
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_XMLRECORD
+  Value=name='cic.info.version'
+  Flags=00000010
+end
+item: Parse String
+  Source=%S_XMLRECORD%
+  Pattern=value='
+  Variable2=S_RIGHT
+end
+item: Parse String
+  Source=%S_RIGHT%
+  Pattern='
+  Variable1=S_PRODUCTVERSION
+end
+item: Set Variable
+  Variable=S_ALLDATAFOUND
+  Value=%S_ALLDATAFOUND%
+  Flags=00000100
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: If/While Statement
+  Variable=S_ALLDATAFOUND
+  Value=3
+end
+item: If/While Statement
+  Variable=S_PRODUCTVERSION
+  Value=7.5
+  Flags=00000111
+end
+item: Set Variable
+  Variable=S_PRODLIST
+  Value=%S_PRODUCTNAME%
+  Flags=00000001
+end
+item: Set Variable
+  Variable=S_PRODLIST
+  Value= - %S_PRODUCTVERSION%
+  Flags=00000001
+end
+item: Set Variable
+  Variable=S_PRODLIST
+  Value=%CRLF%
+  Flags=00000001
+end
+item: Set Variable
+  Variable=S_COUNT
+  Value=%S_COUNT%
+  Flags=00000100
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=1
+end
+item: Set Variable
+  Variable=S_LOCATION_A
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=2
+end
+item: Set Variable
+  Variable=S_LOCATION_B
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=3
+end
+item: Set Variable
+  Variable=S_LOCATION_C
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=4
+end
+item: Set Variable
+  Variable=S_LOCATION_D
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=5
+end
+item: Set Variable
+  Variable=S_LOCATION_E
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=6
+end
+item: Set Variable
+  Variable=S_LOCATION_F
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=7
+end
+item: Set Variable
+  Variable=S_LOCATION_G
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=8
+end
+item: Set Variable
+  Variable=S_LOCATION_H
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=9
+end
+item: Set Variable
+  Variable=S_LOCATION_I
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=10
+end
+item: Set Variable
+  Variable=S_LOCATION_J
+  Value=%S_ECLIPSELOCATION%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=S_COUNT
+  Value=11
+end
+item: Set Variable
+  Variable=S_MAXFOUND
+  Value=More than 10 products were found.%crlf%Only the first 10 are shown.
+end
+item: End Block
+end
+item: End Block
+end
+item: Set Variable
+  Variable=S_ALLDATAFOUND
+  Value=0
+end
+item: Set Variable
+  Variable=S_INLOCATION
+  Value=N
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
