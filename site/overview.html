@@ -10,31 +10,31 @@
 
 <h1 style="text-align: center;">RSE Extensions: An Overview</h1>
 <p>This overview briefly describes the features included in the RSE Extensions.  If you
-are somewhat familiar with RDi/WDSC and its Remote Systems Explorer (RSE), these screenshots should
+are somewhat familiar with RDP/RDi and its Remote Systems Explorer (RSE), these screenshots should
 help make the added features fairly obvious to you.  If you are not familiar with RSE, then as you become more
-familiar with using RDi/WDSC you should find that these extensions just naturally fall in line with everything
-else within RDi/WDSC.  The following screenshot is an example of how RDi/WDSC will likely appear when you
+familiar with using RDP/RDi you should find that these extensions just naturally fall in line with everything
+else within RDP/RDi.  The following screenshot is an example of how RDP/RDi will likely appear when you
 restart it after installing the RSE Extensions.</p>
-<p><strong>Note:</strong> Screen prints shown here may not exactly match your version of RDi/WDSc.</p>
+<p><strong>Note:</strong> Screen prints shown here may not exactly match your version of RDP/RDi.</p>
 <img src="images/overview/overview-1.png" alt="RSE Extensions screen" />
-<p>Notice that there are new subsystems for spooled files and messages beneath your iSeries connection.  These
-subsystems look and behave similarly to the other connection subsystems that RDi/WDSC contributes. </p>
+<p>Notice that there are new subsystems for spooled files and messages beneath your IBM i connection.  These
+subsystems look and behave similarly to the other connection subsystems that RDP/RDi contributes. </p>
 <div class="h2" id="overview" title="overview">
 <h2>Overview</h2>
 <p>The RSE Extensions consists of these primary features:</p>
 <ol>
-<li>The ability to manage and view iSeries <a href="#spooledfiles">spooled files.</a></li>
-<li>The ability to manage and view iSeries <a href="#messages">messages.</a></li>
+<li>The ability to manage and view IBM i <a href="#spooledfiles">spooled files.</a></li>
+<li>The ability to manage and view IBM i <a href="#messages">messages.</a></li>
 <li>A new "<a href="#editing">perspective</a>" that is optimized for source editing.</li>
-<li>Graphical <a href="#compare">compare and merge</a> editors for iSeries source code.</li>
+<li>Graphical <a href="#compare">compare and merge</a> editors for IBM i source code.</li>
 <li>A custom editor for editing the contents of <a href="#dtaara">data areas.</a></li>
 <li>A custom dialog for displaying the properties and contents of <a href="#dtaq">data queues.</a></li>
 </ol>
 <p>A description of each feature follows.</p>
 <div class="h3" id="spooledfiles" title="spooledfiles">
 <h3>Working with Spooled Files</h3>
-<p>The RSE Extensions adds a subsystem named <strong>iSeries Spooled Files</strong> to your iSeries connections.  This subsystem will
-initially include one filter -- <strong>Your spooled files</strong> -- that shows you all the spooled files associated with the user profile the connection is using to access the iSeries computer.  The filter delivers results equivalent to running the WRKSPLF command on a 5250 command line. </p>
+<p>The RSE Extensions adds a subsystem named <strong>IBM i Spooled Files</strong> to your IBM i connections.  This subsystem will
+initially include one filter -- <strong>Your spooled files</strong> -- that shows you all the spooled files associated with the user profile the connection is using to access the IBM i computer.  The filter delivers results equivalent to running the WRKSPLF command on a 5250 command line. </p>
 <p><strong>Note:</strong> After installing the RSE Extensions into an RDi 7.5 configuration which has existing connections defined, the Spooled Files subsystem is not automatically created.
 In order to see the subsystem you must enable it by going to Window -> Preferences -> Remote System -> IBM i -> RSE Extensions.  At this preference is an option to Add the Spooled Files subsystem to the existing connections.</p>
 <p>The following screen shows the filter in the Remote Systems Details
@@ -48,23 +48,23 @@ table view.  It also shows a spooled file that has been opened in the built-in t
 
 <div class="h3" id="messages" title="messages">
 <h3>Working with Messages</h3>
-<p>The RSE Extensions also adds a subsystem for iSeries Messages.  As with the spooled files subsystem, it implements
-a standard RSE subsystem that allows you to define filters for messages.  A default "Your Messages" filter is created
+<p>The RSE Extensions also adds a subsystem for IBM i Messages.  As with the spooled files subsystem, it implements
+a standard RSE subsystem that allows you to define filters for messages.  A default "My Messages" filter is created
 automatically.</p>
 <p><strong>Note:</strong> After installing the RSE Extensions into an RDi 7.5 configuration which has existing connections defined, the Messages subsystem is not automatically created.
 In order to see the subsystem you must enable it by going to Window -> Preferences -> Remote System -> IBM i -> RSE Extensions.  At this preference is an option to Add the Messages subsystem to the existing connections.</p>
 <p>In addition to these features, which require no additional explanation, there is one other
-unique feature implemented, and that is the ability to have RDi/WDSC monitor your personal message queue in the background and notify
-you of new messages.  Right click on the iSeries Messages subsystem and choose Properties, then click on <strong>Message
+unique feature implemented, and that is the ability to have RDP/RDi monitor your personal message queue in the background and notify
+you of new messages.  Right click on the IBM i Messages subsystem and choose Properties, then click on <strong>Message
 Queue Monitoring</strong>.  A screen like this appears:</p>
 <img src="images/overview/message-1.png" alt="RSE Extensions screen" />
-<p>Initially, the Monitor Message Queue checkbox is not checked, so the remaining settings do not appear.  The settings are self-explanatory; you are indicating how you want RDi/WDSC to handle the various types of messages you receive.  If you receive an Inquiry message, RDi/WDSC can present a dialog that lets you respond to the message without leaving the IDE.</p>
+<p>Initially, the Monitor Message Queue checkbox is not checked, so the remaining settings do not appear.  The settings are self-explanatory; you are indicating how you want RDP/RDi to handle the various types of messages you receive.  If you receive an Inquiry message, RDP/RDi can present a dialog that lets you respond to the message without leaving the IDE.</p>
 </div>
 
 <div class="h3" id="editing" title="editing">
-<h3>iSeries Editing Perspective</h3>
-<p>The iSeries Editing Perspective provided by the RSE Extensions is a new perspective you can switch to
-when editing source.  This feature is mainly a convenience feature.  RDi/WDSC is very flexible in how you arrange
+<h3>IBM i Editing Perspective</h3>
+<p>The IBM i Editing Perspective provided by the RSE Extensions is a new perspective you can switch to
+when editing source.  This feature is mainly a convenience feature.  RDP/RDi is very flexible in how you arrange
 your windows.  It also lets you save those arrangements as your own perspective.  All we have done is take the best
 practices we have learned over the years and package those settings up for you.  This also allows us to do the one thing
 that you cannot do yourself, which is give the perspective a unique icon.  This makes it easier to visually recognize in
@@ -74,7 +74,7 @@ the list of open perspectives.  Here is a quick description of how to use this p
 <h4>Open the Perspective</h4>
 <p>To open the perspective for the first time, do Window -&gt; Open Perspective -&gt; Other.  A screen like this appears:</p>
 <img src="images/overview/persp-1.png" alt="RSE Extensions screen" />
-<p>Select the <strong>iSeries Editing</strong> perspective.  Note that once the perspective is open, it is easy to quickly switch between open perspectives.  Just use the perspective switcher that appears in the top-right hand corner of RDi/WDSC (visible in the next screen).  The perspective looks like this:</p>
+<p>Select the <strong>IBM i Editing</strong> perspective.  Note that once the perspective is open, it is easy to quickly switch between open perspectives.  Just use the perspective switcher that appears in the top-right hand corner of RDP/RDi (visible in the next screen).  The perspective looks like this:</p>
 <img src="images/overview/persp-2.png" alt="RSE Extensions screen" />
 <p>It may not look like much, but that is the point.  As you may already know, when you double click an
 editor or view in any window it will expand, or "maximize," to fill the whole space.  However, when a window is maximized you can see only one window at a time.  So instead of forcing you to maximize, this perspective condenses the extra views into a set of toolbar icons at the bottom, allowing the editors to use the entire screen: </p>
@@ -83,10 +83,10 @@ editor or view in any window it will expand, or "maximize," to fill the whole sp
 trying to do it at the same time that other views are showing, it is not very helpful.  With the extra screen real estate
 this feature now becomes useful.  If you are not aware of how to do this, just click and drag one of the editor tabs to any
 window edge.  The icon changes so you know when to drop the Window.  To undo the
-effect, just drag and drop onto another editor, and RDi/WDSC will go back to stacking them.</p>
+effect, just drag and drop onto another editor, and RDP/RDi will go back to stacking them.</p>
 <p>At this point, you might be saying, "OK, but I need some of those views, like the Outline view, or the Remote Systems view."
 Remember those icons we mentioned, on the bottom toolbar in the previous screenshot?  Those are all of the common views
-you would typically need to access.  In this case, we have converted them to something RDi/WDSC calls a "Fast View."  Click
+you would typically need to access.  In this case, we have converted them to something RDP/RDi calls a "Fast View."  Click
 the icon for the Outline view.  Your screen now looks something like this:</p>
 <img src="images/overview/persp-4.png" alt="RSE Extensions screen" />
 <p>Notice how the view "slides" into place on top of your editors?  In the case of the Outline view, you can expand the outline
@@ -97,9 +97,9 @@ your editor, to close the view.)  Of course, the perspective switcher makes it e
 
 <div class="h3" id="compare" title="compare">
 <h3>Graphical Compare/Merge Editors</h3>
-<p>The RSE Extensions provides a graphical compare/merge editor for iSeries source code.  These editors are built on top of the
+<p>The RSE Extensions provides a graphical compare/merge editor for IBM i source code.  These editors are built on top of the
 powerful compare/merge features that are provided with Eclipse for Java source code.  The RSE Extensions handles retrieving and locking
-your source member fron your iSeries source file.  It then has to strip the first 12 source file bytes (sequence and date) from the local
+your source member fron your IBM i source file.  It then has to strip the first 12 source file bytes (sequence and date) from the local
 file so that the Eclipse compare engine can properly analyze the differences of the files.  When the editor is saved, the source is put
 back in the source file and the lock released. The sequence and date fields in the member are reset to new values as part of this process.
 </p>
@@ -111,15 +111,15 @@ you choose.</p>
 <img src="images/overview/compare-2.png" alt="Compare dialogs" />
 <p>The values you enter into these dialogs are fairly self-explanatory, especially
 if you have used PDM option 54 and 55.  A notable enhancement to those options,
-however, is that each source member can come from a different iSeries system.  This
+however, is that each source member can come from a different IBM i system.  This
 is because the members are just retrieved and compared on your local workstation.  Once you
 click OK, the members are downloaded and compared and opened in the Eclipse compare or merge
 editor.</p>
 <img src="images/overview/compare-3.png" alt="Compare editor" />
 <p>The editor contains all of the same compare/merge features that you get when using it for
-Java source.  The only negative to the editor is that it is not "aware" of the iSeries languages
+Java source.  The only negative to the editor is that it is not "aware" of the IBM i languages
 you are comparing/merging.  So you do not get the color-coding or other editor features you get
-when using the LPEX editor.  Hopefully, when/if IBM provides these features as part of RDi/WDSC itself,
+when using the LPEX editor.  Hopefully, when/if IBM provides these features as part of RDP/RDi itself,
 those editor features will be available in their implementation.</p>
 </div>
 
