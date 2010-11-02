@@ -93,7 +93,13 @@ public class QueuedMessageResourceAdapter
 			String errorMessage = null;
 			if (e.getMessage() == null) errorMessage = e.toString();
 			else errorMessage = e.getMessage();
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("QueuedMessageResourceAdapter.2"), errorMessage); //$NON-NLS-1$
+			final String errorString = errorMessage;
+			shell.getDisplay().syncExec(
+					new Runnable() {
+						public void run() {
+							MessageDialog.openError(Display.getCurrent().getActiveShell(), ExtensionsPlugin.getResourceString("QueuedMessageResourceAdapter.2"), errorString); //$NON-NLS-1$
+						}
+					});
 			return false;
 		}
 		return true;
