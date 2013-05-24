@@ -137,7 +137,8 @@ public class CompareDialog extends Dialog {
 		compareConnectionCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 okButton.setEnabled(canFinish());
-                compareMemberPrompt.setSystemConnection(connection.getHost());
+                compareConnection = compareConnectionCombo.getISeriesConnection();
+                compareMemberPrompt.setSystemConnection(compareConnection.getHost());
             }
 		});
 		
@@ -202,7 +203,9 @@ public class CompareDialog extends Dialog {
         if (editButton.getSelection()) settings.put("CompareDialog.mode", "e"); //$NON-NLS-1$ //$NON-NLS-2$
         else settings.put("CompareDialog.mode", "b"); //$NON-NLS-1$ //$NON-NLS-2$
         openForEdit = editButton.getSelection();
-        compareConnection = connection;
+        if (compareConnection == null) {
+        	compareConnection = compareConnectionCombo.getISeriesConnection();
+        }
         compareLibrary = compareMemberPrompt.getLibraryName();
         compareFile = compareMemberPrompt.getFileName();
         compareMember = compareMemberPrompt.getMemberName();
