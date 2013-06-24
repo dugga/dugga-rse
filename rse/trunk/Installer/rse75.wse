@@ -97,7 +97,7 @@ item: Set Variable
 end
 item: Set Variable
   Variable=INSTALLERDATE
-  Value=10301
+  Value=13172
 end
 item: Remark
 end
@@ -1597,7 +1597,7 @@ end
 item: Remark
 end
 item: Remark
-  Text=Now loop through selected products and install links folder and file
+  Text=Now loop through selected products and install dropins folder and file
 end
 item: If/While Statement
   Variable=SELECTEDPRODUCTS
@@ -1606,13 +1606,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_A%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_A%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_A%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_A%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_A%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_A%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1623,13 +1632,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_B%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_B%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_B%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_B%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_B%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_B%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1640,13 +1658,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_C%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_C%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_C%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_C%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_C%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_C%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1657,13 +1684,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_D%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_D%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_D%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_D%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_D%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_D%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1674,13 +1710,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_E%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_E%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_E%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_E%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_E%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_E%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1691,13 +1736,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_F%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_F%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_F%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_F%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_F%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_F%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1708,13 +1762,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_G%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_G%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_G%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_G%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_G%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_G%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1725,13 +1788,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_H%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_H%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_H%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_H%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_H%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_H%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1742,13 +1814,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_I%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_I%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_I%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_I%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_I%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_I%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end
@@ -1759,13 +1840,22 @@ item: If/While Statement
 end
 item: Install File
   Source=\\Concord\Deploy\T54Prd\RSE Extensions 7.5\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_J%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_J%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000010000010
 end
 item: Copy Local File
   Source=%MAINDIR%\com.softlanding.rse.extensions.link
-  Destination=%S_LOCATION_J%\links\com.softlanding.rse.extensions.link
+  Destination=%S_LOCATION_J%\dropins\com.softlanding.rse.extensions.link
   Flags=0000000011000010
+end
+item: Check if File/Dir Exists
+  Pathname=%S_LOCATION_J%\links\com.softlanding.rse.extensions.link
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%S_LOCATION_J%\links\com.softlanding.rse.extensions.link
+end
+item: End Block
 end
 item: End Block
 end

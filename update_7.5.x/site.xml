@@ -3,7 +3,7 @@
    <description url="http://support.softlanding.com/opensource/update_7.5.x">
       Update site for open source Eclipse plugins provided by SoftLanding Systems.
    </description>
-   <feature url="features/com.softlanding.rse.extensions_7.5.0.20101028.jar" id="com.softlanding.rse.extensions" version="7.5.0.20101028">
+   <feature url="features/com.softlanding.rse.extensions_7.5.0.20130621.jar" id="com.softlanding.rse.extensions" version="7.5.0.20130621">
       <category name="Free"/>
    </feature>
    <category-def name="Free" label="Open Source Plug-ins">
